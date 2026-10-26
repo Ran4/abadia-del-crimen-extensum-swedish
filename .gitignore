@@ -14,3 +14,5 @@ run.log
 # reproducible pristine reference captures
 screenshots/pristine_*/
 __pycache__/
+# derived game images: rebuilt by tools/images/build_*.py from the original assets
+assets_sv/res/

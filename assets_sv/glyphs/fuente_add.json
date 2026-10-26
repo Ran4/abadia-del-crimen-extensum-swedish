@@ -1,0 +1,48 @@
+{
+ "legend": {
+  ".": 53,
+  "W": 1,
+  "G": 6,
+  "d": 37,
+  "a": 19,
+  "b": 10,
+  "c": 28,
+  "e": 3,
+  "g": 5,
+  "h": 41,
+  "i": 34,
+  "j": 7,
+  "k": 9,
+  "m": 31,
+  "n": 26,
+  "p": 8
+ },
+ "cells": {
+  "74": {
+   "purpose": "HUD precomposed Ö, hour byte 119 (NATTBÖN; also drawn by j.a in the save/load label). Row 0 = the diaeresis of cell 16 (palette 37+1 at cols 1-2 and 5-6, as drawn over Ä/Ö in messages), row 1 = gap, rows 2-7 = O (cell 34) rows 1,2,3,5,6,7: pixel-identical to the O body of the shipped HUD Ó (cell 68).",
+   "rows": [
+    ".dW..dW.",
+    "........",
+    "..abW...",
+    ".ce.gW..",
+    "hW...iW.",
+    "jW...gW.",
+    "kmW.gnW.",
+    ".kggph.."
+   ]
+  },
+  "80": {
+   "purpose": "Ring overlay for Å/å (char code 125), drawn by the patched j.a at (x, y-2) after a normal A. Rows 0-2 = screen rows y-2..y: a 4x3 ring centred on the A apex (cols 2-5) that sits on the apex. Accent palette only: 1 on the top and right, 6 on the left and bottom (lit from the top right like the O body).",
+   "rows": [
+    "...WW...",
+    "..G..W..",
+    "...GG...",
+    "........",
+    "........",
+    "........",
+    "........",
+    "........"
+   ]
+  }
+ }
+}

@@ -1,0 +1,32 @@
+# Hand-pixelled 'g' for the Swedish HUD day word "Dag" (res/de/marcador.png).
+# Read by tools/images/build_marcador.py, which first removes the en 'y' (box [30..38]x[4..18])
+# and restores the background under it, then paints these pixels.
+#
+# Model: the en 'a' (top hairline in L at row 6, 2-px W strokes with d edges) for a closed bowl,
+# the en 'y' stem (x35..36) for the right side, and the en 'y' descender (rows 15..18) verbatim.
+# Rule (abadia.v.b(int) paints image x37..60, y7..14 black every frame): ink at x <= 36 on rows
+# 7..14 and x <= 38 elsewhere. Columns here are image x 30..38; rows are image y 4..18.
+#
+# symbols: .  keep (ground/ivy after the y is removed)
+#          W #ecebec  L #d7d8d8  M #abb2b3  d #9ca2a4      (greys)
+#          R #96020a  r #6d0211  q #54020c                 (blood band)
+#          k #050204 ground, 2 #194e0c 5 #216214 3 #2a9214 ivy (not used)
+#
+#       x: 30......38
+x0 30
+y0 4
+4  .........
+5  .........
+6  ..dLLLWd.
+7  .dL..dW..
+8  dLd..dW..
+9  dWd..WW..
+10 dWd..WW..
+11 dWWddWW..
+12 .dWWWWW..
+13 ..qRRRR..
+14 ...qqRR..
+15 q..qqqRq.
+16 RqqqRRq..
+17 qRRRRq...
+18 .qqqq....
