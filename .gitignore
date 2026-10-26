@@ -10,3 +10,6 @@ tools/.xvfb_display
 *.rar
 *.pdf
 run.log
+.claude/
+# reproducible pristine reference captures
+screenshots/pristine_*/
