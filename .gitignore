@@ -1,0 +1,12 @@
+# Game binaries and derived copies: never commit (personal use only)
+original/
+work/
+game/
+tools/xvfb-root/
+tools/*.deb
+tools/*.jar
+tools/.xvfb_display
+*.jar
+*.rar
+*.pdf
+run.log
