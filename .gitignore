@@ -13,3 +13,4 @@ run.log
 .claude/
 # reproducible pristine reference captures
 screenshots/pristine_*/
+__pycache__/

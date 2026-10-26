@@ -1,0 +1,558 @@
+es	en	sv	kind	note
+GUILLERMO	WILLIAM	VILHELM	name	gen. VILHELMS; speaker 0; deliberate historicising exonym (cf. Vilhelm Erövraren), chosen knowing that modern references mostly say William (GLOSSARY §3.2)
+FRAY GUILLERMO	BROTHER WILLIAM	BRODER VILHELM	name	address and 3rd person; never FRA/FRAY
+ADSO	ADSO	ADSO	name	gen. ADSOS; speaker 1
+ADSO DE MELK	ADSO OF MELK	ADSO AV MELK	name	not in strings; reference form
+SEVERINO	SEVERINUS	SEVERINUS	name	gen. SEVERINUS (no -s, no apostrophe): SEVERINUS ÖRTAGÅRD; speaker 2
+BERENGARIO	BERENGAR	BERENGAR	name	gen. BERENGARS; speaker 5
+MALAQUÍAS	MALACHI	MALACHIAS	name	gen. MALACHIAS (no -s): MALACHIAS NYCKEL; speaker 4
+VENANCIO	VENANTIUS	VENANTIUS	name	gen. VENANTIUS (no -s): VENANTIUS MANUSKRIPT, VENANTIUS PULPET
+ADELMO	ADELMO	ADELMO	name	gen. ADELMOS: ADELMOS DÖD
+JORGE	JORGE	JORGE	name	gen. JORGES; speaker 7
+JORGE DE BURGOS	JORGE OF BURGOS	JORGE AV BURGOS	name	g62
+BERNARDO GUI	BERNARDO GUI	BERNARDO GUI	name	gen. BERNARDO GUIS; speaker 6; game's form in every language (historical Bernard Gui)
+BERNARDO	BERNARDO	BERNARDO	name	gen. BERNARDOS
+REMIGIO	REMIGIO	REMIGIO	name	gen. REMIGIOS; speaker 8
+SALVATORE	SALVATORE	SALVATORE	name	gen. SALVATORES; speaker 10
+UBERTINO	UBERTINO	UBERTINO	name	gen. UBERTINOS; speaker 12
+UBERTINO DE CASALE	UBERTINO OF CASALE	UBERTINO AV CASALE	name	not in strings; reference form
+NICOLA	NICOLA	NICOLA	name	speaker 13; AVOID the genitive (NICOLAS reads as the name Nicolas): use HOS NICOLA / SOM NICOLA BERÄTTADE
+HERMANO NICOLA	BROTHER NICOLA	BRODER NICOLA	name	g123; also g87, where Guillermo says VENERABLE HERMANO: BRODER NICOLA (a DU pair takes no ÄREVÖRDIGE)
+EL ABAD	THE ABBOT	ABBOTEN	name	gen. ABBOTENS; speaker 3; never given a personal name (no Abbone/Abbo)
+ALDEANO	VILLAGER	BYBON	name	speaker 11 (g66); label only, never in text
+LA CHICA	THE GIRL	FLICKAN	name	character object 12; text says UNA MUJER/ELLA
+FRAY FRANCISCO DE AVILÉS	FRIAR FRANCISCO DE AVILÉS	BRODER FRANCISCO AV AVILÉS	name	g149; tribute to Paco Menéndez (from Avilés); É is drawable
+FRAY JUAN	FRIAR JUAN	BRODER JUAN	name	g149; tribute to Juan Delcán
+SAN GREGORIO	SAINT GREGORY	DEN HELIGE GREGORIUS	name	g150; gen. GREGORIUS
+ARISTÓTELES	ARISTOTLE	ARISTOTELES	name	gen. ARISTOTELES (no -s), rarely needed; g62: ARISTOTELES ÄGNADE ANDRA BOKEN AV SIN POETIK ÅT KOMEDIN
+OVIDIO	OVID	OVIDIUS	name	g163
+VIRGILIO	VIRGIL	VERGILIUS	name	g163; Swedish standard spelling with E
+CRISTO	CHRIST	KRISTUS	name	g62
+JESÚS	JESUS	JESUS	name	g126 exclamation HERRE JESUS! (never a bare JESUS!); Latin JESUS VENTURUS EST unchanged
+DIOS	GOD	GUD	name	gen. GUDS
+EL SEÑOR	THE LORD	HERREN	name	God; gen. HERRENS: HERRENS VILJA
+MARÍA	MARY	MARIA	name	only in AVE MARIA PURISSIMA
+ANTICRISTO	ANTICHRIST	ANTIKRIST	name	no article; gen. ANTIKRISTS (unused g42)
+EL APÓSTOL	THE APOSTLE	JOHANNES	name	g85 only, inside EL LIBRO DEL APÓSTOL -> JOHANNES UPPENBARELSE; gen. JOHANNES (no -s); never APOSTELN (alone it means Paul in Swedish usage)
+EL FILÓSOFO	THE PHILOSOPHER	FILOSOFEN	name	g130 (Aristotle)
+DULCINISTAS	DULCINIANS	DOLCINIANERNA	name	g54; followers of Fra Dolcino
+LA SANTA INQUISICIÓN	THE HOLY INQUISITION	DEN HELIGA INKVISITIONEN	name	g54; plain LA INQUISICIÓN -> INKVISITIONEN (g122)
+Paco Menéndez	Paco Menéndez	Paco Menéndez	name	real person; unchanged everywhere
+Juan Delcán	Juan Delcán	Juan Delcán	name	real person; unchanged
+Manuel Pazos	Manuel Pazos	Manuel Pazos	name	real person; unchanged
+Daniel Celemín	Daniel Celemin	Daniel Celemín	name	real person; keep the accent (es image has it)
+David Cañadas	David Cañadas	David Cañadas	name	real person; parchment credits
+Umberto Eco	Umberto Eco	Umberto Eco	name	real person; unchanged
+Jean Jacques Annaud	Jean-Jacques Annaud	Jean-Jacques Annaud	name	real person; WITH hyphen (it/en image form); gen. Jean-Jacques Annauds
+El Nombre de la Rosa	The Name of the Rose	Rosens namn	name	novel title; in images ”Rosens namn” (Swedish quotes: ” at both ends)
+La Abadía del Crimen Extensum	The Abbey of Crime Extensum	La Abadía del Crimen Extensum	name	game title; unchanged (logo reused)
+LA ABADÍA	THE ABBEY	KLOSTRET	place	gen. KLOSTRETS; host's ESTA ABADÍA -> VÅRT KLOSTER (g1, g49), EL NOMBRE DE ESTA ABADÍA -> VÅRT KLOSTERS GODA NAMN (g1, g122); demonstrative ESTA ABADÍA -> DETTA KLOSTER (g12, g157); not ABBEDI (correct but bookish, never said)
+MONASTERIO	MONASTERY	KLOSTER	place	g53 EN ESTE MONASTERIO -> I DETTA KLOSTER
+EL EDIFICIO	THE BUILDING	BYGGNADEN	place	the Aedificium; Eco's 'Edificio'; gen. BYGGNADENS
+TORREÓN ESTE	EAST KEEP	ÖSTRA TORNET	place	g1; EL TORREÓN -> TORNET (g75, g122)
+EL SCRIPTORIUM	THE SCRIPTORIUM	SCRIPTORIET	place	Latin loan, Swedish definite -et (like REFEKTORIET); indefinite SCRIPTORIUM; the C spelling is DELIBERATE (source keeps scriptorium in every language; parchment too): never SKRIPTORIET / SKRIPTORIUM
+LA BIBLIOTECA	THE LIBRARY	BIBLIOTEKET	place	gen. BIBLIOTEKETS: BIBLIOTEKETS LAMPOR
+EL LABERINTO	THE LABYRINTH	LABYRINTEN	place	g64
+EL REFECTORIO	THE REFECTORY	REFEKTORIET	place	g10, g57
+LA COCINA	THE KITCHEN	KÖKET	place	
+LA IGLESIA	THE CHURCH	KYRKAN	place	
+EL CEMENTERIO	THE CEMETERY	KYRKOGÅRDEN	place	
+EL OSARIO	THE OSSUARY	BENHUSET	place	g73
+LA CAPILLA	THE CHAPEL	KAPELLET	place	g73
+LA CELDA	THE CELL	CELLEN	place	pl. CELLER/CELLERNA; VUESTRA CELDA -> ER CELL
+EL CLAUSTRO	THE CLOISTER	KORSGÅNGEN	place	false friend: never KLOSTRET
+LA ENFERMERÍA	THE INFIRMARY	SJUKHUSET	place	g64, g111, g122; gen. SJUKHUSETS; klostrets sjukhus = a monastery's infirmary; not SJUKSTUGAN (19th/20th-century rural cottage hospital, sick bay)
+EL HOSPITAL	THE HOSPITAL	SJUKHUSET	place	g47, g55: same place as ENFERMERÍA, same word
+LOS BAÑOS	THE BATHS	BADHUSET	place	g55, g93; LA BAÑERA -> BADKARET
+EL HUERTO	THE GARDEN	ÖRTAGÅRDEN	place	pl. ÖRTAGÅRDARNA (g55); SEVERINUS ÖRTAGÅRD (g152)
+EL LABORATORIO	THE LABORATORY	LABORATORIET	place	Severino's
+EL TALLER	THE WORKSHOP	VERKSTADEN	place	Nicola's
+LA POCILGA	THE PIGPEN	SVINSTIAN	place	
+EL POZO	THE WELL	BRUNNEN	place	g102
+EL HORNO	THE OVEN	UGNEN	place	g104
+LA DESPENSA	THE STOREROOM	SKAFFERIET	place	g91
+EL PASADIZO	THE PASSAGE	LÖNNGÅNGEN	place	g91
+LA SALA DE LAS RELIQUIAS	THE RELIC HALL	RELIKKAMMAREN	place	g146
+LA NAVE CENTRAL	THE CENTRAL NAVE	MITTSKEPPET	place	g151
+EL CORO	THE CHOIR	KORET	place	g157
+EL ALTAR	THE ALTAR	ALTARET	place	g73, g157
+LA ALDEA	THE VILLAGE	BYN	place	g153
+EL ESTERCOLERO	THE DUNGHILL	GÖDSELSTACKEN	place	g147
+EL BARRANCO	THE RAVINE	RAVINEN	place	g1, g75
+LA PLANTA INFERIOR / SUPERIOR, EL PISO SUPERIOR	THE LOWER / UPPER FLOOR	NEDRE / ÖVRE VÅNINGEN	place	g55, g58; EL PISO SUPERIOR (g154) -> ÖVRE VÅNINGEN; EL ÚLTIMO PISO (g64) -> ÖVERSTA VÅNINGEN
+OCCIDENTE	THE WEST	VÄSTERLANDET	place	unused g45
+BURGOS	BURGOS	BURGOS	place	g62, only inside JORGE AV BURGOS; unchanged
+Occam	Occam	Occam	parchment	parchment 1 only (broder Vilhelm av Occam); keep the game spelling Occam
+LOS DORMITORIOS	THE CELLS	CELLERNA	place	g157 (length-capped): ... VÄCKER MUNKARNA I CELLERNA; the monks sleep in cells (CELDA); not SOVSALARNA
+LA CHIMENEA	THE CHIMNEY	ELDSTADEN	place	g154 DENNA ELDSTAD; not SPISEN, not KAMINEN
+LAS ESCALERAS	THE STAIRS	TRAPPAN	place	g137; singular
+EL ALMACÉN	THE SHED	FÖRRÅDET	place	g100; Salvatore's pidgin I FÖRRÅD (no article)
+FRAY	BROTHER / FRIAR	BRODER	title	before a name: BRODER VILHELM, BRODER JUAN
+HERMANO	BROTHER	BRODER	title	address and 'a monk' (UN HERMANO -> EN BRODER); never BROR, never BRODERN as address
+HERMANOS	BROTHERS	BRÖDER	title	plural address, no article (abbot g20-24, g59, Severino g93)
+MAESTRO	MASTER	MÄSTARE	title	Adso -> Guillermo; never MAESTRO / LÄRARE / MAGISTER (forbidden rows), nor HERRE
+BELLO MAESTRO	BEAUTIFUL MASTER	VACKRE MÄSTARE	title	g75 twice (Adelmo's words, Guillermo's question); weak masculine -E; same BELLO as VACKRE ADELMO (g71, g122); never SKÖNE
+VENERABLE	VENERABLE	ÄREVÖRDIGE	title	address form with -E, ONLY in pairs that use NI: ÄREVÖRDIGE BRODER, ÄREVÖRDIGE JORGE; 3rd person DEN ÄREVÖRDIGE JORGE; VENERABLE occurs in g41-43, 47, 55, 60, 62, 87, 128, 131; exception g87 (Guillermo -> Nicola, a DU pair): VENERABLE HERMANO -> BRODER NICOLA; never VENERABEL, not VÖRDNADSVÄRDE (one word everywhere)
+QUERIDO	DEAR	KÄRE	title	KÄRE ADSO (g126)
+QUERIDÍSIMO HERMANO	DEAREST BROTHER	KÄRASTE BRODER	title	Ubertino g53
+MUCHACHO (address)	BOY	GOSSE	title	TÚ, MUCHACHO, A MI IZQUIERDA -> DU, GOSSE, SITTER TILL VÄNSTER OM MIG (g57); A TI, MUCHACHO -> DIG, GOSSE (g130); TILL VÄNSTER OM MIG mirrors TILL HÖGER OM ABBOTEN (TILL MIN VÄNSTER is also good Swedish, only not chosen)
+MUCHACHO (reference)	BOY / YOUNG MAN	YNGLING	title	EL MUCHACHO QUE MURIÓ -> YNGLINGEN SOM DOG (g53); LOS MUCHACHOS HERMOSOS -> VACKRA YNGLINGAR (g122)
+INSENSATO	FOOL	DIN DÅRE	title	vocative always with DIN (noun DÅRE): g110 TIG, DIN DÅRE... (Guillermo -> Adso); g118 VAD HAR DU SAGT TILL DEM, DIN DÅRE? (Remigio -> Salvatore); a bare DÅRE as vocative reads translated
+PADRE (spiritual)	FATHER	FADER / FÄDER	title	LOS PADRES ESPIRITUALES DE NUESTRA ORDEN -> VÅR ORDENS ANDLIGA FÄDER (g145); address FADER if ever needed
+HIJO	SON	MIN SON	title	not in strings; reference only
+SEÑOR (Salvatore)	SEÑOR	HERR	title	EL SEÑOR BERNARDO -> HERR BERNARDO (g118 pidgin)
+ABAD	ABBOT	ABBOT	title	3rd person always ABBOTEN; no address title in the strings; if ever needed: FADER ABBOT
+PADRE HERBOLARIO	HERBALIST	ÖRTLÄKARE	title	Severino g55: JAG ÄR SEVERINUS, KLOSTRETS ÖRTLÄKARE; not ÖRTKÄNNARE
+CILLERERO	CELLARER	KÄLLARMÄSTARE	title	Remigio g49
+VIDRIERO	GLAZIER	GLASMÄSTARE	title	Nicola g63, g64
+AYUDANTE DEL BIBLIOTECARIO	ASSISTANT LIBRARIAN	BIBLIOTEKARIENS MEDHJÄLPARE	title	Berengar g56, g60
+BIBLIOTECARIO	LIBRARIAN	BIBLIOTEKARIE	title	
+ILUSTRADOR / MINIATURISTA	ILLUMINATOR	MINIATYRMÅLARE	title	Adelmo g1, g61; PINTANDO MINIATURAS -> MÅLADE MINIATYRER
+COPISTAS	COPYISTS	AVSKRIVARE	title	g45, g58
+TRADUCTOR DE GRIEGO	TRANSLATOR OF GREEK	ÖVERSÄTTARE FRÅN GREKISKA	title	Venantius g71
+MONJE	MONK	MUNK	title	pl. MUNKAR/MUNKARNA
+NOVICIADO	NOVITIATE	NOVICIAT	title	reference term; g56 HICIERON EL NOVICIADO JUNTOS -> DE VAR NOVISER TILLSAMMANS (needs neither word); not NOVISTID
+SOLDADOS	SOLDIERS	KNEKTAR	title	g109
+BRUJA	WITCH	HÄXA	title	g110
+HEREJE	HERETIC	KÄTTARE	title	g118, g145
+ASESINO	KILLER	MÖRDARE	title	g113, g120
+ABAD -> GUILLERMO		NI	address	vos [1,4,6,12,14,15,18,20,25,28,31,35,39,40,67,68,84,112,121,122]; vocative BRODER VILHELM / BRODER
+GUILLERMO -> ABAD		NI	address	vos [1,122]; no vocative title (do not add one)
+ABAD -> MONKS (plural)		NI	address	plural; vosotros [11,20,23,59,96]; [22,24] have only the vocative HERMANOS; vocative BRÖDER
+GUILLERMO -> ADSO		DU	address	tú everywhere; vocative ADSO, KÄRE ADSO (g126), DIN DÅRE (g110 TIG, DIN DÅRE...)
+ADSO -> GUILLERMO		NI	address	vos [89,163]; vocative MÄSTARE
+SEVERINO -> GUILLERMO		NI	address	vos [13,38,47,55,57,71,99,106,107] (13 ESCUCHAD and 38 ESPERAD are unused); vocative ÄREVÖRDIGE BRODER (g47, g55) / BRODER (g13, g38) / BRODER VILHELM (g111) / VILHELM (g57)
+GUILLERMO -> SEVERINO		DU	address	tú majority [56,95,99,106,111] over vos [70,71] (not copied); vocative SEVERINUS / BRODER
+SEVERINO -> ADSO		DU	address	tú [57]; vocative GOSSE
+SEVERINO -> MONKS (plural)		NI	address	plural; [93] BRÖDER!
+MALAQUÍAS -> GUILLERMO		NI	address	vos [7,43,44] (44 SI LO DESEÁIS ... OS MOSTRARÁ is unused); vocative BRODER / ÄREVÖRDIGE BRODER
+BERENGARIO -> GUILLERMO		NI	address	vos [60,61,62,75]; vocative ÄREVÖRDIGE BRODER
+GUILLERMO -> BERENGARIO		DU	address	tú [75]; DOCUMENTED EXCEPTION: his last turn in g75 (NO ME PIDÁIS ... VUESTROS PECADOS) switches to vos and IS copied as NI: GÅ OCH BEKÄNN ERA SYNDER FÖR HERREN; NOT a switch: TENÍAIS in g75 (SI TENÍAIS LA MISMA EDAD) is plural, you two (Berengar and Adelmo) -> plural NI: OM NI VAR JÄMNGAMLA
+JORGE -> GUILLERMO		NI	address	vos [42,62,128,129,130]; DOCUMENTED EXCEPTION: g128 opening tú x2 IS copied as DU (ÄR DET DU, VILHELM? JAG HAR VÄNTAT PÅ DIG), then NI (HÄR HAR NI ER BELÖNING); generic tú in g42 (LO ESPERAS) -> MAN; vocative BRODER VILHELM / VILHELM (g128) / ÄREVÖRDIGE BRODER (g42, unused)
+GUILLERMO -> JORGE		NI	address	vos [62,128]; tú once in g131 (ROBASTE) NOT copied; vocative ÄREVÖRDIGE JORGE
+JORGE -> ADSO		DU	address	tú [130]; vocative GOSSE
+ADSO -> JORGE		NI	address	vos [131]; vocative ÄREVÖRDIGE JORGE
+REMIGIO -> GUILLERMO		NI	address	vos [49,50,51,74,159]; vocative BRODER / BRODER VILHELM
+GUILLERMO -> REMIGIO		NI	address	vos [74]; vocative REMIGIO / BRODER
+SALVATORE -> GUILLERMO		DU	address	broken Swedish pidgin; tú [101 TUYA]; Latin vocative DOMINE FRATE MAGNIFICENTISSIMO kept
+GUILLERMO -> SALVATORE		DU	address	tú [54,100]; vocative BRODER
+UBERTINO -> GUILLERMO		DU	address	tú [53] (g115 has no pronoun); vocative VILHELM / KÄRASTE BRODER / BRODER (g115)
+GUILLERMO -> UBERTINO		DU	address	tú [53] (g97 has no pronoun); vocative UBERTINO
+NICOLA -> GUILLERMO		NI	address	vos [63,64,73,114,123,155] (g87 has no pronoun); vocative BRODER / BRODER VILHELM (g87, g114)
+GUILLERMO -> NICOLA		DU	address	tú majority [64,98,114,123,155] over vos [64,87,114] (not copied); vocative NICOLA / BRODER NICOLA (g87 for VENERABLE HERMANO, g123) / BRODER; no ÄREVÖRDIGE in this DU pair
+BERNARDO -> GUILLERMO		NI	address	vos [109,110,113,116,117,120]; vocative BRODER VILHELM
+GUILLERMO -> BERNARDO		NI	address	vos [110,120]; vocative BERNARDO (bare)
+BERNARDO -> REMIGIO		DU	address	tú [113,118]
+REMIGIO -> BERNARDO		NI	address	vos [118]
+REMIGIO -> SALVATORE		DU	address	tú [118]; vocative DIN DÅRE (VAD HAR DU SAGT TILL DEM, DIN DÅRE?)
+SALVATORE -> BERNARDO		HERR BERNARDO	address	3rd person; [118] OCH HERR BERNARDO MYCKET MAGNIFIK HAN VETA (pidgin infinitive, never HAN VET); GLOSSARY §1.10
+BERNARDO -> ALL PRESENT (plural)		NI	address	plural; [110 MIRAD, 118 VÉIS]
+ALDEANO -> GUILLERMO+ADSO		NI	address	plural; only an imperative occurs, no pronoun: [66] KOM!
+ABAD -> JORGE		NI	address	unused g41; ÄREVÖRDIGE JORGE
+vos / os / vuestro	you / your (polite)	NI / ER / ER, ERT, ERA	address	singular polite; predicative adjective stays SINGULAR: NI ÄR VÄLKOMMEN, VAR VÄLKOMMEN (g42)
+vosotros / os / vuestro	you (plural)	NI / ER / ER, ERT, ERA	address	plural; predicative adjective plural: NI ÄR VÄLKOMNA
+tú / te / tu	you / your (familiar)	DU / DIG / DIN, DITT, DINA	address	
+tú / vos (generic, impersonal)	you (= anyone)	MAN	address	not address: generic you -> MAN in every pair; g42 LLEGA CUANDO MENOS LO ESPERAS -> HAN KOMMER NÄR MAN MINST ANAR DET
+SEVERINO/NICOLA/BERNARDO/BERENGARIO/ABAD -> GUILLERMO+ADSO		NI	address	plural agreement where both are meant; clearly plural: Severino [57,99,107]; singular or plural: Severino [106], Nicola [73], Bernardo [109], Berengario [62], Abad [40]
+NOCHE	NIGHT	 NATT  	hour_hud	bytes=32,78,65,84,84,32,32; hour 0; exactly 7 cells incl. padding; plain A-Z and space
+PRIMA	PRIME	 PRIM  	hour_hud	bytes=32,80,82,73,77,32,32; hour 1; exactly 7 cells incl. padding; plain A-Z and space
+TERCIA	TERCE	 TERS  	hour_hud	bytes=32,84,69,82,83,32,32; hour 2; exactly 7 cells incl. padding; plain A-Z and space
+SEXTA	SEXT	 SEXT  	hour_hud	bytes=32,83,69,88,84,32,32; hour 3; exactly 7 cells incl. padding; plain A-Z and space
+NONA	NONE	  NON  	hour_hud	bytes=32,32,78,79,78,32,32; hour 4; exactly 7 cells incl. padding; plain A-Z and space
+VÍSPERAS	VESPERS	VESPER 	hour_hud	bytes=86,69,83,80,69,82,32; hour 5; exactly 7 cells incl. padding; plain A-Z and space
+COMPLETAS	COMPLINE	NATTBÖN	hour_hud	bytes=78,65,84,84,66,119,78; hour 6; exactly 7 cells incl. padding; the Ö in sv is the precomposed squashed HUD glyph, code 119 (slot 74), provisional until Phase D sets it: emit the bytes, NEVER the encoded sv cell (U+00D6 = byte 214 is negative signed: not drawn by v.c(), blank in the save list); never 120
+NOCHE	NIGHT	NATTEN	hour_text	hour 0; dialogue/parchment form, no length limit; OM NATTEN (habitual), I NATT (tonight), UNDER NATTEN, DEN NATTEN
+PRIMA	PRIME	PRIM	hour_text	hour 1; dialogue/parchment form, no length limit; no article: VID PRIM, TILL PRIM, EFTER PRIM
+TERCIA	TERCE	TERS	hour_text	hour 2; dialogue/parchment form, no length limit; no article: VID TERS, EFTER TERS
+SEXTA	SEXT	SEXT	hour_text	hour 3; dialogue/parchment form, no length limit; no article: VID SEXT, EFTER SEXT
+NONA	NONE	NON	hour_text	hour 4; dialogue/parchment form, no length limit; no article: VID NON, EFTER NON
+VÍSPERAS	VESPERS	VESPERN	hour_text	hour 5; dialogue/parchment form, no length limit; definite: TILL VESPERN, EFTER VESPERN
+COMPLETAS	COMPLINE	NATTBÖNEN	hour_text	hour 6; dialogue/parchment form, no length limit; definite: TILL NATTBÖNEN, EFTER NATTBÖNEN; COMPLETORIUM only if a Latin term is wanted
+DÍA (dialogue)	DAY	DAG / DAGEN	hour_text	AL TERCER DÍA -> PÅ TREDJE DAGEN; EL OTRO DÍA -> HÄROMDAGEN; TODOS LOS DÍAS / CADA DÍA -> VARJE DAG; CIERTO DÍA -> EN DAG
+AMANECER	DAWN	GRYNING / DAGEN GRYR	hour_text	PRONTO AMANECERÁ -> SNART GRYR DAGEN (g33); AL AMANECER -> I GRYNINGEN (g157)
+MAÑANA / HOY / AYER	TOMORROW / TODAY / YESTERDAY	I MORGON / I DAG / I GÅR	hour_text	A LA MAÑANA SIGUIENTE -> MORGONEN DÄRPÅ
+HAS RESUELTO EL	YOU HAVE SOLVED	DU HAR LÖST	ui	a[0]; end screen line y=32; 11 glyphs (<=40)
+ POR CIENTO	 PER CENT	 PROCENT	ui	a[1]; end screen, appended to the number; leading space; 8 glyphs; '100 PROCENT' = 11 (<=37)
+DE LA INVESTIGACION	OF THE INVESTIGATION	AV GÅTAN	ui	a[2]; end screen y=64; 8 glyphs
+PULSA ESPACIO	PRESS SPACE	TRYCK PÅ MELLANSLAG	ui	a[3]; end screen y=128; 19 glyphs
+NO	NO	AV	ui	c[0]; off value for MUSIK / HELSKÄRM / VISA INDIKATORER; 2 glyphs
+SÍ	YES	PÅ	ui	c[1]; on value; 2 glyphs; needs the Å patch
+CLÁSICO	CLASSIC	KLASSISK STYRNING	ui	d[0]; row 5 value when classic; f[5] is EMPTY, so the value is the whole row; 17 glyphs
+DIRECCIONAL	DIRECTIONAL	RIKTNINGSSTYRNING	ui	d[1]; row 5 value when directional; 17 glyphs
+VOCES,SFX	VOICES,SFX	RÖSTER, EFFEKTER	ui	e[0]; row 3 value; LJUD: RÖSTER, EFFEKTER = 22 glyphs (longest row of the menu)
+SFX	SFX	EFFEKTER	ui	e[1]; row 3 value; row 14
+SILENCIO	SILENCE	AV	ui	e[2]; row 3 value; row 8
+CONTINUAR	CONTINUE	FORTSÄTT	ui	f[0]; 8
+GRABAR PARTIDA	SAVE	SPARA SPEL	ui	f[1]; 10
+CARGAR PARTIDA	LOAD	LADDA SPEL	ui	f[2]; 10
+SONIDOS: 	SOUND: 	LJUD: 	ui	f[3]; label with trailing space; 6; max row 22
+MÚSICA: 	MUSIC: 	MUSIK: 	ui	f[4]; 7; max row 9
+CONTROL 	CONTROL: 		ui	f[5]; INTENTIONALLY EMPTY STRING (value carries the noun); max row 17; build must emit "" not fall back; fallback design: 'STYRNING: ' + KLASSISK / RIKTAD (18)
+PANTALLA COMPLETA: 	FULLSCREEN: 	HELSKÄRM: 	ui	f[6]; 10; max row 12
+MOSTRAR EXTRAS: 	SHOW EXTRAS: 	VISA INDIKATORER: 	ui	f[7]; 18 glyphs; max row VISA INDIKATORER: PÅ = 20 (<=23); extras = on-screen displays (lamp gauge, Adso indicator); not TILLÄGG (add-ons), not HJÄLPMEDEL (aids one uses)
+REINICIAR PARTIDA	RESTART	STARTA OM	ui	f[8]; 9
+SALIR	EXIT	AVSLUTA	ui	f[9]; 7
+DÍA 	DAY 	DAG 	ui	w.t[4]; save-slot prefix, trailing space, 4 glyphs; label = 'DAG ' + day + ' ' + 7 hour bytes, e.g. 'DAG 1  NATT  ' / 'DAG 7 NATTBÖN' (13 glyphs, bar holds 15)
+VACÍO	EMPTY	TOM	ui	w.u[4]; empty save slot, 3 glyphs
+La Abadía del Crimen Extensum	The Abbey of Crime Extensum	La Abadía del Crimen Extensum	ui	E.h[4]; window title; matches the reused es logo
+OBSEQUIUM	OBSEQUIUM	OBSEQUIUM	image	Latin in the HUD image lettering, not g text; keep, image untouched
+EXTENSUM	EXTENSUM	EXTENSUM	image	Latin in the title logo, not g text; keep (es logo reused)
+PENITENZIAGITE	PENITENZIAGITE	PENITENZIAGITE	latin	g54 x2; es spells PENITENCIAGITE; use Eco's form as en/it/fr do
+LA MORTZ EST SUPER NOS	LA MORTZ EST SUPER NOS	LA MORTZ EST SUPER NOS	latin	g54; keep
+DOMINE FRATE MAGNIFICENTISSIMO	DOMINE FRATE MAGNIFICENTISSIMO	DOMINE FRATE MAGNIFICENTISSIMO	latin	g54; es MAGNIFICENTISIMO normalised to en/it double S
+JESUS VENTURUS EST ET LOS HOMINES DEBENT FACERE PENITENTIA	JESUS VENTURUS EST ET LOS HOMINES DEBENT FACERE PENITENTIA	JESUS VENTURUS EST ET LOS HOMINES DEBENT FACERE PENITENTIA	latin	g54; keep exactly (LOS kept as en/fr)
+DI VITRIO	DI VITRIO	DI VITRIO	latin	g100 Salvatore (Italianate); keep: FLASKA DI VITRIO
+EST	EST	EST	latin	Salvatore's copula at sentence end (g100, g101); keep
+HOMO LITERATUS	HOMO LITERATUS	HOMO LITERATUS	latin	g118; keep
+PECCAVI SINE MALITIA	PECCAVI SINE MALITIA	PECCAVI SINE MALITIA	latin	g118; keep
+INDULGENTIA	INDULGENTIA	INDULGENTIA	latin	g118; keep
+IN NOMINE PATRE ET FILIO ET SPIRITIS SANCTIS	IN NOMINE PATRE ET FILIO ET SPIRITIS SANCTIS	IN NOMINE PATRE ET FILIO ET SPIRITIS SANCTIS	latin	g118; deliberately bad Latin; keep exactly as es
+OCULI DE VITRO CUM CAPSULA	OCULI DE VITRO CUM CAPSULA	OCULI DE VITRO CUM CAPSULA	latin	g64; keep; glossed by context (spectacles)
+SECRETUM FINIS AFRICAE MANUS SUPRA IDOLUM AGE PRIMUM ET SEPTIMUM DE QUATUOR	SECRETUM FINIS AFRICAE MANUS SUPRA IDOLUM AGE PRIMUM ET SEPTIMUM DE QUATUOR	SECRETUM FINIS AFRICAE MANUS SUPRA IDOLUM AGE PRIMUM ET SEPTIMUM DE QUATUOR	latin	g125; keep byte-exact
+SUPER THRONOS VIGINTI QUATUOR	SUPER THRONOS VIGINTI QUATUOR	SUPER THRONOS VIGINTI QUATUOR	latin	g127; es TRONOS normalised to Vulgate THRONOS (as it/fr); optional gloss PÅ TJUGOFYRA TRONER (Rev 4:4, upon the thrones)
+QUATUOR	QUATUOR	QUATUOR	latin	g127 x3; MUST stay: Q = 1st, R = 7th letter are the hard-coded keys
+COENA CYPRIANI	COENA CYPRIANI	COENA CYPRIANI	latin	g130; book title; keep, no quotes
+AVE MARIA PURISSIMA	AVE MARIA PURISSIMA	AVE MARIA PURISSIMA	latin	g138; es AVE MARÍA PURÍSIMA rendered as the Latin formula; keep the 8-space pause after it
+FINIS AFRICAE	FINIS AFRICAE	FINIS AFRICAE	latin	g125; also the place (the hidden room of the library); keep; EL FIN DE ÁFRICA -> AFRIKAS ÄNDE (g127)
+LO PAPA SANTO	SAINT POPE	LO PAPA SANTO	latin	g54 Salvatore's Romance formula; keep
+A LIBERAR NOS A MALO	TO FREE US	A LIBERAR NOS A MALO	latin	g54 Salvatore; the Pater Noster's libera nos a malo, as in Eco; keep
+DE TUTTE LAS PECCATA	FROM ALL BAD SINS	DE TUTTE PECCATA	latin	g54 Salvatore; keep DE, TUTTE, PECCATA; Spanish LAS dropped
+NO? (tag)	NO?	NO?	latin	g54 Salvatore, after PENITENTIA; keep (international tag, en keeps it)
+IO	ME	IO	latin	Salvatore's Italian I (g54); keep, and supply it where his Swedish needs a subject: IO INTE FÖRSTÅ, IO INTE VETA, IO INTE VARA, IO HOPPAS
+ET (g118)	ET	ET	latin	g118 Salvatore, before IO HOPPAS; keep
+Día	Day	Dag	image	marcador.png; hud font: reuse es/en D and a; draw g (none exists); keep ink within x<=36
+CARGANDO: Por favor, espere	LOADING: Please wait...	LADDAR: var god vänta...	image	loading.png line; loadline font: missing g, ä (a + two 1-px dots); lowercase after colon as fr
+Manuel Pazos / y Daniel Celemín	Manuel Pazos / and Daniel Celemin	Manuel Pazos / och Daniel Celemín	image	manuydani.png; script conj 'och': o, c, h all missing (compose from a/d/e/n); names = es pixels
+inspirado en la obra de	based on the work of	efter spelet av	image	pacoyjuan.png l1; fraktur: all letters present
+Paco Menéndez	Paco Menéndez	Paco Menéndez	image	pacoyjuan.png l2; unchanged pixels
+y Juan Delcán	and Juan Delcán	och Juan Delcán	image	pacoyjuan.png l3; script och: hand-draw o, c, h (reuse the manuydani och glyphs; the en and is the same 32x15 px in all three images) + es pixels for Juan Delcán
+en la novela	inspired by the novel	efter romanen	image	novela.png l1; fraktur: all letters present
+“El Nombre de la Rosa”	“The Name of the Rose”	”Rosens namn”	image	novela.png l2; use the ” glyph at both ends (Swedish); all letters present
+de Umberto Eco	by Umberto Eco	av Umberto Eco	image	novela.png l3; all letters present
+y en la película de	and	och	image	pelicula.png l1; script, own line as en; hand-draw o, c, h (reuse the manuydani och glyphs; the en and is the same 32x15 px in all three images)
+Jean Jacques Annaud	in Jean-Jacques Annaud’s	Jean-Jacques Annauds	image	pelicula.png l2; fraktur; it/en pixels with hyphen; s exists
+del mismo nombre	film of the same name	film med samma namn	image	pelicula.png l3; fraktur: all letters present
+Pulsa para empezar	Press to start	Tryck för att starta	image	pulsa.png; pulsa font: missing T, y, k, f, ö
+La abadia / del crimen / extensum	The Abbey / of Crime / Extensum	La abadia / del crimen / extensum	image	logo.png; es logo reused unchanged (decision: the game's real name); no new pixels
+La abadia del crimen / extensum	The abbey of crime / extensum	La abadia del crimen / extensum	image	loading.png title art; es art reused unchanged, consistent with the logo
+BIENVENIDO A ESTA ABADÍA, HERMANO	WELCOME TO THIS ABBEY, BROTHER	VÄLKOMMEN TILL VÅRT KLOSTER, BRODER	phrase	g 1, 49 (the host speaks: VÅRT, not DETTA)
+BIENVENIDO A MI TALLER, HERMANO	WELCOME TO MY WORKSHOP, BROTHER	VÄLKOMMEN TILL MIN VERKSTAD, BRODER	phrase	g 64
+EL ABAD OS ESPERA	THE ABBOT IS WAITING FOR YOU	ABBOTEN VÄNTAR PÅ ER	phrase	g 49, 50, 51
+OS RUEGO QUE	I BEG YOU TO	JAG BER ER ATT	phrase	g 1, 49
+OS LO SUPLICO	PLEASE	JAG BÖNFALLER ER	phrase	g 68
+SEGUIDME	FOLLOW ME	FÖLJ MIG	phrase	g 55, 60, 67, 121
+VENID	COME	KOM	phrase	g 25, 50, 66, 116
+VENID AQUÍ	COME HERE	KOM HIT	phrase	g 18
+OS ORDENO QUE VENGÁIS	I COMMAND YOU TO COME	JAG BEFALLER ER ATT KOMMA	phrase	g 6
+DEBÉIS ACOMPAÑARME	YOU MUST COME WITH ME	NI MÅSTE FÖLJA MED MIG	phrase	g 109, 117
+LLEGÁIS TARDE	YOU ARE LATE	NI KOMMER FÖR SENT	phrase	g 4
+LLEGÁIS JUSTO A TIEMPO	YOU ARE RIGHT ON TIME	NI KOMMER I RÄTT TID	phrase	g 113
+DEBÉIS ABANDONAR EL EDIFICIO	YOU MUST LEAVE THE BUILDING	NI MÅSTE LÄMNA BYGGNADEN	phrase	g 7
+DEBÉIS ABANDONAR LA ABADÍA	YOU MUST LEAVE THE ABBEY	NI MÅSTE LÄMNA KLOSTRET	phrase	g 31
+ABANDONAD PARA SIEMPRE ESTA ABADÍA	LEAVE THIS ABBEY FOR EVER	LÄMNA DETTA KLOSTER FÖR ALLTID	phrase	g 12
+MAÑANA ABANDONARÉIS LA ABADÍA	TOMORROW YOU WILL LEAVE THE ABBEY	I MORGON SKA NI LÄMNA KLOSTRET	phrase	g 28, 122
+BERNARDO ABANDONARÁ HOY LA ABADÍA	BERNARDO WILL LEAVE THE ABBEY TODAY	BERNARDO LÄMNAR KLOSTRET I DAG	phrase	g 27, 121
+ESTA NOCHE ABANDONARÉ LA ABADÍA	I WILL LEAVE THE ABBEY TONIGHT	I NATT LÄMNAR JAG KLOSTRET	phrase	g 115
+ABANDONAR / DEJAR LA INVESTIGACIÓN	CEASE / STOP THE INVESTIGATION	AVBRYTA UNDERSÖKNINGEN	phrase	g 15, 122
+PODÉIS COMER, HERMANOS	YOU MAY EAT, BROTHERS	NI MÅ ÄTA, BRÖDER	phrase	g 20, 23; variant: 59, 96 (without HERMANOS: NI MÅ ÄTA)
+OREMOS	LET'S PRAY	LÅTOM OSS BEDJA	phrase	g 21; only liturgical use of LÅTOM
+PODÉIS IR A VUESTRAS CELDAS	YOU CAN GO TO YOUR CELLS	NI MÅ GÅ TILL ERA CELLER	phrase	g 11
+ENTRAD EN VUESTRA CELDA	ENTER YOUR CELL	GÅ IN I ER CELL	phrase	g 14
+OCUPAD VUESTRO SITIO	OCCUPY YOUR PLACE	INTA ER PLATS	phrase	g 39
+ASISTIR A LOS OFICIOS Y A LA COMIDA	ATTEND SERVICES AND MEALS	INFINN ER TILL TIDEBÖNERNA OCH MÅLTIDERNA / INFINNA ER TILL TIDEBÖNERNA OCH MÅLTIDERNA	phrase	g 1; INFINN ER (imperative) when it stands as its own sentence after _, as in es; INFINNA ER only if joined to the MÅSTE sentence; a standalone infinitive is ungrammatical; INFINNA SIG TILL fits both nouns (BEVISTA does not go with meals)
+DE NOCHE DEBÉIS ESTAR EN VUESTRA CELDA	YOU MUST STAY IN YOUR CELL AT NIGHT	OM NATTEN MÅSTE NI VARA I ER CELL	phrase	g 1
+NO HABÉIS RESPETADO MIS ÓRDENES	YOU DID NOT OBEY MY RULES	NI HAR INTE ÅTLYTT MINA BEFALLNINGAR	phrase	g 12
+DEBÉIS RESPETAR MIS ÓRDENES	YOU SHALL OBEY MY ORDERS	NI MÅSTE ÅTLYDA MINA BEFALLNINGAR	phrase	g 1
+ADVERTIRÉ AL ABAD	I'LL WARN THE ABBOT	ABBOTEN SKA FÅ VETA DETTA	phrase	g 8; variant: 2 (unused: LÄMNA VENANTIUS MANUSKRIPT, ANNARS SKA ABBOTEN FÅ VETA DET); not UNDERRÄTTA (officialese)
+AHORA DEBO IRME	I MUST LEAVE NOW	NU MÅSTE JAG GÅ	phrase	g 5; variant: 63 (AHORA DEBO MARCHARME A MI TALLER -> NU MÅSTE JAG GÅ TILL MIN VERKSTAD)
+TENGO ALGO QUE DECIROS	I HAVE SOMETHING TO TELL YOU	JAG HAR NÅGOT ATT SÄGA ER	phrase	g 18
+DEBEMOS IR A LA IGLESIA, MAESTRO	WE MUST GO TO THE CHURCH, MASTER	VI MÅSTE GÅ TILL KYRKAN, MÄSTARE	phrase	g 9
+DEBEMOS IR AL REFECTORIO, MAESTRO	WE MUST GO TO THE REFECTORY, MASTER	VI MÅSTE GÅ TILL REFEKTORIET, MÄSTARE	phrase	g 10
+DEBEMOS ENCONTRAR UNA LÁMPARA	WE MUST FIND A LAMP	VI MÅSTE HITTA EN LAMPA	phrase	g 17
+LA LÁMPARA SE AGOTA	THE LAMP IS RUNNING OUT	LAMPAN BÖRJAR SLOCKNA	phrase	g 34
+SE HA AGOTADO LA LÁMPARA	THE LAMP HAS RUN OUT	LAMPAN HAR SLOCKNAT	phrase	g 36
+PRONTO AMANECERÁ	SOON IT WILL DAWN	SNART GRYR DAGEN	phrase	g 33
+DIOS SANTO	DEAR LORD	HERRE GUD	phrase	g 26, 68, 113; two words, never HERREGUD
+DIOS NO LO QUIERA	GOD FORBID	GUD FÖRBJUDE	phrase	g 1, 99
+OH CIELOS	OH, DEAR	MILDA MAKTER	phrase	g 163
+¡LO JURO!	I SWEAR!	DET SVÄR JAG!	phrase	g 113 (JAG HAR INTE DÖDAT HONOM. DET SVÄR JAG!); not a bare JAG SVÄR! (modern ring; SVÄRA also = to curse)
+CUANDO LLEGUÉ YA ESTABA MUERTO	HE WAS ALREADY DEAD WHEN I CAME	HAN VAR REDAN DÖD NÄR JAG KOM	phrase	g 113, 118; Remigio's alibi, the same words both times; g113 ... DET SVÄR JAG! _ HAN VAR REDAN DÖD NÄR JAG KOM.; g118 ... HAN VAR REDAN DÖD NÄR JAG KOM, OCH MALACHIAS VAR DÄR.; no DIT/HIT (g113 is at the scene, g118 is not)
+OS JURO QUE	I SWEAR TO YOU THAT	JAG SVÄR ATT	phrase	g 118; JAG SVÄR ATT JAG INTE DÖDADE HONOM!; never JAG SVÄR ER
+¡BASTA!	ENOUGH!	NOG NU!	phrase	g 61, 62; Jorge; not a bare NOG! (literary, close to German Genug!)
+¡SILENCIO!	SILENCE!	TYSTNAD!	phrase	g 61
+CALLA, INSENSATO	BE QUIET, FOOL	TIG, DIN DÅRE	phrase	g 110 (TIG, DIN DÅRE...; Guillermo -> Adso)
+¿PERO QUÉ LES HAS DICHO, INSENSATO?	WHAT HAVE YOU TOLD THEM, FOOL?	VAD HAR DU SAGT TILL DEM, DIN DÅRE?	phrase	g 118 (Remigio -> Salvatore)
+¡CUIDADO!	CAREFUL!	FÖRSIKTIGT!	phrase	g 78; the flame near the parchment: FÖRSIKTIGT! VILL DU BRÄNNA UPP DET?
+¡CUIDADO, ADSO!	LOOK OUT, ADSO!	SE UPP, ADSO!	phrase	g 133; sudden danger
+DATE PRISA / DAOS PRISA	HURRY UP	SKYNDA DIG / SKYNDA ER	phrase	g 84, 161; SKYNDA ER from the abbot (g84, vos), SKYNDA DIG to Adso (g161 SKYNDA DIG, ADSO!)
+GRACIAS, HERMANO	THANK YOU, BROTHER	TACK, BRODER	phrase	g 55, 71, 99, 114
+MUCHAS GRACIAS, HERMANO	THANK YOU, BROTHER	HJÄRTLIGT TACK, BRODER	phrase	g 74; never STORT TACK
+SÍ, MAESTRO	YES, MASTER	JA, MÄSTARE	phrase	g 91, 160
+NO LO ENTIENDO, MAESTRO	I DON'T UNDERSTAND, MASTER	JAG FÖRSTÅR INTE, MÄSTARE	phrase	g 127
+LO SIENTO, MAESTRO	I'M SORRY, MASTER	FÖRLÅT MIG, MÄSTARE	phrase	g 78
+ASÍ ES	SO IT IS / YES	SÅ ÄR DET	phrase	g 1, 55, 73, 126, 157
+SIN DUDA	NO DOUBT	UTAN TVIVEL	phrase	g 61, 64, 68, 99
+INTERESANTE	INTERESTING	INTRESSANT	phrase	g 64, 73
+CIERTO, ADSO	TRUE, ADSO	MYCKET RIKTIGT, ADSO / DU HAR RÄTT, ADSO	phrase	g 78, 108; MYCKET RIKTIGT in g78 (confirming what Adso saw), DU HAR RÄTT in g108 (agreeing with his complaint)
+LO COMPRENDO	I SEE	JAG FÖRSTÅR	phrase	g 159
+HMMM...	HMMM...	HMMM...	phrase	g 95, 127
+JAJAJAJA / JIJIJI / JEJEJE	HA HA HA / HEE HEE / HEH HEH	HAHAHAHA / HIHIHI / HEHEHE	phrase	g 61; variant: 126 (JAJAJAJAJA, five syllables -> HAHAHAHAHA)
+¿VERDAD?	DON'T YOU? / WASN'T IT?	INTE SANT? / VÄL	phrase	g 110, 132; the tag INTE SANT? in g132 (DET VAR EN GOD IDÉ, INTE SANT? MEN NU ÄR DET FÖR SENT.), the particle VÄL in g110 (NI KÄNNER VÄL OCKSÅ IGEN DEN, BRODER VILHELM? with DEN = ATTIRALJ); never ELLER HUR?
+BUENAS NOCHES	GOOD EVENING	GOD AFTON	phrase	g 128
+ESTE ES / ESTA ES	THIS IS	DETTA ÄR	phrase	g 51, 57, 58, 59, 124, 158; DETTA ÄR ER CELL, DETTA ÄR REFEKTORIET, BRÖDER, DETTA ÄR VILHELM
+UN EXTRAÑO LIBRO	A STRANGE BOOK	EN MÄRKLIG BOK	phrase	g 13, 72, 111; variant: 77 (EL EXTRAÑO LIBRO -> DEN MÄRKLIGA BOKEN); EXTRAÑO is MÄRKLIG by default, UNDERLIG where uncanny (see term EXTRAÑO)
+QUÉ EXTRAÑO	HOW WEIRD	SÅ MÄRKLIGT	phrase	g 19
+EL LIBRO EN GRIEGO	THE BOOK WRITTEN IN GREEK	BOKEN PÅ GREKISKA	phrase	g 78; variant: 72 (UN EXTRAÑO LIBRO ESCRITO EN GRIEGO -> EN MÄRKLIG BOK SKRIVEN PÅ GREKISKA)
+LA MESA DE VENANCIO	VENANTIUS'S DESK	VENANTIUS PULPET	phrase	g 73, 77, 81, 122
+LA MESA DE TRABAJO DE ADELMO	ADELMO'S DESK	ADELMOS PULPET	phrase	g 60
+EL MANUSCRITO DE VENANCIO	VENANTIUS'S MANUSCRIPT	VENANTIUS MANUSKRIPT	phrase	g 2, 125, 127; g2 is unused (LÄMNA VENANTIUS MANUSKRIPT, ...); twice in g127
+LA LLAVE DE MALAQUÍAS	MALACHI'S KEY	MALACHIAS NYCKEL	phrase	g 83
+LAS LÁMPARAS DE LA BIBLIOTECA	THE LAMPS OF THE LIBRARY	BIBLIOTEKETS LAMPOR	phrase	g 99, 107
+EVITAR RESPIRAR ESOS HUMOS	AVOID INHALING THOSE FUMES	UNDVIKA ATT ANDAS IN DESSA ÅNGOR	phrase	g 90; the only verbatim occurrence; g99 has EVITAR RESPIRAR LOS HUMOS QUE SALEN DE ESAS LÁMPARAS -> ATT INTE ANDAS IN ÅNGORNA SOM STIGER UPP UR DESSA LAMPOR (term ÅNGOR); g107 has neither
+MANCHAS NEGRAS	BLACK STAINS	SVARTA FLÄCKAR	phrase	g 32, 122; variant: 95 (MANCHADAS DE NEGRO -> SVARTA; ESAS MANCHAS -> DESSA FLÄCKAR)
+LA TINAJA DE SANGRE	THE CASK OF BLOOD	BLODKARET	phrase	g 85, 122; LA TINAJA alone -> KARET (68, 69, 142)
+EL ÚLTIMO QUE VIO CON VIDA A ADELMO	THE LAST ONE TO SEE ADELMO ALIVE	DEN SISTE SOM SÅG ADELMO VID LIV	phrase	g 75; variant: 74 (AL JOVEN ADELMO -> DEN SISTE SOM SÅG DEN UNGE ADELMO VID LIV)
+LA MUERTE DE ADELMO	ADELMO'S DEATH	ADELMOS DÖD	phrase	g 59, 122; variant: 74 (LA NOCHE DE LA MUERTE DE ADELMO -> a clause: DEN NATT ADELMO DOG SÅG JAG HONOM GÅ TILL BERENGARS CELL); never NATTEN FÖR ADELMOS DÖD
+UN MONJE SE AVENTURÓ POR LA NOCHE EN LA BIBLIOTECA Y TUVO VISIONES EXTRAÑAS	A MONK VENTURED INTO THE LIBRARY AT NIGHT AND HAD STRANGE VISIONS	EN MUNK VÅGADE SIG EN NATT IN I BIBLIOTEKET OCH FICK UNDERLIGA SYNER	phrase	variant: 64 (with EN BUSCA DE UN LIBRO: ... IN I BIBLIOTEKET FÖR ATT SÖKA EN BOK OCH ...), 99 (SE AVENTURÓ A ENTRAR ... TUVO EXTRAÑAS VISIONES, same Swedish words); one past night: EN NATT, not OM NATTEN
+DECIDAN POR SÍ SOLOS	DECIDE FOR THEMSELVES	SJÄLVA AVGÖR	phrase	g 47, 64
+ID A VERME	PAY ME A VISIT	SÖK UPP MIG	phrase	g 63, 155
+AQUÍ TENÉIS (handing over)	HERE YOU ARE	VARSÅGOD	phrase	g 64; one word = here you are; three words VAR SÅ GOD OCH ... = old-fashioned please
+¡AQUÍ LAS TENÉIS!	HERE THEY ARE!	HÄR ÄR DE!	phrase	g 123
+A LA HORA DE LA COMIDA	AT MEALTIMES	VID MÅLTIDERNA	phrase	g 57
+DESPUÉS DE LA COMIDA	AFTER MEALTIME	EFTER MÅLTIDEN	phrase	g 155
+DEMASIADO TARDE / YA ES TARDE	TOO LATE	FÖR SENT	phrase	g 132, 162
+EL LIBRO DEL APÓSTOL	THE BOOK OF THE APOSTLE	JOHANNES UPPENBARELSE	phrase	g 85 (MEN DET STOD SKRIVET I JOHANNES UPPENBARELSE.); g97 EL LIBRO -> BOKEN points back; never APOSTELNS BOK
+LA PRIMERA / SEGUNDA / TERCERA / CUARTA TROMPETA	THE FIRST ... FOURTH TRUMPET	DEN FÖRSTA BASUNEN / DEN ANDRA BASUNEN / DEN TREDJE BASUNEN / DEN FJÄRDE BASUNEN	phrase	g 85, 97
+LUJURIA Y SOBERBIA	LUST AND PRIDE	VÄLLUST OCH HÖGMOD	phrase	g 53; LUJURIA -> VÄLLUST also in 163
+ESTOY CONDENADO	I'M DOOMED	JAG ÄR FÖRDÖMD	phrase	g 75
+EL CASTIGO ETERNO	THE ETERNAL PUNISHMENT	DET EVIGA STRAFFET	phrase	g 75
+EL SECRETO DE CONFESIÓN	THE SECRET OF CONFESSION	BIKTENS SIGILL	phrase	g 75; inside SELLE MIS LABIOS CON ...: one seals with a seal (sigillum confessionis); general concept BIKTHEMLIGHETEN is a reserve term
+OS PIDO QUE ME CONFESÉIS	I ASK YOU TO CONFESS ME	JAG BER ER ATT HÖRA MIN BIKT	phrase	g 75
+CONFIESA	CONFESS	BEKÄNN	phrase	g 118 (judicial)
+EL SECRETO DEL FIN DE ÁFRICA	THE SECRET OF THE END OF AFRICA	HEMLIGHETEN MED AFRIKAS ÄNDE	phrase	g 127; never HEMLIGHETEN OM (translationese)
+LA MANO SOBRE LA IMAGEN	THE HAND OVER THE IMAGE	HANDEN ÖVER BILDEN	phrase	g 127; not AVBILDEN (= a likeness or copy)
+PULSA EL PRIMERO Y EL SÉPTIMO DE CUATRO	PRESS THE FIRST AND SEVENTH OF FOUR	TRYCK PÅ DEN FÖRSTA OCH DEN SJUNDE AV FYRA	phrase	g 127; keep FYRA so the riddle still points to QUATUOR
+¡EL PRIMERO Y SÉPTIMO DE QUATUOR!	THE FIRST AND SEVENTH OF QUATUOR!	DEN FÖRSTA OCH SJUNDE BOKSTAVEN I QUATUOR!	phrase	g 127; = Q and R (hard-coded keys)
+SE REFIERE A LA PALABRA QUATUOR	IT REFERS TO THE WORD QUATUOR	DET SYFTAR PÅ ORDET QUATUOR	phrase	g 127
+ESTÁIS MUERTO, FRAY GUILLERMO	YOU ARE DEAD, BROTHER WILLIAM	NI ÄR EN DÖD MAN, BRODER VILHELM	phrase	g 129 (= you are doomed); never NI ÄR DÖD
+HABÉIS CAÍDO EN LA TRAMPA	YOU HAVE FALLEN INTO MY TRAP	NI HAR GÅTT I FÄLLAN	phrase	g 129
+RESOLVER EL MISTERIO	SOLVE THIS MYSTERY	LÖSA GÅTAN	phrase	g 144; matches end screen AV GÅTAN
+VEAMOS QUÉ HA OCURRIDO	LET'S FIND OUT WHAT'S HAPPENED	LÅT OSS SE VAD SOM HAR HÄNT	phrase	g 67
+YA ESTAMOS LLEGANDO	WE ARE ABOUT TO ARRIVE	SNART ÄR VI FRAMME	phrase	g 159 (length-capped)
+EN LA MEDIDA DE LO POSIBLE	AS MUCH AS POSSIBLE	SÅ GOTT NI KAN	phrase	g 59
+EL OTRO DÍA	THE OTHER DAY	HÄROMDAGEN	phrase	g 95, 99
+POR LA NOCHE (habitual)	AT NIGHT	OM NATTEN	phrase	g 64, 73, 99
+ESTA NOCHE	TONIGHT	I NATT	phrase	g 115
+AQUELLA NOCHE	THAT NIGHT	DEN NATTEN	phrase	g 75
+¡VENID! (villager)	COME!	KOM!	phrase	g 66
+¡HERMANOS!	BROTHERS!	BRÖDER!	phrase	g 93
+¿SABÉIS DÓNDE PUEDO ENCONTRAR UNA LÁMPARA?	DO YOU KNOW WHERE I CAN FIND A LAMP?	VET NI VAR JAG KAN FÅ TAG I EN LAMPA?	phrase	g 74 (REMIGIO, VET NI ...); embedded question: subject before verb (VAR JAG KAN), never VAR KAN JAG here
+¡QUÉ MARAVILLA!	WONDERFUL!	VILKET UNDERVERK!	phrase	g 64 (Nicola, about the spectacles); never VILKEN UNDERBARHET
+OS LO AGRADEZCO	I THANK YOU	TACK SKA DU HA	phrase	g 87 (Guillermo -> Nicola, DU per GLOSSARY §2.2); TACK SKA DU HA. OM JAG FÅR TAG I EN BÅGE SKA JAG LÅTA DIG VETA. Not JAG TACKAR DIG (a prayer formula, stiff to a craftsman)
+HACER PREGUNTAS	ASK QUESTIONS	STÄLLA FRÅGOR	phrase	g 1 (FÅR JAG STÄLLA FRÅGOR TILL DE ANDRA MUNKARNA?); never GÖRA FRÅGOR
+A LA DERECHA DEL ABAD / A MI IZQUIERDA	AT THE ABBOT'S RIGHT / AT MY LEFT	TILL HÖGER OM ABBOTEN / TILL VÄNSTER OM MIG	phrase	g 57; the two halves mirror each other; TILL MIN VÄNSTER is also idiomatic Swedish, only not the chosen form
+SABES MÁS DE LO QUE DEMUESTRAS	YOU KNOW MORE THAN YOU SHOW	DU VET MER ÄN DU LÅTSAS OM	phrase	g 75 (NEJ, DU SÅG HONOM SENARE, OCH DU VET MER ÄN DU LÅTSAS OM.); the set Swedish phrase; DEMOSTRAR is otherwise VISA, never DEMONSTRERA
+LOS RECIENTES SUCESOS	THE RECENT EVENTS	DE SENASTE HÄNDELSERNA	phrase	g 84, 112; g112 has TRAS LOS RECIENTES ACONTECIMIENTOS -> EFTER DE SENASTE HÄNDELSERNA, the same Swedish; never SUCCÉER
+NO HE SATISFECHO VUESTRAS EXPECTATIVAS	I HAVE NOT MET YOUR EXPECTATIONS	JAG HAR INTE INFRIAT ERA FÖRVÄNTNINGAR	phrase	g 122; never EXPEKTATIONER
+ES ÉPOCA DE MATANZA	IT IS SLAUGHTER SEASON	DET ÄR SLAKTTID	phrase	g 142; not EPOK
+SI LO DESEÁIS	IF YOU WISH	OM NI SÅ ÖNSKAR	phrase	g 44, 55, 74; g44 unused; courteous offer to the guest: OM NI SÅ ÖNSKAR, VISAR JAG ER KLOSTRET. (g55)
+SOY X, EL Y (self-introduction)	I'M X, THE Y	JAG ÄR SEVERINUS, SOM HAR HAND OM SJUKHUSET / JAG ÄR REMIGIO, KÄLLARMÄSTAREN / JAG ÄR SEVERINUS, KLOSTRETS ÖRTLÄKARE / JAG ÄR BERENGAR, BIBLIOTEKARIENS MEDHJÄLPARE / JAG ÄR NICOLA, GLASMÄSTAREN	phrase	g 47, 49, 55, 60, 63; one form per message, in this order; g47 unused; JAG ÄR + name + comma + office (definite, or genitive with no article); EL ENCARGADO DE -> SOM HAR HAND OM
+ERA VERDAD, TENÍA EL PODER DE MIL ESCORPIONES	IT WAS TRUE. IT HAD THE POWER OF A THOUSAND SCORPIONS	DET VAR SANT. DEN HADE TUSEN SKORPIONERS KRAFT.	phrase	g 29, 119; Malachias's dying words; g119 HAN HADE SAGT DET TILL MIG... DET VAR SANT. DEN HADE TUSEN SKORPIONERS KRAFT.; g29 unused, same Swedish (the es comma becomes a full stop); DEN = the book
+PODRÉIS (the abbot's short yes)	(YES,) YOU MAY	DET FÅR NI	phrase	g 1 (FÅR JAG STÄLLA FRÅGOR TILL DE ANDRA MUNKARNA?@3 DET FÅR NI.); never DET MÅ NI: MÅ only in NI MÅ ÄTA and NI MÅ GÅ TILL ERA CELLER (GLOSSARY §1.3)
+ME COLOCARÉ JUNTO A LA CAMA	I WILL STAND NEXT TO THE BED	STÄLLER JAG MIG VID SÄNGEN	phrase	g 65; player information (GLOSSARY §1.11): to sleep, stand next to the bed; NÄR JAG VILL SOVA STÄLLER JAG MIG VID SÄNGEN.
+HUNDIR LOS OJOS DE LA CUARTA CALAVERA POR LA IZQUIERDA	PUSH THE EYES OF THE FOURTH SKULL STARTING FROM THE LEFT	TRYCKA IN ÖGONEN PÅ DEN FJÄRDE DÖSKALLEN FRÅN VÄNSTER	phrase	g 73; player information (GLOSSARY §1.11): the altar in the chapel, entered through the ossuary; MAN MÅSTE TRYCKA IN ÖGONEN PÅ DEN FJÄRDE DÖSKALLEN FRÅN VÄNSTER FÖR ATT ÖPPNA DET.
+HACER UN MAPA DE LA ABADÍA	MAKE A MAP OF THE ABBEY	RITA EN KARTA ÖVER KLOSTRET	phrase	g 88; player information (GLOSSARY §1.11): parchment + charcoal -> map; MED DETTA PERGAMENT OCH DETTA RITKOL SKULLE DU KUNNA RITA EN KARTA ÖVER KLOSTRET.
+HE COMENZADO LA AUTOPSIA	I HAVE BEGUN THE AUTOPSY	JAG HAR BÖRJAT UNDERSÖKA LIKET	phrase	g 69 (..., MEN KROPPEN HAR INGA SÅR ...); never LIKBESIKTNING
+ES MUY TARDE	IT IS VERY LATE	DET ÄR MYCKET SENT	phrase	reserve; does not occur in shipped strings
+ES HORA DE ...	IT IS TIME TO ...	DET ÄR DAGS ATT	phrase	reserve; does not occur in shipped strings
+PENITENCIAGITE! LA MORTZ EST SUPER NOS! RUEGA QUE VINGA LO PAPA SANTO A LIBERAR NOS A MALO DE TUTTE LAS PECCATA!	PENITENZIAGITE! LA MORTZ EST SUPER NOS! HOPE SAINT POPE COMES TO FREE US FROM ALL BAD SINS!	PENITENZIAGITE! LA MORTZ EST SUPER NOS! BE ATT LO PAPA SANTO KOMMA A LIBERAR NOS A MALO DE TUTTE PECCATA!	phrase	g 54; Salvatore, fixed line, 1st turn; RUEGA QUE -> BE ATT; VINGA -> KOMMA after the subject; LAS dropped
+NO INTENDO	ME NOT KNOW	IO INTE FÖRSTÅ	phrase	g 54; Salvatore, 3rd turn
+IO NO SABE	ME NOT KNOW	IO INTE VETA	phrase	g 54; Salvatore, 4th turn
+SALVATORE ESTÚPIDO	SALVATORE STUPID	SALVATORE DUM	phrase	g 54; Salvatore, 4th turn, twice: SALVATORE DUM ... DUM...; GLOSSARY §1.10
+¡SÍ, SÍ! BOTELLA DI VITRIO EN ALMACEN EST.	YES, YES! BOTTLE DI VITRIO IN SHED EST.	JA, JA! FLASKA DI VITRIO I FÖRRÅD EST.	phrase	g 100; Salvatore
+SALVATORE TRAE	SALVATORE BRINGS	SALVATORE HÄMTA	phrase	g 100; Salvatore, twice
+BOTELLA TUYA EST.	BOTTLE YOURS EST.	FLASKA DIN EST.	phrase	g 101; Salvatore
+NO SOY HOMO LITERATUS, PECCAVI SINE MALITIA E EL SEÑOR BERNARDO MUY MAGNIFICO EL SABE, ET ISPERO EN LA INDULGENTIA SUYA IN NOMINE PATRE ET FILIO ET SPIRITIS SANCTIS...	I'M NOT HOMO LITERATUS, I HAVE SINNED WITHOUT MALITIA AND MAGNIFICENT EL SEÑOR BERNARDO HE KNOWS, ET I WAIT IN HIS INDULGENTIA IN NOMINE PATRE ET FILIO ET SPIRITIS SANCTIS...	IO INTE VARA HOMO LITERATUS, PECCAVI SINE MALITIA, OCH HERR BERNARDO MYCKET MAGNIFIK HAN VETA, ET IO HOPPAS PÅ INDULGENTIA HANS IN NOMINE PATRE ET FILIO ET SPIRITIS SANCTIS...	phrase	g 118; Salvatore, fixed line; NO SOY -> IO INTE VARA; E -> OCH; EL SEÑOR -> HERR; MUY MAGNIFICO -> MYCKET MAGNIFIK; EL SABE -> HAN VETA; ISPERO -> IO HOPPAS (infinitive, never HOPPA); EN LA -> PÅ; SUYA -> HANS after the noun
+EL NOMBRE DE ESTA ABADÍA	THIS ABBEY'S NAME	VÅRT KLOSTERS GODA NAMN	phrase	g 1, 122 (the abbot)
+¡NO JURES!	DON'T SWEAR!	SVÄR INTE!	phrase	g 118 (Bernardo to Remigio)
+DIJO: ESTOY CONDENADO, BELLO MAESTRO	HE SAID: I'M DOOMED, BEAUTIFUL MASTER	HAN SADE: JAG ÄR FÖRDÖMD, VACKRE MÄSTARE	phrase	g 75; colon instead of quotation marks
+NO ME PIDÁIS QUE SELLE MIS LABIOS CON EL SECRETO DE CONFESIÓN	DON'T ASK ME TO SEAL MY LIPS WITH THE SECRET OF CONFESSION	BE MIG INTE ATT FÖRSEGLA MINA LÄPPAR MED BIKTENS SIGILL	phrase	g 75; start of the documented NI switch
+ID A CONTARLE VUESTROS PECADOS AL SEÑOR		GÅ OCH BEKÄNN ERA SYNDER FÖR HERREN	phrase	g 75; documented NI exception (cold refusal), GLOSSARY §2.1
+¿ERES TÚ, GUILLERMO? TE ESTABA ESPERANDO	IS THAT YOU, WILLIAM? I WAS EXPECTING YOU	ÄR DET DU, VILHELM? JAG HAR VÄNTAT PÅ DIG	phrase	g 128; documented DU exception, GLOSSARY §2.1
+AQUÍ TENÉIS VUESTRO PREMIO	HERE IS YOUR REWARD	HÄR HAR NI ER BELÖNING	phrase	g 128; back to NI after the DU opening
+EL LIBRO	THE BOOK	BOKEN	term	
+EL MANUSCRITO	THE MANUSCRIPT	MANUSKRIPTET	term	neuter: ETT MANUSKRIPT
+EL PERGAMINO	THE PARCHMENT	PERGAMENTET	term	
+MIS LENTES / LAS LENTES (spectacles)	MY LENSES / GLASSES	MINA GLASÖGON / GLASÖGONEN	term	Guillermo's spectacles as an object (61, 78, 82, 87, 98, 114)
+LAS LENTES (pieces of glass to grind/cut)	THE LENSES	GLASEN	term	87, 98, 123, 156
+LA MONTURA	THE FRAME	BÅGEN	term	87, 98
+OJOS DE VIDRIO	GLASS EYES	ÖGON AV GLAS	term	63 (Swedish GLASÖGON = 'glass eyes': keep the image)
+VIDRIO / CRISTAL	GLASS	GLAS	term	
+LAS VIDRIERAS	STAINED GLASS WINDOWS	GLASMÅLNINGARNA	term	64
+LA LLAVE	THE KEY	NYCKELN	term	
+LA LÁMPARA	THE LAMP	LAMPAN	term	pl. LAMPOR
+LA MECHA	THE WICK	VEKEN	term	64
+EL ACEITE	THE OIL	OLJAN	term	
+EL ESPEJO	THE MIRROR	SPEGELN	term	
+EL PAÑO	THE CLOTH	DUKEN	term	99, 107
+LA GASA	THE GAUZE	GASVÄV	term	99; mass noun, counted with STYCKE: UNA GASA -> ETT STYCKE GASVÄV (never EN GASVÄV); never TUNT LINNE (ett linne = a vest)
+LA BOTELLA	THE BOTTLE	FLASKAN	term	99-101
+AGUA CALIENTE	HOT WATER	HETT VATTEN	term	99, 105, 106
+EL CUBO	THE BUCKET	ÄMBARET	term	102; neuter ETT ÄMBAR
+LA INFUSIÓN	THE INFUSION	AVKOKET	term	99, 106, 107
+LAS HIERBAS	THE HERBS	ÖRTERNA	term	
+EL VENENO	THE POISON	GIFTET	term	ENVENENADO -> FÖRGIFTAD
+ARSÉNICO	ARSENIC	ARSENIK	term	70
+PIEDRA DE MAGNETITA / LA PIEDRA QUE ATRAE METALES	MAGNETITE STONE	MAGNETSTEN / STENEN SOM DRAR TILL SIG METALL	term	71, 108, 114
+ARTILUGIO	DEVICE	ANORDNING	term	108, 114
+INSTRUMENTO	INSTRUMENT	INSTRUMENT	term	62, 114
+AGUJA	NEEDLE	NÅL	term	114
+DIAMANTE	DIAMOND	DIAMANT	term	123, 156
+ESFERA ARMILAR	ARMILLARY SPHERE	ARMILLARSFÄR	term	113
+CARBONCILLO	CHARCOAL	RITKOL	term	88
+MAPA	MAP	KARTA	term	88, 108
+GUANTES	GLOVES	HANDSKAR	term	131
+FOLIOS	PAGES	BLADEN	term	131
+EL CUERPO	THE BODY	KROPPEN	term	dead body
+EL CADÁVER	THE CORPSE	LIKET	term	pl. LIKEN
+LA TUMBA	THE TOMB	GRAVEN	term	
+CALAVERA / ESQUELETOS	SKULL / SKELETONS	DÖSKALLE / SKELETT	term	73
+SANGRE DE CERDO / MORCILLAS / MATANZA	PIG BLOOD / BLACK PUDDING / SLAUGHTER	SVINBLOD / BLODKORV / SLAKTTID	term	142
+RELIQUIAS	RELICS	RELIKER	term	122, 146
+HOMILÍA	HOMILY	HOMILIA	term	150
+PROFECÍA	PROPHECY	PROFETIA	term	97
+PECADO	SIN	SYND	term	
+PENITENCIA	PENANCE	BOT	term	only Latin in strings
+CONFESIÓN (sacrament)	CONFESSION	BIKT	term	IR A CONFESARSE CON JORGE -> GÅ TILL BIKT HOS JORGE (74)
+CONFESIÓN (judicial)	CONFESSION	BEKÄNNELSE	term	110, 118
+JUICIO	TRIAL	RÄTTEGÅNG	term	113, 116
+INTERROGATORIO	INTERROGATION	FÖRHÖR	term	118
+HOGUERA	STAKE	BÅL	term	118
+BRUJERÍA	WITCHCRAFT	TROLLDOM	term	64
+MAGIA	MAGIC	MAGI	term	64
+NIGROMANTES	NECROMANCERS	SVARTKONSTNÄRER	term	79
+DIABLO / DIABÓLICO	DEMON / DIABOLICAL	DJÄVUL / DJÄVULSK	term	53, 64, 126
+VISIONES	VISIONS	SYNER	term	
+HEREJÍA	HERESY	KÄTTERI	term	
+LA INVESTIGACIÓN	THE INVESTIGATION	UNDERSÖKNINGEN	term	INVESTIGAR -> UNDERSÖKA; never UTREDNING
+CRIMEN	CRIME	BROTT	term	pl. BROTTEN
+ASESINADO / ASESINAR	KILLED / MURDER	MÖRDAD / MÖRDA	term	
+AUTOPSIA	AUTOPSY	UNDERSÖKA LIKET	term	g69 JAG HAR BÖRJAT UNDERSÖKA LIKET; verb phrase; never LIKBESIKTNING (modern forensic term)
+LAS ESCRITURAS	THE SCRIPTURES	SKRIFTEN	term	61, 62; SKRIFTERNA (enligt skrifterna, DE HELIGA SKRIFTERNA) is not wrong, only not chosen: one form everywhere (human check)
+LA PROVIDENCIA	PROVIDENCE	FÖRSYNEN	term	62
+LA CRISTIANDAD	CHRISTENDOM	KRISTENHETEN	term	130
+POÉTICA	POETICS	POETIK / POETIKEN	term	62 ANDRA BOKEN AV SIN POETIK
+TIERRA CONSAGRADA	CONSECRATED GROUND	VIGD JORD	term	1
+EL MISTERIO	THE MYSTERY	GÅTAN	term	144
+ORDEN (religious)	ORDER	ORDEN	term	145: VÅR ORDEN
+ÓRDENES (commands)	ORDERS	BEFALLNINGAR	term	1, 12; OS ORDENO -> JAG BEFALLER ER
+LOS OFICIOS	THE SERVICES	TIDEBÖNERNA	term	1; the liturgical hours, on the clock PRIM ... NATTBÖN (NATT is the game's night period, not an office); one: EN TIDEBÖN; never GUDSTJÄNSTERNA
+LA COMIDA (meal)	THE MEAL	MÅLTIDEN	term	pl. MÅLTIDERNA
+LA COMIDA (food)	THE FOOD	MATEN	term	58
+EXTRAÑO	STRANGE	MÄRKLIG / UNDERLIG	term	MÄRKLIG (odd, curious): 13, 19, 32, 72, 77, 111, 160; UNDERLIG (uncanny): 47, 64, 79, 89, 99; this is every EXTRAÑ* in g; all forms -T, -A: DET ÄR MYCKET MÄRKLIGT, BRODER VILHELM (32), AV NÅGON MÄRKLIG ANLEDNING (160), DEN UNDERLIGA LUKTEN (89), UNDERLIGA SYNER (64, 99), UNDERLIGA TECKEN (79), MYCKET UNDERLIGA TING (47)
+LOS HUMOS (lamp) / EL HUMO (fire)	FUMES / SMOKE	ÅNGOR, ÅNGORNA / RÖKEN	term	g90 DESSA ÅNGOR; g99 ÅNGORNA SOM STIGER UPP UR DESSA LAMPOR; g161 (fire) RÖKEN
+LA LENGUA (the organ)	THE TONGUE	TUNGAN	term	g32 PÅ TUNGAN OCH FINGRARNA, g95 TUNGAN ÄR OCKSÅ SVART!, g120, g122, g131 FUKTA FINGRARNA MED TUNGAN; g53 LAS LENGUAS (talk) is not this term
+NEGRO / ENNEGRECIDO (tongue, fingers)	BLACK / BLACKENED	SVART / SVARTNAD	term	g95 SVART, g120 SVARTA, g122 ENNEGRECIDOS -> SVARTNADE; no fixed SVART TUNGA phrase (none of the sentences has that shape)
+LAS YEMAS DE LOS DEDOS	FINGERTIPS	FINGERTOPPARNA	term	indef. FINGERTOPPAR; g120 FINGERTOPPARNA; g95 LAS YEMAS DE DOS DEDOS DE SU MANO DERECHA -> TVÅ FINGERTOPPAR PÅ HANS HÖGRA HAND (not PÅ HÖGER HAND, which is also the adverbial on the right-hand side)
+MESA (scriptorium desk)	DESK	PULPET	term	common gender: EN PULPET, PULPETEN; 60, 73, 77, 78, 81, 122
+MESA (other table)	TABLE	BORD	term	71, 133
+LA LETRA (handwriting)	THE HANDWRITING	HANDSTILEN	term	78
+GALLO Y GATO NEGROS	A BLACK COCK AND CAT	EN SVART TUPP OCH EN SVART KATT	term	110
+MISA	MASS	MÄSSAN	term	does not occur in shipped strings; reserve
+REGLA	RULE	REGELN / KLOSTERREGELN	term	does not occur; reserve
+APOCALIPSIS / EL LIBRO DEL APÓSTOL	APOCALYPSE / REVELATION	JOHANNES UPPENBARELSE	term	the word APOCALIPSIS does not occur; EL LIBRO DEL APÓSTOL (g85) is the one place Revelation is named; always this form
+GAFAS	GLASSES	GLASÖGON	term	reserve; does not occur, the game says LENTES
+SECRETO DE CONFESIÓN (concept)	SECRET OF CONFESSION	BIKTHEMLIGHETEN	term	reserve; in g75 the image is kept: BIKTENS SIGILL (phrase row)
+IMAGEN (g127, the idolum)	IMAGE	BILDEN	term	g127 HANDEN ÖVER BILDEN; not AVBILDEN
+REALIZAR	PERFORM / MAKE	GÖRA / UTFÖRA	term	or the specific verb: g64 REALIZO ALGUNOS TRABAJOS DE ARTESANÍA -> UTFÖR EN DEL HANTVERKSARBETEN; g108 REALIZAR EL MAPA -> RITA KARTAN; g149 REALIZADAS POR -> UTFÖRDA AV; never REALISERA
+DEMOSTRAR	SHOW	VISA	term	the general rendering, for rewrites; never DEMONSTRERA; its one occurrence, g75 SABES MÁS DE LO QUE DEMUESTRAS, is the set phrase DU VET MER ÄN DU LÅTSAS OM
+SUCESOS	EVENTS	HÄNDELSER	term	def. HÄNDELSERNA; g84; never SUCCÉER
+EXPECTATIVAS	EXPECTATIONS	FÖRVÄNTNINGAR	term	g122; never EXPEKTATIONER
+SUICIDARSE	COMMIT SUICIDE	TA SITT LIV / TA LIVET AV SIG	term	g1 x2, g68, g122; never SUICIDERA
+FACCIONES	FEATURES	ANLETSDRAG	term	def. ANLETSDRAGEN; g62 SKRATTET VANSTÄLLER ANLETSDRAGEN; never FRAKTIONER
+ASISTIR A	ATTEND	INFINNA SIG TILL	term	g1 (INFINN ER TILL TIDEBÖNERNA OCH MÅLTIDERNA); never ASSISTERA, not BEVISTA (does not go with meals)
+PARAFERNALIA	PARAPHERNALIA	ATTIRALJ	term	g110; common gender: JAG KÄNNER IGEN DENNA ATTIRALJ. NI KÄNNER VÄL OCKSÅ IGEN DEN, BRODER VILHELM? (DEN agrees with ATTIRALJ); never PARAFERNALIA
+ENCARGARSE DE / EL ENCARGADO DE	BE IN CHARGE OF	HA HAND OM / TA HAND OM	term	HA HAND OM for an office: g47 JAG ÄR SEVERINUS, SOM HAR HAND OM SJUKHUSET; g55 JAG HAR HAND OM BADHUSET, SJUKHUSET OCH ÖRTAGÅRDARNA; TA HAND OM for a task: g76 ... TAR HAND OM DEN (the lamp)
+ESTE (a man, pronoun)	THIS ONE	DENNE	term	g68 ESTE NO -> MEN INTE DENNE; g120 ¿QUIÉN HA MATADO A ESTE? -> VEM HAR DÖDAT DENNE?; after DENNA/DETTA/DESSA the noun is indefinite (DENNA ELDSTAD)
+BELLO (of a person)	HANDSOME / BEAUTIFUL	VACKER	term	g71 DEN UNGE OCH VACKRE ADELMO, g75 VACKRE MÄSTARE, g122 DEN VACKRE ADELMO; LOS MUCHACHOS HERMOSOS -> VACKRA YNGLINGAR (g122)
+LA RISA / REÍR	LAUGHTER / TO LAUGH	SKRATTET / SKRATTA	term	g62 SKRATTET VANSTÄLLER ANLETSDRAGEN; KRISTUS SKRATTADE ALDRIG
+COSAS RISIBLES	LAUGHABLE THINGS	LÖJLIGA TING	term	g62
+SENTIDO DEL HUMOR	SENSE OF HUMOUR	SINNE FÖR HUMOR	term	g61
+EL HUMOR (the saints')	COMEDY	SKÄMT	term	g62 HELGONEN ANVÄNDE SKÄMT FÖR ATT ...
+AL HUMOR (Aristotle)	TO COMEDY	KOMEDIN	term	g62 ÄGNADE ANDRA BOKEN AV SIN POETIK ÅT KOMEDIN
+EL SABER	WISDOM / KNOWLEDGE	VETANDET	term	g53 VETANDETS BLÄNDVERK, g130 KRISTENHETENS VETANDE; gen. VETANDETS
+EL SABER PROHIBIDO	FORBIDDEN KNOWLEDGE	DET FÖRBJUDNA VETANDET	term	g126
+EL CONOCIMIENTO	KNOWLEDGE	KUNSKAP	term	g122 RIKT PÅ KUNSKAP OCH BÖCKER
+CONOCIMIENTO PROHIBIDO	FORBIDDEN KNOWLEDGE	FÖRBJUDEN KUNSKAP	term	g71
+LA CIENCIA	SCIENCE	VETENSKAPEN	term	indef. VETENSKAP; g64 LA CIENCIA HUMANA -> MÄNSKLIG VETENSKAP, LOS SECRETOS DE LA CIENCIA -> VETENSKAPENS HEMLIGHETER; old sense: learning (scientia); kept apart from VETANDET (SABER) and KUNSKAP (CONOCIMIENTO)
+REMEDIO	REMEDY	MEDEL	term	def. MEDLET; with MOT: g70 ETT GOTT MEDEL MOT ...; g99 x4 NÅGOT MEDEL MOT ..., DET BÄSTA MEDLET ÄR ATT ..., DET MEDLET; not BOTEMEDEL, not MEDEL FÖR
+DESCIFRAR	DECIPHER	TYDA	term	g82, g125
+CIFRADO / CIFRADA	CIPHERED	I CHIFFER	term	g122 SKRIVEN I CHIFFER PÅ ETT PERGAMENT; ANVISNINGARNA I CHIFFER
+ARTIFICIOS	TRICKS	KONSTGREPP	term	g64 MAGISKA KONSTGREPP, g126
+fray Guillermo de Occam	William of Occam	broder Vilhelm av Occam	parchment	parchment 1 only; keep the game's spelling Occam
+Melk	Melk	Melk	parchment	parchment 1; also Adso av Melk (reference)
+Cuando llegamos a Munich	Munich	När vi kom till Bayern	parchment	parchment 2; München needs ü, outside the charset: only after Phase D puts ü in letras slot 0x3C (black) AND letras_render.py --sv maps it (GLOSSARY §9.4); never Munchen/Munich
+sabio franciscano	learned Franciscan	en lärd franciskan	parchment	parchment 1 (fray Guillermo de Occam, sabio franciscano)
+amanuense y discípulo	amanuensis and disciple	skrivare och lärjunge	parchment	parchment 1
+Basado en la obra de	Based on the work of	Efter spelet av	parchment	parchment credits/ending line (letras font)
+Programación:	Programming:	Programmering:	parchment	parchment credits/ending line (letras font)
+Gráficos:	Graphics:	Grafik:	parchment	parchment credits/ending line (letras font)
+Música:	Music:	Musik:	parchment	parchment credits/ending line (letras font)
+Dedicado a la memoria de	In memoriam of	Till minne av	parchment	parchment credits/ending line (letras font)
+y	and	och	parchment	parchment credits/ending line (letras font)
+F I N		S L U T	parchment	parchment credits/ending line (letras font)
+monasterio de Melk	Melk monastery	klostret i Melk	parchment	parchment 1
+la abadía	the abbey	klostret	parchment	parchment 1, 2
+los edificios	the buildings	byggnaderna	parchment	parchment 2
+la meseta	the plateau	platån	parchment	parchment 2: abandonaron la meseta, que aún humeaba, como un lugar maldito -> övergav den ännu rykande platån som en förbannad plats (not the weak past rykte, a homograph of the noun rykte; not ort, which reads as a town)
+El Señor	The Lord	Herren	parchment	parchment 1
+la divinidad	the Godhead	gudomen	parchment	parchment 1
+scriptorium	scriptorium	scriptoriet	parchment	parchment 2 (Hace frío en el scriptorium)
+Guillermo	William	Vilhelm	parchment	parchment 1, 2; gen. Vilhelms
+mi padre	my father	min fader	parchment	parchment 1
+mi buen maestro / mi maestro	my good master / my master	min gode mästare / min mästare	parchment	parchment 1, 2
+1327	1327	1327	parchment	parchment 1; digits 1 2 3 7 are drawable, keep in digits; other numbers as words
+GUILLERMO DE BASKERVILLE	WILLIAM OF BASKERVILLE	VILHELM AV BASKERVILLE	forbidden	not used anywhere in the es game; never introduce
+(archaic Swedish polite pronoun)		EDER	forbidden	always NI / ER; the archaic subject pronoun I is banned too but cannot be searched for (I is also the preposition). Collision: EDER is also the plural of ED (oath); translators use the singular (SVÄR INGEN ED) or EDGÅNGAR, and an EDER meaning oaths is a reviewed exception in Phase E
+FRAY		FRA / FRAY / FRIAR	forbidden	use BRODER (BRODER VILHELM)
+HERMANO		BROR	forbidden	use BRODER (also never BRODERN as address; that one needs a human check)
+VENERABLE		VENERABEL / VÖRDNADSVÄRDE / VÖRDNADSVÄRD	forbidden	use ÄREVÖRDIGE / ÄREVÖRDIG
+LA ABADÍA		ABBEDI / ABBEDIET / ABBOTSKLOSTER	forbidden	use KLOSTER / KLOSTRET
+EL EDIFICIO		EDIFICIET	forbidden	use BYGGNADEN
+LA INVESTIGACIÓN		UTREDNING / UTREDNINGEN / INVESTIGATION / INVESTIGERING	forbidden	use UNDERSÖKNING / UNDERSÖKNINGEN
+LENTES		LINSER / BRILLOR	forbidden	use GLASÖGON (spectacles) / GLASEN (glass pieces)
+SUICIDARSE		SUICIDERA / SUICIDERADE	forbidden	use TA SITT LIV / TA LIVET AV SIG
+DIOS SANTO		HERREGUD	forbidden	use HERRE GUD
+¿VERDAD?		ELLER HUR	forbidden	use INTE SANT? / VÄL
+EL LIBRO DEL APÓSTOL		APOSTELNS BOK	forbidden	use JOHANNES UPPENBARELSE
+ESTÁIS MUERTO		NI ÄR DÖD	forbidden	use NI ÄR EN DÖD MAN (g129)
+OS JURO		JAG SVÄR ER	forbidden	use JAG SVÄR ATT
+BELLO MAESTRO		SKÖNE MÄSTARE / SKÖNE	forbidden	use VACKRE MÄSTARE / VACKRE
+LA GASA		TUNT LINNE	forbidden	use GASVÄV
+LOS OFICIOS		GUDSTJÄNSTERNA	forbidden	use TIDEBÖNERNA
+MUCHAS GRACIAS		STORT TACK	forbidden	use HJÄRTLIGT TACK
+MOSTRAR EXTRAS		TILLÄGG	forbidden	ui f[7]: use VISA INDIKATORER: 
+(archaic Swedish)		EJ / ICKE / SKALL / ALLENAST / EMEDAN / EHURU / OCK / VARDA / HVAD / HAFVA / ÄRO / VORO / HAVA / HAVEN / GINGO	forbidden	use INTE / SKA / BARA / EFTERSOM / FAST / OCKSÅ / BLI / VAD / HA; no plural verb forms (ÄR, VAR, HA, HAR, GICK); VORE (conditional) is allowed; HAVEN is also the definite plural of HAV (the seas): prefer HAVET or VÄRLDENS HAV, and a HAVEN = seas is a reviewed exception in Phase E (as for EDER = oaths)
+(modern Swedish)		OKEJ / SNÄLLA / SORRY / COOL / FIXA / CHECKA / KILLE / GRABB / HEJ / ASSÅ / TYP	forbidden	modern or colloquial; GLOSSARY §10 gives the replacements; TYP banned in both senses (use SLAG: AV SAMMA SLAG); LIKSOM is NOT here (fine as like, as: g62 LIKSOM SYNDEN; only the filler is banned, a human check)
+GUILLERMO / SEVERINO / MALAQUÍAS / VENANCIO / BERENGARIO		GUILLERMO / SEVERINO / MALAQUÍAS / VENANCIO / BERENGARIO	forbidden	Spanish name forms in Swedish text; use VILHELM / SEVERINUS / MALACHIAS / VENANTIUS / BERENGAR
+NICOLA (genitive)		NICOLAS	forbidden	reads as the name Nicolas; rephrase (HOS NICOLA)
+Munich (parchment)		München	forbidden	parchment only, until the Phase D upgrade of GLOSSARY §9.4; use Bayern
+MAESTRO		MAESTRO / LÄRARE / MAGISTER	forbidden	use MÄSTARE (Adso -> Guillermo; parchment min gode mästare)
+HACER PREGUNTAS		GÖRA FRÅGOR	forbidden	use STÄLLA FRÅGOR (g1)
+¡QUÉ MARAVILLA!		UNDERBARHET	forbidden	use VILKET UNDERVERK! (g64); never VILKEN UNDERBARHET
+ASISTIR A		ASSISTERA / ASSISTERAR / ASSISTERADE	forbidden	false friend; use INFINNA SIG TILL (g1)
+ASISTIR A (LOS OFICIOS Y LA COMIDA)		BEVISTA / BEVISTAR / BEVISTADE	forbidden	use INFINNA SIG TILL (g1): BEVISTA does not go with meals
+REALIZAR		REALISERA / REALISERAR / REALISERADE / REALISERAT	forbidden	false friend; use GÖRA / UTFÖRA or the specific verb (g64, g108, g149)
+DEMOSTRAR		DEMONSTRERA / DEMONSTRERAR / DEMONSTRERADE	forbidden	false friend; use VISA (g75)
+SUCESOS		SUCCÉER / SUCCÉERNA / SUCCEER	forbidden	false friend; use HÄNDELSER (g84)
+FACCIONES		FRAKTIONER / FRAKTIONERNA	forbidden	false friend; use ANLETSDRAG (g62)
+EXPECTATIVAS		EXPEKTATIONER / EXPEKTATIONERNA	forbidden	false friend; use FÖRVÄNTNINGAR (g122)
+PRETENDER		PRETENDERA / PRETENDERAR / PRETENDERADE	forbidden	false friend; use FÖRSÖKA / AVSE; does not occur in es g, listed for rewrites
+CONSTIPADO		KONSTIPERAD	forbidden	false friend; use FÖRKYLD; does not occur in es g, listed for rewrites
+CALLA		HÅLL KÄFTEN	forbidden	vulgar; use TIG (g110 TIG, DIN DÅRE...)
+¡DIOS SANTO!		HELIGA GUD	forbidden	use HERRE GUD (g26, g68, g113)
+AUTOPSIA		LIKBESIKTNING	forbidden	modern forensic term; use UNDERSÖKA LIKET (g69)
+EL SECRETO DEL FIN DE ÁFRICA		HEMLIGHETEN OM AFRIKAS ÄNDE	forbidden	use HEMLIGHETEN MED AFRIKAS ÄNDE (g127)
+LA IMAGEN (g127)		AVBILDEN / AVBILD	forbidden	use BILDEN (g127); AVBILD = a likeness or copy
+EL SCRIPTORIUM		SKRIPTORIET / SKRIPTORIUM	forbidden	use SCRIPTORIET / SCRIPTORIUM: the Latin C spelling is deliberate (GLOSSARY §3.4); parchment scriptoriet
+PARAFERNALIA		PARAFERNALIA / PARAFERNALIAN	forbidden	rare and jocular in Swedish, and the untranslated Spanish word; use ATTIRALJ (g110)
