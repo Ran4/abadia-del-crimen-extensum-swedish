@@ -1,0 +1,4 @@
+render_strings lang=de ref=es jar=/home/ran/the_abbey_of_crime_extensum_swedish/game/TheAbbeyOfCrimeExtensum.jar
+harness exit 0; errors 0; warnings 9
+sheets (49): endgame.png glyphs.png hours.png menu.png messages_01.png messages_02.png messages_03.png messages_04.png messages_05.png messages_06.png messages_07.png messages_08.png messages_09.png messages_10.png messages_11.png messages_12.png messages_13.png messages_14.png messages_15.png messages_16.png messages_17.png messages_18.png messages_19.png messages_20.png messages_21.png messages_22.png messages_23.png messages_24.png messages_25.png messages_26.png messages_27.png messages_28.png messages_29.png messages_30.png messages_31.png messages_32.png messages_33.png messages_34.png messages_35.png messages_36.png messages_37.png messages_38.png messages_39.png messages_40.png messages_41.png parchment_ending_01.png parchment_ending_02.png parchment_intro_01.png parchment_intro_02.png
+RESULT: OK

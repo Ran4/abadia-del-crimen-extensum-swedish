@@ -4,12 +4,13 @@
 # ///
 """Build the Swedish first screen res/de/intro/loading.png ("LADDAR: var god vänta...").
 
-Deterministic. Inputs (read-only):
-  - work/jar/res/es/intro/loading.png   base: the es title art (everything above row 175) is kept
+Deterministic. Inputs (read-only; RES = res/ of original/TheAbbeyOfCrimeExtensum.jar and GLYPHS = the
+glyph inventory, both made from original/ by tools/images/inputs.py):
+  - RES/es/intro/loading.png   base: the es title art (everything above row 175) is kept
                                         pixel for pixel; its bottom line "CARGANDO: Por favor,
                                         espere" (rows 181..193) is removed
-  - work/jar/res/{en,es,it}/intro/loading.png   the shipped loadline letters, cut by box (CUT)
-  - work/jar/res/de/intro/loading.png   only to assert de == en and to take its colour type (RGBA)
+  - RES/{en,es,it}/intro/loading.png   the shipped loadline letters, cut by box (CUT)
+  - RES/de/intro/loading.png   only to assert de == en and to take its colour type (RGBA)
   - assets_sv/image_src/loading/g.txt     the hand-pixelled 'g' (the loadline font has none)
   - assets_sv/image_src/loading/auml.txt  the hand-pixelled 'ä' (en 'a' + two 1-px dots)
 Output:
@@ -53,7 +54,10 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
-RES = ROOT / "work/jar/res"
+sys.dont_write_bytecode = True        # importing inputs must not write tools/images/__pycache__
+sys.path.insert(0, str(ROOT / "tools/images"))
+import inputs  # noqa: E402  (original/ jar res/ + glyph inventory, see tools/images/inputs.py)
+RES = inputs.RES
 SRC_DIR = ROOT / "assets_sv/image_src/loading"
 OUT = ROOT / "assets_sv/res/de/intro/loading.png"
 

@@ -6,9 +6,9 @@
 
 Read-only library for the intro image builders (novela, pacoyjuan, pelicula) plus a small CLI.
 Pure Python + Pillow, integer glow arithmetic, no randomness: the same inputs give byte-identical
-output. Nothing is computed at import; the font is built on first use (~1 s). Inputs (read-only):
-work/jar/res/<lang>/intro/*.png and the Phase A inventory
-work/phaseA/images/glyphs/{index.json,font_metrics.json,fraktur/*_mask.png}. Writes nothing
+output. The font is built on first use (~1 s); importing tools/images/inputs.py makes the inputs
+from original/ once. Inputs (read-only): RES/<lang>/intro/*.png (res/ of the original jar) and the
+Phase A inventory GLYPHS/{index.json,font_metrics.json,fraktur/*_mask.png}. Writes nothing
 except where a CLI command or save_rgba_png() is told to.
 
 USE FROM A BUILDER in tools/images/ (its PEP 723 header needs "pillow==11.3.0"; the script's own
@@ -259,8 +259,11 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
-RES = ROOT / "work" / "jar" / "res"
-GLYPHS = ROOT / "work" / "phaseA" / "images" / "glyphs"
+sys.dont_write_bytecode = True        # importing inputs must not write tools/images/__pycache__
+sys.path.insert(0, str(ROOT / "tools/images"))
+import inputs  # noqa: E402  (original/ jar res/ + glyph inventory, see tools/images/inputs.py)
+RES = inputs.RES
+GLYPHS = inputs.GLYPHS
 KIT_OUT = ROOT / "work" / "phaseD" / "fraktur-kit"
 
 F = (253, 246, 231)                  # cream core
@@ -583,7 +586,7 @@ def _check_box(box, what: str) -> tuple[int, int, int, int]:
 
 
 def _shipped_key(base) -> tuple[str, str] | None:
-    """(lang, image) if base is a path to one of the shipped credit images (work/jar/res)."""
+    """(lang, image) if base is a path to one of the shipped credit images (under RES)."""
     if not isinstance(base, (str, Path)):
         return None
     try:
@@ -860,7 +863,7 @@ def source_coverage(src_rel: str) -> tuple[int, int, list[int]]:
     if src_rel not in _DECOMP_CACHE:
         parts = src_rel.split("/")
         lang, image = parts[1], parts[3][:-4]
-        cv = Canvas(ROOT / "work" / "jar" / src_rel, SCRIPT_BOXES.get((lang, image), []))
+        cv = Canvas(inputs.JAR_DIR / src_rel, SCRIPT_BOXES.get((lang, image), []))
         _DECOMP_CACHE[src_rel] = (cv.w, cv.h, cv.c0)
     return _DECOMP_CACHE[src_rel]
 

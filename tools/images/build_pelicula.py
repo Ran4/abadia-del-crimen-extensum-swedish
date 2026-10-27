@@ -12,10 +12,11 @@ kit's save_rgba_png, level 9), i.e. on the interpreter uv picks. So the builder 
 "sha256" of the file (compare runs of one interpreter) and "pixels sha256" of the decoded RGBA
 bytes (compare across interpreters), with the Python and zlib versions used.
 
-Inputs (read-only data; nothing under work/jar/ is executed or changed):
-  work/jar/res/de/intro/pelicula.png  the base (= en byte for byte, checked): "and" (script, own
+Inputs (read-only data, never executed or changed; RES = res/ of the original jar, made from
+original/ by tools/images/inputs.py):
+  RES/de/intro/pelicula.png  the base (= en byte for byte, checked): "and" (script, own
                                       line) / "in Jean-Jacques Annaud’s" / "film of the same name"
-  work/jar/res/en/intro/pelicula.png  the Phase A letter inventory is keyed on it (de == en)
+  RES/en/intro/pelicula.png  the Phase A letter inventory is keyed on it (de == en)
   tools/images/fraktur.py             the Fraktur kit: coverage-space canvas, the shipped letters
                                       as coverage, the font's s and its spacing, the glow model
   tools/images/script_och.py          och_layer() and its placement on the en "and"'s baseline
@@ -56,7 +57,7 @@ usage: uv run tools/images/build_pelicula.py [--out PATH] [--quiet]
          [--src en|it] [--left N] [--och-align compose|left|right] [--och-dx N]
   --out PATH   write there instead: a .png; inside the project only the real output or a path
                under work/phaseD/ (any track's scratch) is allowed (assets_sv/, tools/,
-               work/jar/, original/ and the rest are refused); outside it, anywhere
+               work/inputs/, original/ and the rest are refused); outside it, anywhere
   --src/--left/--och-align/--och-dx  scratch experiments only (need --out): the source of the
                "Jean-Jacques Annaud" pixels, the left ink column of line 2, the och placement
 """
@@ -76,7 +77,10 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
-RES = ROOT / "work/jar/res"
+sys.dont_write_bytecode = True        # importing inputs must not write tools/images/__pycache__
+sys.path.insert(0, str(ROOT / "tools/images"))
+import inputs  # noqa: E402  (original/ jar res/ + glyph inventory, see tools/images/inputs.py)
+RES = inputs.RES
 OUT = ROOT / "assets_sv/res/de/intro/pelicula.png"
 PHASE_D = ROOT / "work/phaseD"                # scratch builds may go anywhere under it
 
@@ -319,7 +323,7 @@ def write_atomic(out_path: Path, data: bytes) -> None:
 
 def safe_out(out: Path) -> Path:
     """--out must name a .png. Inside the project it must be the real output or lie under
-    work/phaseD/ (this track's or any other track's scratch); assets_sv/, tools/, work/jar/,
+    work/phaseD/ (this track's or any other track's scratch); assets_sv/, tools/, work/inputs/,
     original/ and everything else in the project are refused. Outside the project, anywhere.
     Symlinks are resolved first, so a link under work/phaseD/ cannot point the write elsewhere."""
     out = out.resolve()

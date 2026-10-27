@@ -48,11 +48,14 @@ n=$(LC_ALL=C awk -v d="$INTRO_SECS" -v i="$INTRO_IV" 'BEGIN{printf "%d", d/i}')
 SHOT_FULL=0 burst 00_intro_timeline/t "$n" "$INTRO_IV"
 
 # Plateau = >=2 consecutive identical timeline frames (moon clip masked), not black;
-# keep the first occurrence of each distinct plateau image.
+# keep the first occurrence of each distinct plateau image. The 8th is "Press to start",
+# which blinks forever: two grabs can catch its fade at the same phase and form one more
+# plateau, so collecting stops at 8 and later ones are only counted and logged.
 names=(01_loading 02_credits_manuydani 03_credits_pacoyjuan 04_credits_novela
        05_credits_pelicula 06_monje 07_logo 08_press_to_start)
 declare -A seen=()
 plateaus=()
+extra=()
 prev="" run=0
 for f in "$SHOT_DIR"/00_intro_timeline/t_*.png; do
   h=$(convert "$f" -fill black -draw "rectangle $MOON_MASK" rgb:- | md5sum | cut -c1-32)
@@ -62,11 +65,12 @@ for f in "$SHOT_DIR"/00_intro_timeline/t_*.png; do
     mean=$(convert "$f" -colorspace gray -format '%[fx:mean]' info:)
     if LC_ALL=C awk -v m="$mean" 'BEGIN{exit !(m > 0.01)}'; then
       seen[$h]=1
-      plateaus+=("$f")
+      if (( ${#plateaus[@]} < 8 )); then plateaus+=("$f"); else extra+=("$(basename "$f")"); fi
     fi
   fi
 done
 dlog "intro plateaus found: ${#plateaus[@]} (expected 8)"
+if (( ${#extra[@]} )); then dlog "extra plateaus after the 8th (press-to-start blink phases), not named: ${extra[*]}"; fi
 for i in "${!plateaus[@]}"; do
   if (( ${#plateaus[@]} == 8 )); then nm=${names[$i]}; else nm=$(printf '0%d_plateau_%02d' $(( i < 8 ? i + 1 : 8 )) "$i"); fi
   cp "${plateaus[$i]}" "$(nat "$nm")"
@@ -82,8 +86,10 @@ fi
 
 # ---------------------------------------------------- 2. press key -> intro parchment -----
 # Parchment page capture: poll the native frame as fast as possible (~6-8 grabs/s); "ink" =
-# share of dark pixels inside the parchment text area (168x176+76+16; pergamino.png is
-# 190x190 centred at 65,9). Ink only grows while a page is written and collapses during
+# share of dark pixels inside the parchment text area (168x171+76+21; pergamino.png is
+# 190x190 centred at 65,9; rows 16..20 are left out because the first page-turn tick draws
+# the curled roll there, which made the peak frame show the turn starting). Ink only grows
+# while a page is written and collapses during
 # the page turn, so the frame with the peak ink of each page is that page, complete to
 # within one poll (~0.15 s, i.e. at most the last pixels of one glyph).
 parchment_full() {
@@ -93,7 +99,7 @@ parchment_full() {
   while :; do
     grab_native "$cur"
     now=$(_now_ms)
-    ink=$(convert "$cur" -crop 168x176+76+16 +repage -colorspace gray -threshold 35% -negate -format '%[fx:mean]' info:)
+    ink=$(convert "$cur" -crop 168x171+76+21 +repage -colorspace gray -threshold 35% -negate -format '%[fx:mean]' info:)
     h=$(png_hash "$cur")
     if [[ $h != "$prevh" ]]; then t_change=$now; prevh=$h; fi
     # armed = a page is being written; a page turn disarms until the ink is ~0 again

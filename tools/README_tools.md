@@ -11,6 +11,37 @@ verification. Nothing here opens a window: every Java process runs with `DISPLAY
 uv run tools/build.py                 # translation/ + assets_sv/ + original/ -> game/
 ```
 
+**Inputs.** Only these: `original/` (the pristine download: the jar, the launchers and the PDFs;
+read, never written), `translation/`, the tracked parts of `assets_sv/` (`glyphs/*.json`,
+`image_src/**`), and `tools/` itself. Everything else is derived on every build:
+`assets_sv/res/de/**` is rewritten by the image builders (step 8a), and the builders read nothing
+from `work/jar/` or `work/phaseA/`: `tools/images/inputs.py` extracts `res/**.png` from the original
+jar and regenerates the glyph inventory with the Phase A scripts copied into
+`tools/images/inventory/` (`glyph_inventory.py`, `font_metrics.py`, `hud_glyphs.py`, `marks.py`,
+`merge_index.py`, byte copies), into `work/inputs/<key>/` (key = hash of the jar, the five scripts
+and `inputs.py`; published by an atomic rename, never changed; regenerated output is byte-identical
+to the Phase A inventory: 1803/1803 files). Deleting `work/` is always safe.
+
+**Prerequisites** (not in git): `uv`; JDK 11 (`java`, `javac`, `javap` on the PATH); JDK 8 at
+`/usr/lib/jvm/java-8-openjdk-amd64` (step 9b verifies the classes on it; the build fails without
+it); and the ASM jars in `tools/` (git-ignored, from Maven Central; the local copies match Maven's
+published SHA-1):
+
+| file | URL (`https://repo1.maven.org/maven2/` + ...) | sha256 |
+|---|---|---|
+| `asm-9.7.1.jar` | `org/ow2/asm/asm/9.7.1/asm-9.7.1.jar` | `8cadd43ac5eb6d09de05faecca38b917a040bb9139c7edeb4cc81c740b713281` |
+| `asm-tree-9.7.1.jar` | `org/ow2/asm/asm-tree/9.7.1/asm-tree-9.7.1.jar` | `9929881f59eb6b840e86d54570c77b59ce721d104e6dfd7a40978991c2d3b41f` |
+| `asm-analysis-9.7.1.jar` | `org/ow2/asm/asm-analysis/9.7.1/asm-analysis-9.7.1.jar` | `85b29371884ba31bb76edf22323c2c24e172c3267a67152eba3d1ccc2e041ef2` |
+| `asm-util-9.7.1.jar` | `org/ow2/asm/asm-util/9.7.1/asm-util-9.7.1.jar` | `f885be71b5c90556f5f1ad1c4f9276b29b96057c497d46666fe4ddbec3cb43c6` |
+| `asm-commons-9.7.1.jar` (not used by the build) | `org/ow2/asm/asm-commons/9.7.1/asm-commons-9.7.1.jar` | `9a579b54d292ad9be171d4313fd4739c635592c2b5ac3a459bbd1049cddec6a0` |
+| `cfr-0.152.jar` (decompiling only) | `org/benf/cfr/0.152/cfr-0.152.jar` | `f686e8f3ded377d7bc87d216a90e9e9512df4156e75b06c655a16648ae8765b2` |
+| `vineflower-1.10.1.jar` (decompiling only) | `org/vineflower/vineflower/1.10.1/vineflower-1.10.1.jar` | `b9b208e50793b64657a6b6292067526613f549de7405f9243624b02f4276e409` |
+
+Clean-room check (Phase E round 1): the tracked and trackable files (`git ls-files -co
+--exclude-standard`) copied into an empty directory, plus `original/` and the ASM jars, built with
+no `work/`, `game/` or `assets_sv/res/`. The jar and `work/build/manifest.json` (sha256 of every game
+file and changed jar entry) were byte-identical to the in-tree build.
+
 | option | default | meaning |
 |---|---|---|
 | `--strings PATH` | `translation/strings_sv.tsv` | all in-game strings (format: header `array index context speaker max_len es en sv note`, rows as `tools/data/context.tsv`) |
@@ -20,9 +51,11 @@ uv run tools/build.py                 # translation/ + assets_sv/ + original/ ->
 | `--out DIR` | `game/` | wiped and recreated; checked before anything is touched (refuses a file, a dir holding files it did not write, and project/system dirs; keeps `savedata.bin`) |
 | `--placeholder` | off | Spanish placeholder text allowed: the untranslated-string lint errors (used `g`, `a c d e f`, HUD hours `b`, `w.t`, `w.u`) become warnings |
 | `--allow-missing-assets` | off | a missing Swedish image falls back to the original `res/de` (English) file, with a loud WARNING |
+| `--no-image-rebuild` | off | skip step 8a and use the images already in `assets_sv/res/de/` |
 
 What it does (scratch in `work/build/`, wiped each run and used by nothing else; one build at a
-time; ~4 s): checks the original jar's sha256;
+time): checks the original jar's sha256; rebuilds the seven Swedish images from `work/inputs/<key>/`
+(step 8a, above);
 lints the strings first and stops on errors; compiles `tools/java/*.java`; generates
 `abadia/k.java` from the `sv` column (non-ASCII as `\uXXXX`), compiles it with
 `javac --release 7` and proves with `javap` that fields, descriptors, flags, class flags (0x0031) and
@@ -94,4 +127,7 @@ build reads them), `width "LINE"`, `pages FILE OUTDIR --text`, `encode`, `dump`.
 | `harness/` | self-contained copy of the Phase A rendering harness (`build.sh`, `render.sh`, `src/`) |
 | `render_strings.py`, `regress.py` | the two checkers above |
 | `data/context.tsv` | byte copy of `work/phaseA/context.tsv` (row keys, es, en, used/dead) |
-| `run_headless.sh`, `drivers/` | live game runs on a private Xvfb (FORMAT §7) |
+| `run_headless.sh`, `drivers/` | live game runs on a private Xvfb (FORMAT §7); a driver is stopped after `DRIVER_TIMEOUT` (default 1800 s), so `interactive.sh MAX` with MAX above that needs `DRIVER_TIMEOUT` raised too |
+| `images/build_*.py`, `fraktur.py`, `script_och.py`, `preview_intro.py` | the seven Swedish image builders and their kits (run by step 8a) |
+| `images/inputs.py`, `images/inventory/` | the builders' read-only inputs, made from `original/` alone (see *Inputs* above) |
+| `check_glossary.py` | strings and parchments against `translation/glossary.tsv` (page breaks and parchment line wraps are ignored when matching) |

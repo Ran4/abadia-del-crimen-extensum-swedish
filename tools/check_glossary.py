@@ -15,7 +15,12 @@ Checks, per row kind:
   latin      the form stands as a whole word in every g message the note names
   ui         a/c/d/e/f/w.t/w.u/E.h equal the sv cell exactly (the note starts with the field)
   hour_hud   b[h] equals the sv cell (the note names `hour h`)
-  parchment  the form stands in the parchment(s) the note names (warning: forms inflect)
+  parchment  the form stands in the parchment(s) the note names (warning: forms inflect);
+             `credits` rows may stand in either parchment (the credits close both)
+Matching ignores layout: in g messages a `_` page break or `*` line break counts as one space
+(GLOSSARY §1.7: page breaks are a layout choice), and parchment text is matched with its lines
+joined, line-break hyphens removed (`byggna-` + `derna` -> `byggnaderna`) and runs of spaces
+collapsed, so a wrapped or indented phrase still counts.
 Other kinds (name, place, title, term, address, hour_text, image) are inflected or drawn and are
 checked by people. Exit 1 on errors. Importable: load_glossary(path), check(strings, gloss, perg).
 """
@@ -66,11 +71,23 @@ def whole_word(form: str, text: str) -> bool:
     return re.search(rf"(?<![{LETTER}]){re.escape(form)}(?![{LETTER}])", text) is not None
 
 
+def flatten_message(s: str) -> str:
+    """A g message with its `_` page breaks and `*` line breaks read as one space."""
+    return re.sub(r" {2,}", " ", re.sub(r"\s*[_*]\s*", " ", s)).strip()
+
+
+def flatten_parchment(t: str) -> str:
+    """Parchment text as running prose: hyphenated line ends joined, whitespace collapsed."""
+    t = re.sub(rf"(?<=[{LETTER}])-\r?\n\s*(?=[{LETTER}])", "", t)
+    return re.sub(r"\s+", " ", t).strip()
+
+
 def check(strings: dict, gloss: list[dict], perg: dict, only: set | None = None):
     """strings: {(array, index): sv}; perg: {1: text, 2: text} (may be empty).
     Returns (errors, warnings, manual)."""
     errors, warnings, manual = [], [], []
-    g = {i: s for (a, i), s in strings.items() if a == "g"}
+    g = {i: flatten_message(s) for (a, i), s in strings.items() if a == "g"}
+    perg = {p: flatten_parchment(t) for p, t in perg.items()}
 
     def want(key):
         return only is None or key in only
@@ -126,9 +143,12 @@ def check(strings: dict, gloss: list[dict], perg: dict, only: set | None = None)
                 if want(key) and key in strings and strings[key] != sv:
                     errors.append(f"{where}: b[{key[1]}] is {strings[key]!r}, glossary says {sv!r}")
         elif kind == "parchment" and perg:
-            ps = [p for p in (1, 2) if re.search(rf"parchment {p}\b|parchment 1, 2|parchment credits", note)]
             if "credits" in note:
-                ps = [2]
+                # the credits close both parchments; one occurrence anywhere is enough
+                if not any(a and a in t for a in alts for t in perg.values()):
+                    warnings.append(f"{where}: neither parchment has {sv!r} (fine if inflected)")
+                continue
+            ps = [p for p in (1, 2) if re.search(rf"parchment {p}\b|parchment 1, 2", note)]
             for p in ps:
                 if p in perg and not any(a and a in perg[p] for a in alts):
                     warnings.append(f"{where}: pergamino{p} lacks {sv!r} (fine if inflected)")

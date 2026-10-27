@@ -4,13 +4,14 @@
 # ///
 """Build the Swedish credit screen res/de/intro/manuydani.png ("Manuel Pazos / och Daniel Celemín").
 
-Deterministic. Inputs (read-only):
-  - work/jar/res/es/intro/manuydani.png   base: "Manuel Pazos" / "y Daniel Celemín" (the es file
+Deterministic. Inputs (read-only; RES = res/ of original/TheAbbeyOfCrimeExtensum.jar and GLYPHS = the
+glyph inventory, both made from original/ by tools/images/inputs.py):
+  - RES/es/intro/manuydani.png   base: "Manuel Pazos" / "y Daniel Celemín" (the es file
                                           keeps the í of Celemín); everything except the script
                                           "y" is kept pixel for pixel, RGB of transparent pixels
                                           included
-  - work/jar/res/en/intro/manuydani.png   only for the cross-check in step 5 (and de == en)
-  - work/jar/res/de/intro/manuydani.png   only to assert de == en and to take its colour type
+  - RES/en/intro/manuydani.png   only for the cross-check in step 5 (and de == en)
+  - RES/de/intro/manuydani.png   only to assert de == en and to take its colour type
   - tools/images/script_och.py            och_layer(): the composed script "och" (cream, alpha in
                                           multiples of 17, no glow), its placement on the en
                                           "and"'s baseline (och_position), and the deterministic
@@ -70,7 +71,10 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
-RES = ROOT / "work/jar/res"
+sys.dont_write_bytecode = True        # importing inputs must not write tools/images/__pycache__
+sys.path.insert(0, str(ROOT / "tools/images"))
+import inputs  # noqa: E402  (original/ jar res/ + glyph inventory, see tools/images/inputs.py)
+RES = inputs.RES
 OUT = ROOT / "assets_sv/res/de/intro/manuydani.png"
 SCRATCH = ROOT / "work/phaseD/manuydani"
 

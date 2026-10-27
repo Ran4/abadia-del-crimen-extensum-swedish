@@ -2,6 +2,8 @@
 # interactive.sh: keeps the game running for manual/experimental driving from other shells.
 # Writes $RUN_DIR/env.sh (source it to get DISPLAY, WIN_ID, GAME_PID, ... and the helpers),
 # then waits until $RUN_DIR/stop exists, the game dies, or MAX seconds (default 1800) pass.
+# MAX is capped by run_headless.sh's own DRIVER_TIMEOUT (default 1800 s): for a longer session
+# raise both, e.g.  DRIVER_TIMEOUT=3600 tools/run_headless.sh game de tools/drivers/interactive.sh 3000
 set -euo pipefail
 source "$HEADLESS_LIB"
 {

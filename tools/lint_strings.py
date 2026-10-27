@@ -44,7 +44,12 @@ MENU_HARD = [27, 26, 26, 25, 25, 25, 27, 27, 27, 27]   # FORMAT §1.7 (opaque pa
 MENU_SOFT = 23                                          # 190-px highlight bar
 MENU_SUFFIX = {3: "e", 4: "c", 5: "d", 6: "c", 7: "c"}
 # Remigio's day-1 walk (FORMAT §1.8): isolated tick caps, plus 158 chained after 157.
-TICK_CAPS = {157: 232, 158: 96, 159: 211, 51: 77}
+# g157: 215, not the longest shipped (it, 232). Phase E measured the real window from g157's start to
+# g158's (Remigio reaching waypoint 8 interrupts it) at 220 and 223 ticks (work/phaseE/runs/run1,
+# run2 events.log: ak 6351 -> 7011, 1233 -> 1903); 215 keeps the whole message, its 17-tick linger
+# included, inside that window with a margin (es, 221, and it, 232, lose part of their linger).
+# Measured windows of the others, far above their caps: g158 187 ticks, g159 319.
+TICK_CAPS = {157: 215, 158: 96, 159: 211, 51: 77}
 TICK_CAP_158_CHAINED = 129
 TITLE_RE = re.compile(r"Abad|Abbey|Abbaz|abbaye|Abtei")   # tools/run_headless.sh line 56
 MARKER_OK = re.compile(r"@(?:[0-9]|1[0-4])(?= |$)")

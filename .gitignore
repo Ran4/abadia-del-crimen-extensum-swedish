@@ -13,6 +13,13 @@ run.log
 .claude/
 # reproducible pristine reference captures
 screenshots/pristine_*/
+# every verification screenshot is a game frame with original art (a derived image): kept on
+# disk as the verification set, never committed; only its text indexes and reports are tracked
+screenshots/**
+!screenshots/**/
+!screenshots/**/*.md
+!screenshots/**/*.txt
+!screenshots/**/*.tsv
 __pycache__/
 # derived game images: rebuilt by tools/images/build_*.py from the original assets
 assets_sv/res/

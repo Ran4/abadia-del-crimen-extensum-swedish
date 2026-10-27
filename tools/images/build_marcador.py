@@ -4,10 +4,11 @@
 # ///
 """Build the Swedish HUD image res/de/marcador.png ("Dag" instead of "Day").
 
-Deterministic. Inputs (read-only):
-  - work/jar/res/de/marcador.png  (the shipped de file, byte-identical to en; asserted)
-  - work/jar/res/en/marcador.png  (only to assert de == en)
-  - work/phaseA/images/glyphs/hud/BACKGROUND_reconstructed_x0-41_y0-21.png
+Deterministic. Inputs (read-only; RES = res/ of original/TheAbbeyOfCrimeExtensum.jar and GLYPHS = the
+glyph inventory, both made from original/ by tools/images/inputs.py):
+  - RES/de/marcador.png  (the shipped de file, byte-identical to en; asserted)
+  - RES/en/marcador.png  (only to assert de == en)
+  - GLYPHS/hud/BACKGROUND_reconstructed_x0-41_y0-21.png
         (Phase A majority-vote background of the word area; used to restore the pixels the
          en 'y' covered)
   - assets_sv/image_src/marcador/g.txt  (the hand-pixelled 'g', committed source pixels)
@@ -38,10 +39,13 @@ from pathlib import Path
 
 from PIL import Image
 
-ROOT = Path("/home/ran/the_abbey_of_crime_extensum_swedish")
-SRC_DE = ROOT / "work/jar/res/de/marcador.png"
-SRC_EN = ROOT / "work/jar/res/en/marcador.png"
-BG = ROOT / "work/phaseA/images/glyphs/hud/BACKGROUND_reconstructed_x0-41_y0-21.png"
+ROOT = Path(__file__).resolve().parents[2]
+sys.dont_write_bytecode = True        # importing inputs must not write tools/images/__pycache__
+sys.path.insert(0, str(ROOT / "tools/images"))
+import inputs  # noqa: E402  (original/ jar res/ + glyph inventory, see tools/images/inputs.py)
+SRC_DE = inputs.RES / "de/marcador.png"
+SRC_EN = inputs.RES / "en/marcador.png"
+BG = inputs.GLYPHS / "hud/BACKGROUND_reconstructed_x0-41_y0-21.png"
 GLYPH = ROOT / "assets_sv/image_src/marcador/g.txt"
 OUT = ROOT / "assets_sv/res/de/marcador.png"
 
@@ -119,7 +123,7 @@ def read_glyph(path: Path) -> tuple[int, int, list[str]]:
 
 def build(glyph_path: Path, out_path: Path, quiet: bool) -> int:
     de_bytes, en_bytes = SRC_DE.read_bytes(), SRC_EN.read_bytes()
-    assert de_bytes == en_bytes, "work/jar/res/de/marcador.png is expected to be byte-identical to en"
+    assert de_bytes == en_bytes, "the original res/de/marcador.png is expected to be byte-identical to en"
     src_chunks = chunks(de_bytes)
     types = [t for t, _ in src_chunks]
     assert types == [b"IHDR", b"PLTE", b"tRNS", b"IDAT", b"IEND"], types

@@ -15,9 +15,9 @@ o, c, h exists, so each is composed from shipped pixels plus hand corrections:
 
 Sources (read-only data, alpha taken only where RGB == cream, so a neighbouring Fraktur glow is
 never picked up):
-  work/jar/res/en/intro/manuydani.png   en "and" [49,143,82,158] (alpha>0 box); checked pixel-
+  RES/en/intro/manuydani.png   en "and" [49,143,82,158] (alpha>0 box); checked pixel-
                                         identical to the "and" in en pacoyjuan and en pelicula
-  work/jar/res/it/intro/manuydani.png   it "e" [76,144,83,154]
+  RES/it/intro/manuydani.png   it "e" [76,144,83,154]
 Recipes and hand corrections: assets_sv/image_src/script/och_{o,c,h}.txt (format in each file).
 
 Coordinates. Everything is composed in en manuydani screen coordinates, so "och" sits on the
@@ -80,7 +80,10 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[2]
-RES = ROOT / "work/jar/res"
+sys.dont_write_bytecode = True        # importing inputs must not write tools/images/__pycache__
+sys.path.insert(0, str(ROOT / "tools/images"))
+import inputs  # noqa: E402  (original/ jar res/ + glyph inventory, see tools/images/inputs.py)
+RES = inputs.RES
 SRC_DIR = ROOT / "assets_sv/image_src/script"
 OUT_DIR = ROOT / "work/phaseD/och"      # the only place inside the project the CLI writes to
 LETTERS = ("o", "c", "h")
@@ -496,7 +499,7 @@ def show() -> None:
 
 def _safe_out(out: Path) -> Path:
     """Inside the project, previews may only go to work/phaseD/och/ or a directory under it (never
-    into assets_sv/, work/jar/, original/, tools/ or another track's work/phaseD/<dir>/). The path
+    into assets_sv/, work/inputs/, work/jar/, original/, tools/ or another track's work/phaseD/<dir>/). The path
     is resolved first, so a symlink cannot lead out of there. Outside the project any directory
     is accepted."""
     out = out.resolve()

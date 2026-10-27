@@ -206,28 +206,32 @@ wait_until_frame_changes() {
 }
 
 audio_level() {
+  # Peak and RMS of the null sink's monitor, in shell tools only (no Python: the project runs
+  # Python only through uv). od prints one signed 16-bit little-endian sample per line.
   local secs="${1:-3}" res
   res="$(timeout "$secs" parec --device="$NULL_SINK.monitor" --format=s16le --rate=44100 \
-          --channels=2 --raw 2>/dev/null | python3 -I -c '
-import sys, array, math
-a = array.array("h"); a.frombytes(sys.stdin.buffer.read() or b"")
-n = len(a)
-pk = max((abs(x) for x in a), default=0)
-rms = math.sqrt(sum(x*x for x in a)/n) if n else 0.0
-print(f"samples={n} peak={pk} rms={rms:.1f}")' || true)"
+          --channels=2 --raw 2>/dev/null | od -An -v -td2 -w2 --endian=little \
+        | LC_ALL=C awk '{ v = $1 < 0 ? -$1 : $1; if (v > pk) pk = v; s += $1 * $1; n++ }
+                        END { printf "samples=%d peak=%d rms=%.1f", n, pk, n ? sqrt(s / n) : 0 }' \
+        || true)"
   elog "AUDIO LEVEL on $NULL_SINK.monitor over ${secs}s: $res"
 }
 
 check_invisible() {
-  local out names="" w
+  local out names="" w err
   _win_refresh
-  out="$(DISPLAY=:0 xdotool search --name "$TITLE_RE" 2>/dev/null || true)"
-  if [[ -z $out ]]; then
+  err="$RUN_DIR/.check_invisible_err.$$"
+  out="$(DISPLAY=:0 xdotool search --name "$TITLE_RE" 2>"$err" || true)"
+  if [[ -z $out && -s $err ]]; then
+    # empty output with an error is not proof: :0 may not have been queried at all
+    elog "CHECK BLIND: DISPLAY=:0 xdotool search gave no windows but reported: $(head -c 300 "$err" | tr '\n' ' ')"
+  elif [[ -z $out ]]; then
     elog "INVISIBLE OK: DISPLAY=:0 xdotool search --name '$TITLE_RE' -> no windows"
   else
     for w in $out; do names+="$w='$(DISPLAY=:0 xdotool getwindowname "$w" 2>/dev/null)' "; done
     elog "CHECK: windows on :0 match '$TITLE_RE': $names (not ours unless the game is on :0)"
   fi
+  rm -f "$err"
   elog "game window on $DISPLAY: $WIN_ID '$(xdotool getwindowname "$WIN_ID" 2>/dev/null)' map_state=$(xwininfo -id "$WIN_ID" | awk '/Map State/{print $NF}')"
 }
 

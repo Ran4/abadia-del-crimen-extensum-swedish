@@ -261,7 +261,7 @@ the Swedish lines (TSV kind `phrase`, note "Salvatore").
 
 | msg | Spanish | keep | replace → Swedish | Swedish line |
 |---|---|---|---|---|
-| g54 (1) | PENITENCIAGITE! LA MORTZ EST SUPER NOS! RUEGA QUE VINGA LO PAPA SANTO A LIBERAR NOS A MALO DE TUTTE LAS PECCATA! | PENITENZIAGITE (★ §4), LA MORTZ EST SUPER NOS, LO PAPA SANTO, A LIBERAR NOS A MALO, DE, TUTTE, PECCATA | RUEGA QUE → BE ATT; VINGA → KOMMA, placed after the subject; LAS → dropped | `PENITENZIAGITE! LA MORTZ EST SUPER NOS! BE ATT LO PAPA SANTO KOMMA A LIBERAR NOS A MALO DE TUTTE PECCATA!` |
+| g54 (1) | PENITENCIAGITE! LA MORTZ EST SUPER NOS! RUEGA QUE VINGA LO PAPA SANTO A LIBERAR NOS A MALO DE TUTTE LAS PECCATA! | PENITENZIAGITE (★ §4), LA MORTZ EST SUPER NOS, LO PAPA SANTO, A LIBERAR NOS A MALO, DE, TUTTE, PECCATA | RUEGA QUE → BEDJA ATT (the full infinitive, so the verb is unmistakable and the automatic page cut falls before A LIBERAR, as in es); VINGA → KOMMA, placed after the subject; LAS → dropped | `PENITENZIAGITE! LA MORTZ EST SUPER NOS! BEDJA ATT LO PAPA SANTO KOMMA A LIBERAR NOS A MALO DE TUTTE PECCATA!` |
 | g54 (2) | DOMINE FRATE MAGNIFICENTISIMO. JESUS VENTURUS EST ET LOS HOMINES DEBENT FACERE PENITENTIA, NO? | everything (MAGNIFICENTISSIMO ★), NO? | nothing | `DOMINE FRATE MAGNIFICENTISSIMO. JESUS VENTURUS EST ET LOS HOMINES DEBENT FACERE PENITENTIA, NO?` |
 | g54 (3) | NO INTENDO. | nothing | NO INTENDO → IO INTE FÖRSTÅ | `IO INTE FÖRSTÅ.` |
 | g54 (4) | SALVATORE ESTÚPIDO. IO NO SABE. ESTÚPIDO... | IO | ESTÚPIDO → DUM; NO SABE → INTE VETA | `SALVATORE DUM. IO INTE VETA. DUM...` |
@@ -273,7 +273,7 @@ Why: VINGA (his Italianate *venga*, "may come") is the verb of the sentence and 
 Swedish reader, so it becomes KOMMA; the kept `A LIBERAR NOS A MALO` is the Pater Noster's *libera
 nos a malo*, as in Eco. `NO?` stays because the tag is international (en keeps it too). `MAGNIFIK`
 is an old Swedish loan ("splendid") and echoes his Latin flattery in g54. `HOPPAS` is the
-infinitive; never `HOPPA` (= jump). Lengths stay close to the Spanish (g54 (1) 105 vs 112 glyphs,
+infinitive; never `HOPPA` (= jump). Lengths stay close to the Spanish (g54 (1) 108 vs 112 glyphs,
 g100 74 vs 76, the g118 segment 175 vs 167).
 
 ### 1.11 Messages that carry player information

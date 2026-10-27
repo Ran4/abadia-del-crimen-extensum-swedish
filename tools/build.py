@@ -22,7 +22,10 @@ Steps (docs/FORMAT.md is the reference): 1 check the original jar, wipe work/bui
 strings first; 2 compile tools/java/*.java; 3 generate + compile abadia/k.java and prove its shape
 with javap; 4 patch j.class (Å), w.class (w.t[4], w.u[4]), E.class (E.h[4]); 5 res/fuente.png;
 6 res/letras; 7 res/de/pergamino1|2; 8a rebuild the Swedish images with tools/images/build_*.py
-(only for the default --assets; they are derived files and not kept in git); 8 images; 9 the jar; verify classes on JDK 11 and 8;
+(only for the default --assets; they are derived files and not kept in git) from original/ alone:
+tools/images/inputs.py extracts res/**.png from the original jar and regenerates the glyph inventory
+into work/inputs/<key>/ (key = hash of the jar and the scripts; nothing under work/jar/ or
+work/phaseA/ is read); 8 images; 9 the jar; verify classes on JDK 11 and 8;
 10 game/; 12 work/build/manifest.json. Deterministic: two runs with the same inputs give identical
 bytes (compare the manifests). Exit 0 = built, 1 = failed (nothing is written to --out then).
 --out is checked before anything is touched. work/build/ belongs to this script alone (one build at
@@ -654,20 +657,27 @@ def image_rules(name: str, data: bytes, odata: bytes, where: str) -> list[str]:
 IMAGE_BUILDERS = ["marcador", "loading", "pulsa", "manuydani", "pacoyjuan", "novela", "pelicula"]
 
 
-def step8a_rebuild_images(args):
+def step8a_rebuild_images(args) -> str | None:
     log.step("8a", "rebuild the Swedish images (tools/images/build_*.py -> assets_sv/res/de/)")
     if args.no_image_rebuild:
         log.info("skipped (--no-image-rebuild)")
-        return
+        return None
     if args.assets != (ROOT / "assets_sv").resolve():
         log.info(f"skipped: --assets is {rel(args.assets)}, and the builders write to assets_sv/")
-        return
+        return None
+    script = HERE / "images" / "inputs.py"
+    r = subprocess.run(["uv", "run", "--quiet", str(script)], cwd=ROOT, capture_output=True, text=True)
+    if r.returncode:
+        raise BuildError(f"{rel(script)} failed (exit {r.returncode}):\n{r.stdout[-2000:]}{r.stderr[-2000:]}")
+    inputs_dir = rel(r.stdout.strip().splitlines()[-1])
+    log.info(f"builder inputs: {inputs_dir} (res/**.png of the original jar + glyph inventory, made by {rel(script)})")
     for name in IMAGE_BUILDERS:
         script = HERE / "images" / f"build_{name}.py"
         r = subprocess.run(["uv", "run", "--quiet", str(script)], cwd=ROOT, capture_output=True, text=True)
         if r.returncode:
             raise BuildError(f"{rel(script)} failed (exit {r.returncode}):\n{r.stdout[-2000:]}{r.stderr[-2000:]}")
         log.info(f"{rel(script)}: OK")
+    return inputs_dir
 
 
 def step8_images(args, zf: zipfile.ZipFile) -> tuple[dict, dict]:
@@ -814,7 +824,9 @@ def step9b_verify(jar: pathlib.Path, kdata: dict, rows: list[dict]):
     bad = [k for k in want if got.get(k) != want[k]]
     if bad:
         raise BuildError("runtime values differ: " + "; ".join(f"{k}: got {got.get(k)!r} want {want[k]!r}" for k in bad[:10]))
-    log.info(f"runtime values of k (a..g, {sum(len(v) for v in kdata['arrays'].values())} strings + 49 hour bytes) "
+    n_str = sum(len(v) for a, v in kdata["arrays"].items() if a != "b")
+    n_hours = len(kdata["arrays"].get("b", []))
+    log.info(f"runtime values of k ({n_str} strings (a,c..g) + {n_hours} hour names (b, {len(kdata['hud'])} bytes)) "
              f"and w.t/w.u match the TSV; w.t/w.u other slots unchanged")
 
 
@@ -910,7 +922,7 @@ def main():
         fuente = step5_fuente(args.fuente_add, zf, kdata["hud"])
         letras = step6_letras(args.letras_add, zf)
         perg = step7_pergamino({"pergamino1": args.perg1, "pergamino2": args.perg2}, letras)
-        step8a_rebuild_images(args)
+        image_inputs = step8a_rebuild_images(args)
         images, img_sources = step8_images(args, zf)
         changed = {"abadia/k.class": kdata["class"], "abadia/j.class": cls["j"], "abadia/w.class": cls["w"],
                    "abadia/E.class": cls["E"], "res/fuente.png": fuente, "res/letras": letras,
@@ -936,6 +948,7 @@ def main():
             "inputs": {k: {"path": rel(getattr(args, k)), "sha256": sha256(getattr(args, k).read_bytes())}
                        for k in ("strings", "perg1", "perg2", "fuente_add", "letras_add")},
             "images": img_sources,
+            "image_inputs": image_inputs,
             "game": game_files,
             "jar_changed_entries": actually_changed,
             "jar_unchanged_replacements": sorted(n for n, d in changed.items() if d == zf.read(n)),

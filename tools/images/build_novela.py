@@ -5,18 +5,19 @@
 """Build the Swedish credit screen res/de/intro/novela.png:
     "efter romanen" / "”Rosens namn”" / "av Umberto Eco"            (GLOSSARY §8)
 
-Deterministic. Inputs (read-only):
-  - work/jar/res/es/intro/novela.png   base: "en la novela" / "“El Nombre de la Rosa”" /
+Deterministic. Inputs (read-only; RES = res/ of original/TheAbbeyOfCrimeExtensum.jar and GLYPHS = the
+glyph inventory, both made from original/ by tools/images/inputs.py):
+  - RES/es/intro/novela.png   base: "en la novela" / "“El Nombre de la Rosa”" /
                                        "de Umberto Eco". Everything outside the three text lines
                                        and their glow is kept byte for byte (RGB of transparent
                                        pixels included).
-  - work/jar/res/en/intro/novela.png   only to check that the base choice does not matter
+  - RES/en/intro/novela.png   only to check that the base choice does not matter
                                        outside the text (es and en differ only there) and
-  - work/jar/res/de/intro/novela.png   that de == en byte for byte (its colour type, RGBA, is kept)
+  - RES/de/intro/novela.png   that de == en byte for byte (its colour type, RGBA, is kept)
   - tools/images/fraktur.py            the Fraktur kit (imported, never modified; bytecode off so
                                        no __pycache__ is written next to it)
-  - through fraktur.py also:           work/jar/res/{es,en,fr,it}/intro/{manuydani,pacoyjuan,
-                                       novela,pelicula}.png and work/phaseA/images/glyphs/
+  - through fraktur.py also:           RES/{es,en,fr,it}/intro/{manuydani,pacoyjuan,
+                                       novela,pelicula}.png and GLYPHS/
                                        {index.json,font_metrics.json,fraktur/*_mask.png}
                                        (checked with strace: nothing else in the project is read)
 Output:
@@ -77,9 +78,12 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
-RES = ROOT / "work/jar/res"
+sys.dont_write_bytecode = True        # importing inputs must not write tools/images/__pycache__
+sys.path.insert(0, str(ROOT / "tools/images"))
+import inputs  # noqa: E402  (original/ jar res/ + glyph inventory, see tools/images/inputs.py)
+RES = inputs.RES
 OUT = ROOT / "assets_sv/res/de/intro/novela.png"
-SCRATCH = ROOT / "work/phaseD"        # every track's scratch (never assets_sv/ or work/jar/)
+SCRATCH = ROOT / "work/phaseD"        # every track's scratch (never assets_sv/ or the inputs)
 
 sys.dont_write_bytecode = True        # importing fraktur must not write tools/images/__pycache__
 sys.path.insert(0, str(ROOT / "tools/images"))

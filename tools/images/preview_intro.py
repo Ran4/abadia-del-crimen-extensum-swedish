@@ -24,7 +24,10 @@ import sys
 from PIL import Image, ImageDraw
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-RES = ROOT / "work" / "jar" / "res"
+sys.dont_write_bytecode = True        # importing inputs must not write tools/images/__pycache__
+sys.path.insert(0, str(ROOT / "tools/images"))
+import inputs  # noqa: E402  (original/ jar res/ + glyph inventory, see tools/images/inputs.py)
+RES = inputs.RES
 ORDER = ["loading", "manuydani", "pacoyjuan", "novela", "pelicula", "monje", "logo", "pulsa"]
 
 

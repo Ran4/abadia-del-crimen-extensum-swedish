@@ -4,16 +4,17 @@
 # ///
 """Build the Swedish "press to start" image res/de/intro/pulsa.png: "Tryck för att starta".
 
-Deterministic. Inputs (read-only):
-  - work/jar/res/de/intro/pulsa.png   the shipped de file (byte-identical to en; checked) = base
-  - work/jar/res/en/intro/pulsa.png   glyph source (r, o, a, t, "start")
-  - work/jar/res/pl/intro/pulsa.png   glyph source (c)
-  - work/jar/res/es/intro/pulsa.png   read on every build, to check the outline rules below on
+Deterministic. Inputs (read-only; RES = res/ of original/TheAbbeyOfCrimeExtensum.jar and GLYPHS = the
+glyph inventory, both made from original/ by tools/images/inputs.py):
+  - RES/de/intro/pulsa.png   the shipped de file (byte-identical to en; checked) = base
+  - RES/en/intro/pulsa.png   glyph source (r, o, a, t, "start")
+  - RES/pl/intro/pulsa.png   glyph source (c)
+  - RES/es/intro/pulsa.png   read on every build, to check the outline rules below on
                                       its line (with en and pl), and by --fit
   - assets_sv/image_src/pulsa/layout.txt   which glyph goes where (see that file)
   - assets_sv/image_src/pulsa/*.txt        hand-drawn glyphs T, y, k, f and the two dots of ö
 Output:
-  - assets_sv/res/de/intro/pulsa.png  (--out may redirect it, never into work/jar/ or original/)
+  - assets_sv/res/de/intro/pulsa.png  (--out may redirect it, never into work/inputs/, work/jar/ or original/)
 
 The pulsa font (images.md §3.3, FORMAT §6.2) is an anti-aliased blackletter: every opaque pixel is
 the fill (253,246,231) scaled by k/15 (k = 0..15; k = 0 is the opaque black outline), every partial
@@ -79,10 +80,13 @@ from PIL import Image
 from scipy import ndimage
 
 ROOT = Path(__file__).resolve().parents[2]
-SRC = {lang: ROOT / f"work/jar/res/{lang}/intro/pulsa.png" for lang in ("de", "en", "es", "pl")}
+sys.dont_write_bytecode = True        # importing inputs must not write tools/images/__pycache__
+sys.path.insert(0, str(ROOT / "tools/images"))
+import inputs  # noqa: E402  (original/ jar res/ + glyph inventory, see tools/images/inputs.py)
+SRC = {lang: inputs.RES / f"{lang}/intro/pulsa.png" for lang in ("de", "en", "es", "pl")}
 SRC_DIR = ROOT / "assets_sv/image_src/pulsa"
 OUT = ROOT / "assets_sv/res/de/intro/pulsa.png"
-READ_ONLY = (ROOT / "work/jar", ROOT / "original")   # extracted game data: never written
+READ_ONLY = (inputs.BASE, ROOT / "work/jar", ROOT / "original")   # game data: never written
 
 W, H = 320, 208
 FILL_R = {"en": 253, "es": 253, "pl": 255}   # pl draws the same font with fill (255,246,231)
@@ -332,7 +336,7 @@ def read_layout(src_dir: Path, shipped: dict) -> list[tuple[Glyph, int]]:
 # ---------------------------------------------------------------- build
 def build(out_path: Path, src_dir: Path, quiet: bool) -> int:
     de_bytes = SRC["de"].read_bytes()
-    need(de_bytes == SRC["en"].read_bytes(), "work/jar/res/de/intro/pulsa.png must equal en")
+    need(de_bytes == SRC["en"].read_bytes(), "the original res/de/intro/pulsa.png must equal en")
     src_chunks = chunks(de_bytes)
     need([t for t, _ in src_chunks] == CHUNKS, f"base chunks {[t for t, _ in src_chunks]}, expected {CHUNKS}")
     ihdr, plte, trns = src_chunks[0][1], src_chunks[1][1], src_chunks[2][1]

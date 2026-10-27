@@ -5,12 +5,13 @@
 """Build the Swedish credit screen res/de/intro/pacoyjuan.png
 ("efter spelet av" / "Paco Menéndez" / "och Juan Delcán").
 
-Deterministic. Inputs (read-only):
-  - work/jar/res/es/intro/pacoyjuan.png   base: "inspirado en la obra de" / "Paco Menéndez" /
+Deterministic. Inputs (read-only; RES = res/ of original/TheAbbeyOfCrimeExtensum.jar and GLYPHS = the
+glyph inventory, both made from original/ by tools/images/inputs.py):
+  - RES/es/intro/pacoyjuan.png   base: "inspirado en la obra de" / "Paco Menéndez" /
                                           "y Juan Delcán" (the names keep their accents);
                                           everything except line 1 and the script "y" is kept
-  - work/jar/res/en/intro/pacoyjuan.png   only to assert de == en byte for byte
-  - work/jar/res/de/intro/pacoyjuan.png   only to assert de == en and to take its colour type
+  - RES/en/intro/pacoyjuan.png   only to assert de == en byte for byte
+  - RES/de/intro/pacoyjuan.png   only to assert de == en and to take its colour type
   - tools/images/fraktur.py               the Fraktur kit, through its documented API only
                                           (Canvas.shipped/erase/draw/draw_script/coverage_layer/
                                           render, line, Layer, SCRIPT_BOXES, moon_pixels,
@@ -85,7 +86,10 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
-RES = ROOT / "work/jar/res"
+sys.dont_write_bytecode = True        # importing inputs must not write tools/images/__pycache__
+sys.path.insert(0, str(ROOT / "tools/images"))
+import inputs  # noqa: E402  (original/ jar res/ + glyph inventory, see tools/images/inputs.py)
+RES = inputs.RES
 OUT = ROOT / "assets_sv/res/de/intro/pacoyjuan.png"
 SCRATCH = ROOT / "work/phaseD/pacoyjuan"
 
