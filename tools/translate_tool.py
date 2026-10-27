@@ -4,11 +4,14 @@
 """Translation helper (Phase C): chunk plan, source view, per-chunk checks, merge, game order.
 
   uv run tools/translate_tool.py plan                       write/print work/phaseC/plan.json
-  uv run tools/translate_tool.py show CHUNK                 source rows of one chunk: context, speaker,
+  uv run tools/translate_tool.py show CHUNK|g52,g54         source rows of one chunk: context, speaker,
                                                             es/en/fr/it, es pages, relevant glossary rows
   uv run tools/translate_tool.py pages "TEXT"               how the game pages a g string; ticks
   uv run tools/translate_tool.py check FILE.json [...]      lint + glossary + timing for the chunk's rows
-  uv run tools/translate_tool.py merge [--out TSV]          all chunk files -> translation/strings_sv.tsv
+  uv run tools/translate_tool.py merge [--out TSV] [--force] all chunk files -> translation/strings_sv.tsv
+                                                            (refused once the TSV is newer than the chunks)
+  uv run tools/translate_tool.py extract g52,g54 OUT.json   rows of the TSV -> a chunk file (for `check`)
+  uv run tools/translate_tool.py apply FILE.json            a chunk file's rows -> back into the TSV
   uv run tools/translate_tool.py gameorder [--tsv TSV] [--sv-only]   every used g string in rough game order
   uv run tools/translate_tool.py letras                     work/phaseC/letras_sv = original letras + the
                                                             current assets_sv/glyphs/letras_add.json, for
@@ -119,7 +122,10 @@ def pages_report(text, indent="    "):
 def cmd_show(a):
     plan = {c["id"]: c for c in load_plan()}
     if a.chunk not in plan:
-        sys.exit(f"unknown chunk {a.chunk}; known: {', '.join(plan)}")
+        if re.match(r"(g|a|b|c|d|e|f|w\.t|w\.u|E\.h)\[?\d", a.chunk):
+            plan[a.chunk] = {"rows": [list(k) for k in parse_keys(a.chunk)]}
+        else:
+            sys.exit(f"unknown chunk {a.chunk}; known: {', '.join(plan)} (or give rows, e.g. g52,g54)")
     d, msgs = all_strings(), messages()
     ref = {(r["array"], int(r["index"])): r for r in ref_rows()}
     gloss = check_glossary.load_glossary(GLOSSARY)
@@ -265,12 +271,49 @@ def chunk_files():
 
 def cmd_merge(a):
     files = chunk_files()
+    out = pathlib.Path(a.out)
+    if out.exists() and not a.force and all(f.stat().st_mtime < out.stat().st_mtime for f in files):
+        sys.exit(f"{out} is newer than every chunk file: it has been edited since the chunks were merged "
+                 f"(Phase E fixes live only there). Use extract/apply instead, or --force to overwrite it.")
     rows, keys = overlay(files)
     dup = {k for k in keys if keys.count(k) > 1}
     if dup:
         sys.exit(f"rows in more than one chunk file: {sorted(dup)}")
     write_tsv(rows, a.out)
     print(f"wrote {a.out}: {len(rows)} rows, {len(keys)} from {len(files)} chunk files")
+
+
+def parse_keys(spec):
+    keys = []
+    for tok in spec.split(","):
+        m = re.fullmatch(r"(g|a|b|c|d|e|f|w\.t|w\.u|E\.h)\[?(\d+)\]?", tok.strip())
+        if not m:
+            sys.exit(f"bad row key {tok!r} (use e.g. g52,g54,a1)")
+        keys.append((m.group(1), int(m.group(2))))
+    return keys
+
+
+def cmd_extract(a):
+    rows = {(r["array"], int(r["index"])): r for r in lint_strings.read_tsv(a.tsv)}
+    out = [{"array": k[0], "index": k[1], "sv": rows[k]["sv"], "note": rows[k]["note"]} for k in parse_keys(a.keys)]
+    pathlib.Path(a.out).write_text(json.dumps({"chunk": a.name, "rows": out}, ensure_ascii=False, indent=1) + "\n",
+                                   encoding="utf-8")
+    print(f"wrote {a.out}: {len(out)} rows from {a.tsv}")
+
+
+def cmd_apply(a):
+    rows = lint_strings.read_tsv(a.tsv)
+    by_key = {(r["array"], int(r["index"])): r for r in rows}
+    _, crow = read_chunk(a.file)
+    for c in crow:
+        key = (c["array"], int(c["index"]))
+        if key not in by_key:
+            sys.exit(f"{a.file}: unknown row {key}")
+        by_key[key]["sv"] = c["sv"]
+        if "note" in c:
+            by_key[key]["note"] = c["note"]
+    write_tsv(rows, a.tsv)
+    print(f"applied {len(crow)} rows from {a.file} to {a.tsv}")
 
 
 def order_key(m):
@@ -324,6 +367,15 @@ def main():
     c.add_argument("files", nargs="+")
     m = sub.add_parser("merge")
     m.add_argument("--out", default=str(OUT_TSV))
+    m.add_argument("--force", action="store_true")
+    x = sub.add_parser("extract")
+    x.add_argument("keys")
+    x.add_argument("out")
+    x.add_argument("--name", default="extract")
+    x.add_argument("--tsv", default=str(OUT_TSV))
+    y = sub.add_parser("apply")
+    y.add_argument("file")
+    y.add_argument("--tsv", default=str(OUT_TSV))
     g = sub.add_parser("gameorder")
     g.add_argument("--tsv", default=str(OUT_TSV))
     g.add_argument("--sv-only", action="store_true", help="Swedish only (a reader who never sees es)")
@@ -334,7 +386,8 @@ def main():
             print(c["id"], c["es_chars"], " ".join(f"{x[0]}{x[1]}" for x in c["rows"]))
     else:
         {"show": cmd_show, "pages": cmd_pages, "check": cmd_check, "merge": cmd_merge,
-         "gameorder": cmd_gameorder, "letras": cmd_letras}[a.cmd](a)
+         "gameorder": cmd_gameorder, "letras": cmd_letras,
+         "extract": cmd_extract, "apply": cmd_apply}[a.cmd](a)
 
 
 if __name__ == "__main__":
