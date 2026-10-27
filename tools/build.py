@@ -16,11 +16,13 @@ Inputs (defaults):
   --out DIR           game/      (wiped and recreated; an existing savedata.bin is kept)
   --placeholder       Spanish placeholder text allowed: untranslated-text lint errors become warnings
   --allow-missing-assets   a missing Swedish image falls back to the original res/de file (WARNING)
+  --no-image-rebuild  use the images already in assets_sv/res/de/ instead of rebuilding them
 
 Steps (docs/FORMAT.md is the reference): 1 check the original jar, wipe work/build/; 11 lint the
 strings first; 2 compile tools/java/*.java; 3 generate + compile abadia/k.java and prove its shape
 with javap; 4 patch j.class (Å), w.class (w.t[4], w.u[4]), E.class (E.h[4]); 5 res/fuente.png;
-6 res/letras; 7 res/de/pergamino1|2; 8 images; 9 the jar; verify classes on JDK 11 and 8;
+6 res/letras; 7 res/de/pergamino1|2; 8a rebuild the Swedish images with tools/images/build_*.py
+(only for the default --assets; they are derived files and not kept in git); 8 images; 9 the jar; verify classes on JDK 11 and 8;
 10 game/; 12 work/build/manifest.json. Deterministic: two runs with the same inputs give identical
 bytes (compare the manifests). Exit 0 = built, 1 = failed (nothing is written to --out then).
 --out is checked before anything is touched. work/build/ belongs to this script alone (one build at
@@ -649,6 +651,25 @@ def image_rules(name: str, data: bytes, odata: bytes, where: str) -> list[str]:
     return out
 
 
+IMAGE_BUILDERS = ["marcador", "loading", "pulsa", "manuydani", "pacoyjuan", "novela", "pelicula"]
+
+
+def step8a_rebuild_images(args):
+    log.step("8a", "rebuild the Swedish images (tools/images/build_*.py -> assets_sv/res/de/)")
+    if args.no_image_rebuild:
+        log.info("skipped (--no-image-rebuild)")
+        return
+    if args.assets != (ROOT / "assets_sv").resolve():
+        log.info(f"skipped: --assets is {rel(args.assets)}, and the builders write to assets_sv/")
+        return
+    for name in IMAGE_BUILDERS:
+        script = HERE / "images" / f"build_{name}.py"
+        r = subprocess.run(["uv", "run", "--quiet", str(script)], cwd=ROOT, capture_output=True, text=True)
+        if r.returncode:
+            raise BuildError(f"{rel(script)} failed (exit {r.returncode}):\n{r.stdout[-2000:]}{r.stderr[-2000:]}")
+        log.info(f"{rel(script)}: OK")
+
+
 def step8_images(args, zf: zipfile.ZipFile) -> tuple[dict, dict]:
     img_dir = args.assets / "res" / "de"
     log.step(8, f"images from {rel(img_dir)}")
@@ -865,6 +886,7 @@ def main():
     ap.add_argument("--out", type=pathlib.Path, default=ROOT / "game")
     ap.add_argument("--placeholder", action="store_true")
     ap.add_argument("--allow-missing-assets", action="store_true")
+    ap.add_argument("--no-image-rebuild", action="store_true")
     args = ap.parse_args()
     args.fuente_add = args.fuente_add or args.assets / "glyphs" / "fuente_add.json"
     args.letras_add = args.letras_add or args.assets / "glyphs" / "letras_add.json"
@@ -888,6 +910,7 @@ def main():
         fuente = step5_fuente(args.fuente_add, zf, kdata["hud"])
         letras = step6_letras(args.letras_add, zf)
         perg = step7_pergamino({"pergamino1": args.perg1, "pergamino2": args.perg2}, letras)
+        step8a_rebuild_images(args)
         images, img_sources = step8_images(args, zf)
         changed = {"abadia/k.class": kdata["class"], "abadia/j.class": cls["j"], "abadia/w.class": cls["w"],
                    "abadia/E.class": cls["E"], "res/fuente.png": fuente, "res/letras": letras,
