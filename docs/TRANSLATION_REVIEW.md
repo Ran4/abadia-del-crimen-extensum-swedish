@@ -18,7 +18,8 @@ decisions) and `translation/pergamino{1,2}_sv.txt`.
 - **Phase E.** A four-lens critic panel reviewed the built game, including every rendered page, in 3 rounds. Its fixers changed 17 messages, mostly to move page breaks.
 - **Phase F.** Those 17 messages went through the editor, back-translation and meaning loop again in 3 rounds (0/4/15 must/should/nit issues). The loop ended clean: **yes**.
 - **Phase F final verification.** One more unit (x01) put the UI rows that have text, and the final wording of g61, g64 and g149, through an editor pass, a blind back-translation and a meaning check (editor 0/0/0, meaning 0/0/0 must/should/nit). It ended clean in 1 round and changed no row (§3.4).
-- **Cross-checks.** The script ran 27 cross-checks against the project files and git: **all pass**.
+- **Phase F2, Spanish back-translation.** The brief asks for the back-translation to be into Spanish; the passes above back-translated into English (§1.2). Phase F2 back-translated the final Swedish of every unit blind into Spanish: the 13 `g` chunks, the 29 UI rows that have text and both parchments (225 lines, 94 segments flagged as unclear). A meaning check compared each back-translation with the original Spanish and raised 0/0/1 must/should/nit issues. No unit had a must or should, so no fixer ran and no row or parchment line changed (§4; the back-translations themselves are in Appendix C).
+- **Cross-checks.** The script ran 39 cross-checks against the project files and git: **all pass**.
 
 ## 0. Sources and cross-checks
 
@@ -27,13 +28,14 @@ decisions) and `translation/pergamino{1,2}_sv.txt`.
 | B, glossary | `wf_cb1d7e9e-f32` | 10 | counts only (§1.4) |
 | C, translation | `wf_4a0ebacc-9c0` | 169 | 5 agents relaunched under the same label (the relaunch's result is used): `edit:c07:r3`, `edit:c10:r2`, `nits:c12`, `perg1:edit:r2`, `perg2:revise:r1` |
 | E, verification | `wf_dcee03f1-9e3` | 17 | – |
-| F, re-review | `wf_4230a7f1-04d` | 32 | the re-review result: `work/phaseF/rereview_result.json`; no result when this file was generated: `verify:fix:r1` |
+| F, re-review | `wf_4230a7f1-04d` | 40 | the re-review result: `work/phaseF/rereview_result.json`; – |
+| F2, Spanish back-translation | `wf_b66191f2-dd4` | 48 | found by its step labels (`read:`, `es-backtr:`, `es-meaning:`); no result when this file was generated: `rebuild` (the step that regenerated this file) |
 
 Journals: `~/.claude/projects/-home-ran-the-abbey-of-crime-extensum-swedish/8dfa1262-e7c1-4492-8c56-1b182a40f8ec/subagents/workflows/<workflow>/journal.jsonl`. These are Claude Code session files outside the
 project. They are not in git and may be cleaned up, which is why this record exists. The other
 inputs are: `work/phaseC/plan.json` (chunk → messages); `work/phaseC/chunks/*.json`;
-`translation/strings_sv.tsv` at commit `e7b6230` (end of Phase C), at `0450eaa` (end of Phase E) and in the
-working tree (after Phase F); and the two parchment files.
+`translation/strings_sv.tsv` at commit `e7b6230` (end of Phase C), at `0450eaa` (end of Phase E), at `99c3661`
+(end of Phase F) and in the working tree; and the two parchment files at the same points.
 
 Cross-checks:
 
@@ -43,13 +45,13 @@ Cross-checks:
 - PASS: every TSV row is in exactly one group (143 + 20 + 32 = 195)
 - PASS: the last Phase C journal state equals work/phaseC/chunks/*.json for 163/163 g rows
 - PASS: the last Phase C journal state equals the TSV at commit e7b6230 (Phase C) for 163/163 g rows
-- PASS: the 32 ui rows equal work/phaseC/chunks/ui.json in the TSV at e7b6230 (32) and now (32)
-- PASS: the last Phase C journal text of pergamino1 equals translation/pergamino1_sv.txt
-- PASS: translation/pergamino1_sv.txt is unchanged since commit e7b6230 (Phase C)
-- PASS: the last Phase C journal text of pergamino2 equals translation/pergamino2_sv.txt
-- PASS: translation/pergamino2_sv.txt is unchanged since commit e7b6230 (Phase C)
+- PASS: the 32 ui rows equal work/phaseC/chunks/ui.json in the TSV at e7b6230 (32) and at 99c3661 (32)
+- PASS: the last Phase C journal text of pergamino1 equals translation/pergamino1_sv.txt at 99c3661
+- PASS: translation/pergamino1_sv.txt is unchanged from commit e7b6230 (Phase C) to 99c3661 (Phase F)
+- PASS: the last Phase C journal text of pergamino2 equals translation/pergamino2_sv.txt at 99c3661
+- PASS: translation/pergamino2_sv.txt is unchanged from commit e7b6230 (Phase C) to 99c3661 (Phase F)
 - PASS: the TSV diff e7b6230 → 0450eaa (Phase E) is exactly the 17 messages g52, g54, g61, g64, g75, g77, g85, g114, g118, g122, g125, g131, g143, g149, g150, g155, g163
-- PASS: since 0450eaa only messages among the 17 changed (g54, g61, g64, g122, g131, g149, g150, g163)
+- PASS: from 0450eaa to 99c3661 (Phase F) only messages among the 17 changed (g54, g61, g64, g122, g131, g149, g150, g163)
 - PASS: `lint_strings.py` on the current TSV: lint translation/strings_sv.tsv: 0 error(s), 1 warning(s)
 - PASS: `check_glossary.py -q` on the current TSV and parchments: 0 errors, 1 warnings, 13 manual checks
 - PASS: consistency pass 1: the units with routed issues (14) are exactly the units with a fixer step (14)
@@ -58,12 +60,24 @@ Cross-checks:
 - PASS: Phase F round 1: the issues in `work/phaseF/rereview_result.json` equal rereview:edit/meaning:r1 in the Phase F journal
 - PASS: Phase F round 2: the issues in `work/phaseF/rereview_result.json` equal rereview:edit/meaning:r2 in the Phase F journal
 - PASS: Phase F round 3: the issues in `work/phaseF/rereview_result.json` equal rereview:edit/meaning:r3 in the Phase F journal
-- PASS: Phase F: the messages its revisions changed (g54, g61, g64, g122, g131, g149, g150, g163) equal the TSV diff 0450eaa → working tree (g54, g61, g64, g122, g131, g149, g150, g163)
+- PASS: Phase F: the messages its revisions changed (g54, g61, g64, g122, g131, g149, g150, g163) equal the TSV diff 0450eaa → 99c3661 (g54, g61, g64, g122, g131, g149, g150, g163)
 - PASS: the Phase F final-verification record work/phaseF/ui_review/x01_result.json exists
-- PASS: unit x01: 33/33 reviewed rows equal the current TSV
+- PASS: unit x01: 33/33 reviewed rows equal the TSV at 99c3661
 - PASS: unit x01 holds every ui row but g0 and E.h[4] (30), plus g61, g64 and g149
 - PASS: unit x01: the blind back-translation covers the 32 non-empty rows, in order
 - PASS: unit x01: the meaning check judged all 7 segments the back-translator flagged
+- PASS: the Phase F2 journal (Spanish back-translation) is found by its step labels (read:, es-backtr:, es-meaning:): `wf_b66191f2-dd4`
+- PASS: Phase F2: all 16 units (c01–c12, u01, ui, perg1, perg2) have a read, a back-translation and a meaning-check result (16 do)
+- PASS: Phase F2: the read steps of c01–c12, u01 and ui hold 192 TSV rows, each once: every row but g0 (empty), f5 (empty by D9) and E.h[4] (the Spanish window title, kept by D6)
+- PASS: Phase F2: each `g` unit holds the same messages as its Phase C chunk (13/13)
+- PASS: Phase F2: the Swedish each back-translator was given is the TSV text at 99c3661 (end of Phase F) for 192/192 rows
+- PASS: Phase F2: the 17 paragraphs read for perg1 are translation/pergamino1_sv.txt at 99c3661 with the hand-wrapping undone (identical once spaces and hyphens are ignored)
+- PASS: Phase F2: the 16 paragraphs read for perg2 are translation/pergamino2_sv.txt at 99c3661 with the hand-wrapping undone (identical once spaces and hyphens are ignored)
+- PASS: Phase F2: every back-translation answers its unit's read lines one for one and in order (16/16 units, 225 lines)
+- PASS: Phase F2: the units with a must or should (0) are exactly the units with a fix step (0)
+- PASS: Phase F2: the TSV diff 99c3661 → working tree (none) is exactly the rows its fixers changed (none)
+- PASS: Phase F2: translation/pergamino1_sv.txt is unchanged since 99c3661, as no fixer changed it
+- PASS: Phase F2: translation/pergamino2_sv.txt is unchanged since 99c3661, as no fixer changed it
 
 ## 1. Per-unit passes and coverage
 
@@ -71,12 +85,12 @@ Cross-checks:
 
 | Group | Rows | Count | Review route |
 |---|---|---|---|
-| c01–c12 | the `g` messages the game shows (context USED) | 143 | Phase C per-unit loop (§1.3), whole-game passes (§2), Phase E critics |
-| u01 | `g` messages the game never shows (context UNUSED) | 20 | Phase C per-unit loop (§1.3), Phase E critics |
-| ui | g0, a0–a3, b0–b6, c0, c1, d0, d1, e0–e2, f0–f9, w.t[4], w.u[4], E.h[4] | 32 | fixed in GLOSSARY §5.1 and §6 (Phase B, §1.4), Phase E critics, Phase F final-verification unit x01 (§3.4; all but g0 and E.h[4]) |
+| c01–c12 | the `g` messages the game shows (context USED) | 143 | Phase C per-unit loop (§1.3), whole-game passes (§2), Phase E critics, Phase F2 Spanish back-translation (§4) |
+| u01 | `g` messages the game never shows (context UNUSED) | 20 | Phase C per-unit loop (§1.3), Phase E critics, Phase F2 Spanish back-translation (§4) |
+| ui | g0, a0–a3, b0–b6, c0, c1, d0, d1, e0–e2, f0–f9, w.t[4], w.u[4], E.h[4] | 32 | fixed in GLOSSARY §5.1 and §6 (Phase B, §1.4), Phase E critics, Phase F final-verification unit x01 (§3.4; all but g0 and E.h[4]), Phase F2 Spanish back-translation (§4; all but g0, f[5] and E.h[4]) |
 | **all rows of `translation/strings_sv.tsv`** | | **195** | |
-| perg1 | intro parchment (pergamino1) | 84 lines | Phase C per-unit loop (§1.3), player pass (§2), Phase E critics |
-| perg2 | ending parchment (pergamino2) | 87 lines | Phase C per-unit loop (§1.3), player pass (§2), Phase E critics |
+| perg1 | intro parchment (pergamino1) | 84 lines | Phase C per-unit loop (§1.3), player pass (§2), Phase E critics, Phase F2 Spanish back-translation (§4) |
+| perg2 | ending parchment (pergamino2) | 87 lines | Phase C per-unit loop (§1.3), player pass (§2), Phase E critics, Phase F2 Spanish back-translation (§4) |
 
 The 195 TSV rows are the brief's 185 strings (`a` 4, `c` 2, `d` 2, `e` 3, `f` 10, `g` 164) plus the 7 HUD
 hour names (`b`) and the three slot-4 strings outside `abadia.k` (`w.t`, `w.u`, `E.h`).
@@ -101,17 +115,20 @@ hour names (`b`) and the three slot-4 strings outside `abadia.k` (`w.t`, `w.u`, 
 - **Severity:** *must* means wrong: ungrammatical, wrong meaning, a broken rule or glossary form,
   wrong address, or lost player information. *should* means clearly unidiomatic, stiff or off-register,
   a noticeable shift in nuance, or a poor page cut. *nit* means a small preference.
-- **Deviation from the brief:** the brief asks for a back-translation into Spanish. The
+- **Back-translation language:** the brief asks for a back-translation into Spanish. In this loop the
   back-translator wrote literal English instead, and the meaning checker compared that with the Spanish.
+  The Spanish back-translation now exists for every unit: Phase F2 made it from the final text of each
+  unit, the UI rows and both parchments (§4, Appendix C). The English back-translations of this loop, of
+  the Phase F re-review and of unit x01 stay documented here as an extra pass.
 
 ### 1.3 Summary per unit and round
 
-Issue counts are must/should/nit. *Back-translation* gives the lines back-translated (messages,
-or paragraphs for the parchments) and, in brackets, how many segments the back-translator flagged as
+Issue counts are must/should/nit. *Back-translation (en)* gives the lines back-translated into English
+(messages, or paragraphs for the parchments) and, in brackets, how many segments the back-translator flagged as
 unclear. *Then* says what followed the round and how many messages it changed (lines, for a
 parchment).
 
-| Unit | Messages (count) | Round | Editor | Meaning | Back-translation | Then |
+| Unit | Messages (count) | Round | Editor | Meaning | Back-translation (en) | Then |
 |---|---|---|---|---|---|---|
 | c01 | g1, g4–g12, g14, g15, g17–g24, g31, g33 (22) | 1 | 0/0/2 | 0/0/1 | 22 (16) | nits pass: 2 changed, 0 rejected |
 | c02 | g34–g37, g39, g43, g49–g58 (16) | 1 | 0/0/4 | 0/0/3 | 16 (24) | nits pass: 4 changed, 0 rejected |
@@ -345,7 +362,7 @@ The messages changed in Phase F (g54, g61, g64, g122, g131, g149, g150, g163) ar
 | g155 | c12 | r1 | – · – · – | no |
 | g163 | c12 | r1 | 0/1/0 · 0/1/0 · – | yes (1, 2) |
 
-What changed, as word-level differences (Phase C → Phase E, then Phase E → now; `_` is a page break):
+What changed, as word-level differences (Phase C → Phase E, then Phase E → Phase F; `_` is a page break):
 
 - **g52** (c02). Phase E: `ARBETADE MED.` → `ARBETADE PÅ.`.
 - **g54** (c02). Phase E: `NOS! BE ATT` → `NOS! BEDJA ATT`. Phase F: `MAGNIFICENTISSIMO. JESUS` → `MAGNIFICENTISSIMO. _ JESUS`.
@@ -448,6 +465,96 @@ Other differences from es that the meaning check weighed and accepted:
 
 **Outcome.** Clean in one round: no must, should or nit from either pass, so no revision and no nits pass. Every segment the back-translator flagged was judged and found to be either the same in es or a documented glossary decision. No row changed, so the built jar is the one already verified.
 
+## 4. The Spanish back-translation (Phase F2)
+
+The brief's back-translation pass asks for the Swedish to be translated back into Spanish without
+seeing the source, and compared with the source. The Phase C loop, the Phase F re-review and unit x01
+back-translated into English (§1.2). Phase F2 (`wf_b66191f2-dd4`) made the Spanish back-translation of the final
+text, the TSV and parchments at `99c3661`, for every unit: the 13 `g` chunks of Phase C, the UI rows
+and both parchments. Each unit went through these steps once:
+
+- **Read** (`read:<unit>`): an agent took the unit's rows from the TSV with `translate_tool.py extract` and
+  returned their Swedish unchanged. For a parchment it returned one entry per paragraph and per credits
+  line, with the hand-wrapping and the line-end hyphens undone. §0 checks both against the files.
+- **Blind back-translation** (`es-backtr:<unit>`): a separate agent was given only those lines and told
+  that they come from a game set in a 14th-century abbey. It was told to read no files, run no commands
+  and use no web. It translated every line into Spanish: NI/ER as vos/vosotros and DU/DIG as tú, the
+  Latin kept, and the `@N` speaker marks, `_` page breaks and `*` line breaks left in place. It also
+  listed whatever in the Swedish read as unclear, ambiguous, ungrammatical or strange.
+- **Meaning check** (`es-meaning:<unit>`): an agent compared each back-translation with the original
+  Spanish (`translate_tool.py show`, or the es parchment in the jar), reading the Swedish, the row notes,
+  the glossary and DECISIONS where needed. It reported omissions, additions, changed facts, tense or
+  agent, tone shifts, changed address (vos/tú against GLOSSARY §2) and lost player information
+  (GLOSSARY §1.11). It did not report natural rewording or documented choices, and it judged every
+  segment the back-translator flagged. *must*: the player is told something different, or misses
+  something; *should*: a noticeable shift in nuance, tone or clarity; *nit*: trivial.
+- **Fix** (`fix:<unit>`), only for a unit with a must or should: a fixer verified each issue against the
+  Spanish, applied it or rejected it with a reason, and ran the lint and `check_glossary.py`. A Swedish
+  editor then checked the changed text (`fixcheck:<unit>`), and a second fix (`fix2:<unit>`) answered any
+  must or should it raised. Nits went to no fixer.
+
+### 4.1 Summary per unit
+
+Counts are must/should/nit. *Lines* are the lines back-translated: messages, UI rows, or a parchment's
+paragraphs and credits lines. *Flagged* is how many segments the back-translator listed as unclear.
+
+| Unit | Rows (count) | Lines | Flagged | Meaning check | Fix |
+|---|---|---|---|---|---|
+| c01 | g1, g4–g12, g14, g15, g17–g24, g31, g33 (22) | 22 | 4 | 0/0/0 | none needed |
+| c02 | g34–g37, g39, g43, g49–g58 (16) | 16 | 12 | 0/0/0 | none needed |
+| c03 | g59–g63 (5) | 5 | 5 | 0/0/0 | none needed |
+| c04 | g64–g70 (7) | 7 | 9 | 0/0/0 | none needed |
+| c05 | g71–g74 (4) | 4 | 5 | 0/0/0 | none needed |
+| c06 | g75–g85 (11) | 11 | 4 | 0/0/0 | none needed |
+| c07 | g86–g98 (13) | 13 | 5 | 0/0/0 | none needed |
+| c08 | g99–g111 (13) | 13 | 8 | 0/0/1 | none needed |
+| c09 | g112–g121 (10) | 10 | 7 | 0/0/0 | none needed |
+| c10 | g122–g125 (4) | 4 | 5 | 0/0/0 | none needed |
+| c11 | g126–g144 (19) | 19 | 5 | 0/0/0 | none needed |
+| c12 | g145–g163 (19) | 19 | 6 | 0/0/0 | none needed |
+| u01 | g2, g3, g13, g16, g25–g30, g32, g38, g40–g42, g44–g48 (20) | 20 | 5 | 0/0/0 | none needed |
+| ui | a0–a3, b0–b6, c0, c1, d0, d1, e0–e2, f0–f4, f6–f9, w.t[4], w.u[4] (29) | 29 | 0 + 7 beside the lines (§4.2) | 0/0/0 | none needed |
+| perg1 | intro parchment (pergamino1) | 17 | 4 | 0/0/0 | none needed |
+| perg2 | ending parchment (pergamino2) | 16 | 3 | 0/0/0 | none needed |
+| **all** | **192 rows + 2 parchments** | **225** | **94** | **0/0/1** | **none needed** |
+
+Not back-translated: g0 (empty), f5 (empty by D9) and E.h[4] (the Spanish window title, kept by D6).
+
+### 4.2 Issues, fixes and rejections
+
+No unit had a must or should issue, so no fix step ran, and Phase F2 changed no row and no parchment line
+(§0 checks the TSV and both parchments against `99c3661`). The meaning checks raised 1 nit,
+recorded here and not acted on, since nits go to no fixer:
+
+**c08** (0/0/1):
+
+- **nit** g110 (`es-meaning:c08`), segment `EN HÄXA, EN FÖRFÖRD MUNK OCH EN RIT SOM LYCKLIGTVIS INTE FULLBORDADES.`: The Spanish says UN MONJE QUE SE HA DEJADO SEDUCIR, a monk who let himself be seduced. That wording blames the monk, which suits Bernardo's prosecutor's view and the trial that follows. EN FÖRFÖRD MUNK makes the monk a passive victim and puts all the blame on the witch. The shift is small: en also says A SEDUCED MONK, and the facts stay the same. *Suggested fix:* EN HÄXA, EN MUNK SOM LÄT SIG FÖRFÖRAS _ OCH EN RIT SOM LYCKLIGTVIS INTE FULLBORDADES. Checked with pages: the page break falls between list items, so there is no automatic mid-sentence cut. It adds one page (about +30 ticks for the segment). Without the added `_`, the automatic cut would fall after LYCKLIGTVIS, which is worse. *Not routed:* a nit.
+
+**Flags the meaning check did not see (ui).** The ui back-translator returned its 7 flags in one list beside its lines, not per line. The workflow gave the meaning check only the lines, so it judged none of them (its report says nothing was flagged). Appendix C quotes them. The rows they concern are settled in the glossary and DECISIONS: TOM in GLOSSARY §5.3 and §6.4, AV and PÅ in §6.2, the hour names and their 7-cell field in §5.1 and D8 (NATT as the night period in §5.2), the end-screen split around the number in §6.1, and the empty f5 in D9 and §6.3. The meaning check's row-by-row verdict covers each of these rows.
+
+### 4.3 The meaning checks' verdicts
+
+Each report's finding, in its own words; the whole report is in Appendix C.
+
+- **c01:** I found no real meaning differences in the 22 rows (g1, g4–g12, g14, g15, g17–g24, g31, g33): no must, should or nit.
+- **c02:** I found no real meaning differences in g34, g35, g36, g37, g39, g43, g49, g50, g51, g52, g53, g54, g55, g56, g57 or g58: no must, should or nit.
+- **c03:** I found no real meaning differences in g59 to g63.
+- **c04:** I found no real meaning differences in g64 to g70.
+- **c05:** I found no real meaning differences in g71 to g74.
+- **c06:** I found no real meaning differences in g75-g85.
+- **c07:** I found no meaning differences in g86 to g98, so there are no must, should or nit issues.
+- **c08:** Only one nit came up, in g110.
+- **c09:** I found no real meaning differences in g112 to g121.
+- **c10:** I found no real meaning differences in g122 to g125.
+- **c11:** I compared g126 to g144 against the Spanish and the back-translation and found no meaning differences that need a fix.
+- **c12:** I found no real meaning differences in g145 to g163, so there is no must, should or nit to report.
+- **u01:** I found no real meaning differences in the 20 rows.
+- **ui:** I found no real meaning differences in the 28 UI rows: no must, should or nit.
+- **perg1:** I found no real meaning differences in pergamino1.
+- **perg2:** The Swedish ending parchment says the same thing as the original Spanish.
+
+All counts in this section come from the lists themselves. Where a report's own count differs: the ui report speaks of 28 rows, while the unit has 29 and the report's row-by-row verdict names all 29.
+
 ## Appendix A. Every issue and rejection, by unit
 
 Each entry gives the severity, the message (or parchment line), the problem and the suggested fix,
@@ -456,6 +563,7 @@ reviser's or fixer's reason. In Phase C and Phase F, an issue without a rejectio
 sometimes with a different wording that the row's note explains. The exceptions are the nits of
 whole-game pass 2, marked *not routed*. The Phase E fixers did not reject issues one by one: their
 rejections and deferrals are quoted at the end of Appendix B, and round-3 issues had no fixer.
+The Phase F2 issues, fixes and rejections are all in §4.2.
 
 ### c01: g1, g4–g12, g14, g15, g17–g24, g31, g33 (22 messages)
 
@@ -1399,3 +1507,789 @@ are listed for completeness. The translation entries among them are summarised i
 - **should** docs, final report (rule breaches): Besides the two breaches already known (audio_level's `python3 -I` in 7 tours, now fixed, and the opening agent's `python3 -`), this fixer ran one stray …
 - **nit** translation, translation/strings_sv.tsv g54, g61, g64, g77, g122, g143, g149, g150 …: The round-2 wording has not had a language-critic pass. Two choices differ from what the critics proposed: g64 uses FÅR INTE instead of SKA INTE (§1.4: FÅ = be …
 - **nit** docs, docs/GLOSSARY.md §7.1 REALIZAR row; translation/glossary.tsv row 467: The term row's examples no longer match the strings. It cites g64 `UTFÖR EN DEL HANTVERKSARBETEN` and g149 `UTFÖRDA AV`; the strings say `GÖR EN DEL ANNAT …`
+
+## Appendix C. The Spanish back-translations (Phase F2)
+
+For each unit: the blind back-translation as the back-translator wrote it (`@N` marks a speaker, `_` a
+page break and `*` a line break, as in the Swedish), the segments it flagged as unclear, and the meaning
+check's whole report, which judges each flag. The Swedish of each line is the row's `sv` in
+`translation/strings_sv.tsv` at `99c3661` (for perg1 and perg2, the parchment file), and the original is the row's `es`.
+
+### c01 (es): g1, g4–g12, g14, g15, g17–g24, g31, g33 (22 messages)
+
+- **g1:** @3 BIENVENIDO A NUESTRA ABADÍA, HERMANO._ HA SUCEDIDO ALGO TERRIBLE._ ADELMO, NUESTRO JOVEN MINIATURISTA, FUE HALLADO EN EL FONDO DEL BARRANCO._ PROBABLEMENTE CAYÓ DE NOCHE DESDE UNA VENTANA DEL TORREÓN ORIENTAL DEL EDIFICIO.@0 ¿DÓNDE HABÉIS ENTERRADO EL CUERPO?@3 EN EL CEMENTERIO, NATURALMENTE.@0 COMPRENDO LO QUE OS INQUIETA._ SI EL DESDICHADO, DIOS NO LO QUIERA, SE HUBIERA QUITADO LA VIDA,_ HABRÍAIS ENCONTRADO UNA VENTANA ABIERTA. PERO NO LA ENCONTRASTEIS.@3 ¿QUIÉN OS LO HA DICHO?@0 VOS MISMO. LO HABÉIS ENTERRADO EN TIERRA CONSAGRADA._ NO LO HABRÍAIS PERMITIDO SI SE HUBIERA QUITADO LA VIDA.@3 ASÍ ES. TODAS LAS VENTANAS ESTABAN CERRADAS._ POR ESO TEMO QUE UNO DE LOS MONJES HAYA COMETIDO UN CRIMEN._ OS RUEGO QUE LO ENCONTRÉIS ANTES DE QUE LLEGUE EL INQUISIDOR BERNARDO GUI,_ PUES NO DESEO QUE SE MANCILLE EL BUEN NOMBRE DE NUESTRA ABADÍA.@0 ¿PUEDO HACER PREGUNTAS A LOS DEMÁS MONJES?@3 PODÉIS._ PERO DEBÉIS OBEDECER MIS ÓRDENES Y LAS REGLAS DE LA ABADÍA._ ACUDID A LOS OFICIOS Y A LAS COMIDAS._ POR LA NOCHE DEBÉIS PERMANECER EN VUESTRA CELDA.@0 ¿HA LLEGADO YA UBERTINO?@3 SÍ, LLEGÓ HACE ALGUNOS DÍAS. LO HALLARÉIS EN LA IGLESIA._ PASA LA MAYOR PARTE DE SU TIEMPO EN ORACIÓN Y CONTEMPLACIÓN.
+- **g4:** @3 LLEGÁIS TARDE, HERMANO GUILLERMO.
+- **g5:** @3 AHORA DEBO MARCHARME.
+- **g6:** @3 OS ORDENO QUE VENGÁIS.
+- **g7:** @4 DEBÉIS ABANDONAR EL EDIFICIO, HERMANO.
+- **g8:** @4 EL ABAD SE ENTERARÁ DE ESTO.
+- **g9:** @1 DEBEMOS IR A LA IGLESIA, MAESTRO.
+- **g10:** @1 DEBEMOS IR AL REFECTORIO, MAESTRO.
+- **g11:** @3 PODÉIS RETIRAROS A VUESTRAS CELDAS.
+- **g12:** @3 NO HABÉIS OBEDECIDO MIS ÓRDENES._ ABANDONAD ESTA ABADÍA PARA SIEMPRE.
+- **g14:** @3 ENTRAD EN VUESTRA CELDA, HERMANO GUILLERMO.
+- **g15:** @3 BERNARDO HA LLEGADO. DEBÉIS INTERRUMPIR LA INVESTIGACIÓN.
+- **g17:** @1 DEBEMOS ENCONTRAR UNA LÁMPARA, MAESTRO.
+- **g18:** @3 VENID AQUÍ, HERMANO GUILLERMO. TENGO ALGO QUE DECIROS.
+- **g19:** @3 VENANCIO SE RETRASA. QUÉ EXTRAÑO...
+- **g20:** @3 HERMANO GUILLERMO, DEBÉIS SABER QUE LA BIBLIOTECA ES UN LUGAR PROHIBIDO. SOLO EL BIBLIOTECARIO MALAQUÍAS PUEDE ENTRAR EN ELLA._ PODÉIS COMER, HERMANOS.
+- **g21:** @3 OREMOS.
+- **g22:** @3 HERMANOS, BERENGARIO HA DESAPARECIDO._ TEMO QUE SE HAYA COMETIDO OTRO CRIMEN.
+- **g23:** @3 PODÉIS COMER, HERMANOS.
+- **g24:** @3 HERMANOS, BERENGARIO HA SIDO HALLADO ASESINADO.
+- **g31:** @3 DEBÉIS ABANDONAR LA ABADÍA.
+- **g33:** @1 PRONTO AMANECERÁ, MAESTRO.
+
+*Flagged as unclear (4):*
+
+- g1: "HAN FÖLL TROLIGEN NATTETID FRÅN ETT FÖNSTER I BYGGNADENS ÖSTRA TORN": "BYGGNADEN" (the building) presumably means the Aedificium, but the text never says so. Translated as "DEL EDIFICIO".
+- g1: "OM DEN OLYCKLIGE ... HADE TAGIT SITT LIV, SÅ HADE NI HITTAT ETT ÖPPET FÖNSTER": the reasoning is a little odd, since an accidental fall would also leave an open window. Kept as written.
+- g1: "MEN DET GJORDE NI INTE": elliptical ("but you didn't [find one]"). Rendered as "PERO NO LA ENCONTRASTEIS".
+- g20: Names have been given their usual Spanish forms (as in the Spanish translation of Eco's novel): Vilhelm -> Guillermo, Venantius -> Venancio, Malachias -> Malaquías, Berengar -> Berengario. Adelmo, Ubertino and Bernardo Gui stay as they are.
+
+**Meaning check** (`es-meaning:c01`, 0/0/0 must/should/nit):
+
+I found no real meaning differences in the 22 rows (g1, g4–g12, g14, g15, g17–g24, g31, g33): no must, should or nit. I read each back-translation against the Spanish from `translate_tool.py show`, then checked the Swedish and its notes in translation/strings_sv.tsv, GLOSSARY §1.3–§1.11, §2, §3.4, §7 and §12, and DECISIONS.md.
+
+**The back-translator's four unclear points**
+- **g1 BYGGNADENS ÖSTRA TORN.** Not a problem. The Spanish also says EL EDIFICIO bare and definite on first mention. The glossary fixes EDIFICIO as BYGGNADEN (§0, §3.4), and the row note records why the building moved from the ravine sentence to the tower sentence. NERE I RAVINEN still gives "at the bottom of the ravine".
+- **g1, the odd reasoning about an open window.** The logic is the same in the Spanish (SI ... SE HUBIERA SUICIDADO, HUBIERAIS ENCONTRADO UNA DE LAS VENTANAS ABIERTAS, PERO NO FUE ASÍ). The Swedish is faithful.
+- **g1 MEN DET GJORDE NI INTE.** Natural, clear Swedish. I ran `pages` on g1: it sits on the same page as SÅ HADE NI HITTAT ETT ÖPPET FÖNSTER, so its antecedent is in view. JAG FÖRSTÅR VAD SOM OROAR ER rewords YA VEO, VUESTRO PROBLEMA ES QUE naturally, and the deduction stays intact.
+- **g20 name forms.** Only a remark about the back-translator's own Spanish. The Swedish names follow GLOSSARY §3.2.
+
+**Other differences, all already documented**
+- **g1 INKVISITORN before BERNARDO GUI.** The note explains it; fr adds the same title.
+- **g1 KLOSTRETS REGLER for LAS DE LA ABADÍA.** In the row note.
+- **g1 TROLIGEN for SEGURAMENTE.** Spanish SEGURAMENTE here means "most likely" (it has PROBABILMENTE, fr IL A DÛ), so TROLIGEN keeps the meaning.
+- **g8 ABBOTEN SKA FÅ VETA DETTA for ADVERTIRÉ AL ABAD.** GLOSSARY §7 and §12.
+- **g15 AVBRYTA UNDERSÖKNINGEN.** The fixed phrase in GLOSSARY §7. In Swedish, AVBRYTA here means "stop for good", which matches ABANDONAR. The back-translator's INTERRUMPIR is a quirk of the back-translation, not a fault in the Swedish.
+- **g20 FÖRBJUDEN PLATS, the added BIBLIOTEKARIEN and NI BÖR VETA.** All in the row note.
+- **g24 MÖRDAD.** As in the Spanish; the note and DECISIONS cover the clash with g93.
+
+**Page breaks:** in g12 and g22 the Swedish adds a page break at a sentence boundary, as GLOSSARY §1.7 allows. In g12 the first sentence is 37 glyphs, more than one 35-glyph line, so the two sentences together would not fit on one page.
+
+**Address:** every row matches GLOSSARY §2.2. The abbot, Malachias and Adso use NI to Vilhelm, Vilhelm uses NI to the abbot, and the abbot uses plural NI with BRÖDER to the monks.
+
+**Player information:** g1 keeps every rule: obey the orders and the house rules, attend the hours and meals, stay in the cell at night, and Ubertino is in the church. g7, g9, g10, g14, g17 and g31 each keep their instruction exactly.
+
+### c02 (es): g34–g37, g39, g43, g49–g58 (16 messages)
+
+- **g34:** @1 LA LÁMPARA SE ESTÁ APAGANDO.
+- **g35:** @3 HABÉIS ENTRADO EN MI CELDA.
+- **g36:** @1 LA LÁMPARA SE HA APAGADO.
+- **g37:** @1 NUNCA ENCONTRAREMOS LA SALIDA DE AQUÍ.
+- **g39:** @3 OCUPAD VUESTRO SITIO, FRAY GUILLERMO.
+- **g43:** @4 LO SIENTO, VENERABLE HERMANO, NO PODÉIS SUBIR A LA BIBLIOTECA.
+- **g49:** @8 BIENVENIDO A NUESTRA ABADÍA, HERMANO._ SOY REMIGIO, EL CILLERERO._ OS RUEGO QUE ME SIGÁIS. EL ABAD OS ESPERA.
+- **g50:** @8 VENID, HERMANO. EL ABAD OS ESPERA.
+- **g51:** @8 ESTA ES VUESTRA CELDA. EL ABAD OS ESPERA AHÍ DENTRO.
+- **g52:** @0 ADSO, SUBAMOS AL SCRIPTORIUM. VEAMOS EN QUÉ TRABAJABA ADELMO.
+- **g53:** @12 ¡GUILLERMO! ¡QUERIDÍSIMO HERMANO! _ ¡CUÁNTO TIEMPO! ¡CUÁNTAS COSAS HAN SUCEDIDO!@0 UBERTINO, ME ALEGRO DE VERTE. * ¿VA TODO BIEN?@12 GUILLERMO, COMO BIEN SABES, CORREN TIEMPOS DIFÍCILES. _ ME HE VISTO OBLIGADO A ESCONDERME DE MIS PERSEGUIDORES EN ESTA ABADÍA._ PERO EL MAL ESTÁ EN TODAS PARTES, INCLUSO ENTRE ESTOS MUROS.@0 LO SÉ. EL ABAD ME LO HA CONTADO. _ ME HA PEDIDO AYUDA PARA ESCLARECER EL ASUNTO.@12 BUSCA ENTONCES LA LUJURIA Y LA SOBERBIA. _ LA LUJURIA, PUES HABÍA ALGO... FEMENINO EN EL JOVEN QUE MURIÓ._ Y, POR ENDE, ALGO DIABÓLICO. _ PERO TAMBIÉN HE MENCIONADO LA SOBERBIA, LA SOBERBIA DEL INTELECTO. _ ESTA ABADÍA ESTÁ CONSAGRADA AL ORGULLO DE LA PALABRA, A LA ILUSIÓN DEL SABER...@0 SI SABES ALGO, AYÚDAME.@12 NADA SÉ. NO HAY NADA QUE YO SEPA. _ PERO HAY COSAS QUE SE SIENTEN CON EL CORAZÓN. DEJA HABLAR A TU CORAZÓN. _ ESCRUTA LOS ROSTROS, NO ESCUCHES LAS LENGUAS...
+- **g54:** @10 ¡PENITENZIAGITE! ¡LA MORTZ EST SUPER NOS! ¡ROGAR QUE LO PAPA SANTO VENIR A LIBERAR NOS A MALO DE TUTTE PECCATA!@0 ¿POR QUÉ HAS DICHO PENITENZIAGITE?@10 DOMINE FRATE MAGNIFICENTISSIMO. _ JESUS VENTURUS EST ET LOS HOMINES DEBENT FACERE PENITENTIA, ¿NO?@0 ¿CONOCES A LOS DOLCINIANOS?@10 IO NO ENTENDER.@0 ¿HAS TENIDO PROBLEMAS CON LA SANTA INQUISICIÓN?@10 SALVATORE TONTO. IO NO SABER. TONTO...
+- **g55:** @2 VENERABLE HERMANO, SOY SEVERINO, EL HERBOLARIO DE LA ABADÍA. _ ME OCUPO DE LOS BAÑOS, DE LA ENFERMERÍA Y DE LOS HUERTOS. _ SI ASÍ LO DESEÁIS, OS MOSTRARÉ LA ABADÍA.@0 GRACIAS, HERMANO. _ YA AL LLEGAR REPARÉ EN EL ESPLÉNDIDO HUERTO. _ ADEMÁS DE PLANTAS COMESTIBLES, PARECE QUE TAMBIÉN ALBERGA HIERBAS MEDICINALES.@2 ASÍ ES. LAS RECOJO A LO LARGO DE TODO EL AÑO. _ LUEGO LAS GUARDO EN TARROS EN EL LABORATORIO. _ SEGUIDME Y OS MOSTRARÉ LA PLANTA BAJA DEL EDIFICIO.
+- **g56:** @0 ¿HABLABAS A MENUDO CON ADELMO?@2 NO. RARA VEZ HABLÁBAMOS. _ SIEMPRE ESTABA EN EL SCRIPTORIUM PINTANDO MINIATURAS. _ YO, EN CAMBIO, PASO LA MAYOR PARTE DEL TIEMPO EN MI LABORATORIO. _ ERA BUEN AMIGO DE BERENGARIO, EL AYUDANTE DEL BIBLIOTECARIO. _ FUERON NOVICIOS JUNTOS.
+- **g57:** @2 ESTE ES EL REFECTORIO. _ DEBÉIS ACUDIR AQUÍ A LA HORA DE LAS COMIDAS. _ GUILLERMO, VOS OS SENTARÉIS A LA DERECHA DEL ABAD. _ TÚ, MUCHACHO, TE SENTARÁS A MI IZQUIERDA.
+- **g58:** @2 ESTA ES LA COCINA DE LA ABADÍA. _ AQUÍ SE PREPARA LA COMIDA PARA TODOS LOS MONJES. _ EL SCRIPTORIUM, DONDE TRABAJAN LOS COPISTAS, ESTÁ EN LA PLANTA SUPERIOR.
+
+*Flagged as unclear (12):*
+
+- g49: "BRODER._ JAG" / "KÄLLARMÄSTAREN._ JAG": the page break comes straight after the full stop, but elsewhere it is written " _ " with spaces. The spacing is kept as in the source.
+- g51: "ABBOTEN VÄNTAR PÅ ER DÄRINNE": it is a little odd that the abbot waits inside the guest's own cell. It is translated literally.
+- g53: "ORDETS HÖGFÄRD" comes right after "HÖGMOD" (twice). The two words are near-synonyms, so they are rendered as ORGULLO and SOBERBIA to keep them apart.
+- g53: "VETANDETS BLÄNDVERK" means a dazzling delusion or deception. It is rendered as "ILUSIÓN DEL SABER"; "ESPEJISMO DEL SABER" would also work.
+- g54: Salvatore's lines are macaronic and mix Swedish with Latin, Italian and Occitan. The Swedish parts are deliberately ungrammatical: "BEDJA ATT LO PAPA SANTO KOMMA A LIBERAR..." uses bare infinitives, and so do "IO INTE FÖRSTÅ" and "IO INTE VETA". They are rendered as broken Spanish with infinitives (ROGAR, VENIR, ENTENDER, SABER), and the non-Swedish words are kept. Because Spanish is itself a Romance language, the mixed-language effect is weaker in Spanish.
+- g54: "SALVATORE DUM. ... DUM...": this is taken to be the Swedish word "dum" (stupid), not the Latin "dum" (while), and is translated as TONTO.
+- g54: "PENITENTIA, NO?": the Spanish opening question mark is added ("¿NO?").
+- g55: "SEVERINUS" is in Latin form, while the other monks have Italian names (REMIGIO, ADELMO, UBERTINO). It is rendered with the usual Spanish form, SEVERINO.
+- g55: "BYGGNADENS NEDRE VÅNING" does not say which building. It is presumably the Aedificium and is rendered as "EL EDIFICIO".
+- g55: "SJUKHUSET" literally means 'the hospital'. It is rendered as "LA ENFERMERÍA", which is more natural for a monastery.
+- g56: "HAN VAR GOD VÄN MED BERENGAR" is slightly unidiomatic. Swedish would more usually say "goda vänner med" or "en god vän till". The meaning is clear.
+- g57: "NI MÅSTE KOMMA HIT" is read as plural, addressed to both William and Adso, so it is rendered with vosotros.
+
+**Meaning check** (`es-meaning:c02`, 0/0/0 must/should/nit):
+
+I found no real meaning differences in g34, g35, g36, g37, g39, g43, g49, g50, g51, g52, g53, g54, g55, g56, g57 or g58: no must, should or nit. I checked each row's Spanish from `translate_tool.py show` against the Swedish and its note in translation/strings_sv.tsv, and against GLOSSARY §1.7, §1.10, §1.11, §2, §3 and §7 and DECISIONS D13 and D17. The facts, tense, who does what, and NI/DU address all match. The matrix pairs are Remigio, Malaquías, Severino and the abbot to Guillermo NI; Ubertino and Guillermo DU to each other; Guillermo to Severino and Salvatore DU; Severino to Adso DU. The player facts are kept: the lamp warning and that it has gone out (g34/g36), that the library is forbidden (g43), that you must come to the refectory at mealtimes and where Guillermo and Adso sit (g57), and that the scriptorium is upstairs (g58).
+
+My verdict on each item the back-translator found unclear:
+- **g49, the glued `._`:** not a problem. The Spanish is glued the same way (`HERMANO._ SOY`, `CILLERERO._ OS`), and GLOSSARY §1.7 rule 4 says to follow the Spanish spacing.
+- **g51, the abbot waiting inside the guest's cell:** the Spanish says exactly that (`EL ABAD OS ESPERA DENTRO`). It is how the scene works: the message is cut off when the abbot sees Guillermo in the cell. The Swedish `DÄRINNE` is correct, and the trial in GLOSSARY §1.9 measured it inside the g51 tick cap.
+- **g53, `ORDETS HÖGFÄRD` beside `HÖGMOD`:** a deliberate choice, recorded in the row note, that keeps the Spanish pair SOBERBIA and ORGULLO apart.
+- **g53, `VETANDETS BLÄNDVERK`:** the fixed wording for ILUSIÓN DEL SABER (GLOSSARY §7.1). The back-translator's ILUSIÓN DEL SABER is the original word for word, so nothing is lost. Turning `EN ESTE MONASTERIO CONSAGRADO...` into its own sentence is documented and keeps the meaning.
+- **g54, Salvatore's broken infinitives, `DUM`, `NO?`:** all fixed lines from GLOSSARY §1.10. `DUM` reads as the Swedish word for stupid, as intended. The page break after the vocative is documented in the row note and in D13.
+- **g55, `SEVERINUS`, `BYGGNADENS NEDRE VÅNING`, `SJUKHUSET`:** all documented. SEVERINUS is the fixed name (GLOSSARY §0 and §3). EDIFICIO is BYGGNADEN, and the Spanish `DEL EDIFICIO` is just as unspecific. SJUKHUSET matches the Spanish HOSPITAL (GLOSSARY §3.4 and §12, round 3). A Swedish reader is not confused by any of them.
+- **g56, `HAN VAR GOD VÄN MED BERENGAR`:** idiomatic Swedish (`vara god vän med någon` is a standard phrase), not a fault. Dropping SÉ QUE is documented in the row note and loses only a minor hint that Severino knows this second-hand.
+- **g57, `NI MÅSTE KOMMA HIT` read as plural:** correct. GLOSSARY §2.2 lists Severino's g57 DEBÉIS VENIR as clearly plural, addressed to Guillermo and Adso.
+
+The remaining rewordings are natural Swedish, not changes of meaning:
+- g34 `BÖRJAR SLOCKNA` for SE AGOTA and g36 `HAR SLOCKNAT` for SE HA AGOTADO, both fixed glossary phrases;
+- g37 `HITTA UT HÄRIFRÅN` for SALIR DE AQUÍ, which carries the same game-over message;
+- g43 `TYVÄRR` for LO SIENTO;
+- g52 `VI GÅR UPP` for SUBAMOS;
+- g53 `RANNSAKA ANSIKTENA, LYSSNA INTE PÅ TUNGORNA`, where `tungor` for people's talk is a Swedish usage, as in `onda tungor`;
+- g54 `KOMMIT I KLAMMERI MED` for TENIDO PROBLEMAS CON;
+- g55 `BADHUSET` and `PRAKTFULLA`.
+
+I edited no files.
+
+### c03 (es): g59–g63 (5 messages)
+
+- **g59:** @3 HERMANOS, ESTE ES GUILLERMO. _ HA VENIDO PARA INVESTIGAR LA MUERTE DE ADELMO. _ AYUDADLE EN TODO LO QUE PODÁIS. _ PODÉIS COMER.
+- **g60:** @5 VENERABLE HERMANO, SOY BERENGARIO, EL AYUDANTE DEL BIBLIOTECARIO. _ SEGUIDME Y OS MOSTRARÉ EL PUPITRE DE ADELMO.
+- **g61:** @5 ADELMO ERA JOVEN Y TENÍA UNA IMAGINACIÓN MUY VIVA. _ AQUÍ PODÉIS VER EN QUÉ TRABAJABA ANTES DE SU TRÁGICA MUERTE.@0 SIN DUDA ERA UN EXCELENTE MINIATURISTA. _ SOLO CON MIS ANTEOJOS PUEDO DISTINGUIR TODOS LOS DETALLES. _ ¡TENÍA BUEN SENTIDO DEL HUMOR! _ ¡UN ASNO QUE ENSEÑA LAS ESCRITURAS A LOS OBISPOS! JAJAJAJA@5 JIJIJI...@13 JEJEJE...@7 ¡BASTA YA! ¡SILENCIO!
+- **g62:** @5 AHÍ VEIS A JORGE DE BURGOS. * ES EL MÁS ANCIANO DE TODO EL MONASTERIO.@7 ESPERO QUE MIS PALABRAS NO OS HAYAN MOLESTADO, HERMANO GUILLERMO. * OÍ A ALGUNOS REÍRSE DE COSAS RIDÍCULAS. * LA RISA DEFORMA LOS RASGOS DEL ROSTRO Y HACE QUE LOS HOMBRES SE PAREZCAN A LOS MONOS.@0 LOS MONOS NO RÍEN. LA RISA ES LO PROPIO DEL HOMBRE.@7 COMO EL PECADO. CRISTO NUNCA RIO.@0 ¿PODEMOS ESTAR SEGUROS DE ELLO?@7 EN NINGÚN LUGAR DE LAS ESCRITURAS DICE QUE RIERA.@0 COMO TAMPOCO DICE QUE NO LO HICIERA. _ INCLUSO LOS SANTOS SE SERVÍAN DE BROMAS PARA RIDICULIZAR A LOS ENEMIGOS DE LA FE.@7 UN SANTO NO SE ENTREGA A BROMAS PUERILES. _ SUFRE POR LA VERDAD.@0 Y SIN EMBARGO, ARISTÓTELES DEDICÓ EL SEGUNDO LIBRO DE SU POÉTICA A LA COMEDIA. _ VEÍA EN LA COMEDIA UN INSTRUMENTO DE LA VERDAD.@7 ¿HABÉIS LEÍDO ESA OBRA?@0 NO, NATURALMENTE QUE NO. SE PERDIÓ HACE MUCHOS SIGLOS.@7 ¡NO SE PERDIÓ! ¡NUNCA SE ESCRIBIÓ! _ PUES LA PROVIDENCIA NO QUIERE QUE SE GLORIFIQUEN LAS COSAS VANAS.@0 ESO ES DISCUTIBLE. YO CREO QUE...@7 ¡BASTA YA!@0 VENERABLE JORGE, OS RUEGO QUE ME PERDONÉIS SI OS HE OFENDIDO.@7 GRRR...
+- **g63:** @13 HERMANO, SOY NICOLA, EL MAESTRO VIDRIERO. _ HE NOTADO QUE LEÉIS CON UN PAR DE OJOS DE VIDRIO. _ ME GUSTARÍA PODER EXAMINARLOS PARA ENTENDER CÓMO FUNCIONAN. _ AHORA DEBO IR A MI TALLER. BUSCADME EN CUANTO PODÁIS.
+
+*Flagged as unclear (5):*
+
+- g61: "HAHAHAHA@5" has no closing punctuation or ellipsis, unlike the other laughs ("HIHIHI...", "HEHEHE..."); I kept it without punctuation.
+- g61: "@13 HEHEHE...": speaker 13 is Nicola, who laughs here before he introduces himself in g63. This may be intended, but check that the speaker number is right.
+- g62: "ÄVEN HELGONEN ANVÄNDE JU SKÄMT": the particle "JU" ('after all, as you know') has no neat Spanish equivalent. I left it out rather than add a phrase like 'bien lo sabéis'.
+- g62: "JAG HOPPAS ATT MINA ORD INTE HAR FÖRARGAT ER": it is unclear which of Jorge's words this refers to. It seems to be his outburst "NOG NU! TYSTNAD!" at the end of g61, and it reads as ironic coming from him.
+- g63: "ETT PAR ÖGON AV GLAS" is a deliberately quaint way to say spectacles. I kept it literally as "UN PAR DE OJOS DE VIDRIO", but in Spanish that normally means artificial glass eyes. If that reading is a problem, "UNOS OJOS DE VIDRIO" or "UNAS LENTES DE VIDRIO" would be alternatives.
+
+**Meaning check** (`es-meaning:c03`, 0/0/0 must/should/nit):
+
+I found no real meaning differences in g59 to g63. Each back-translation matches the original Spanish in facts, tense, who does what, tone and address. All five rows use NI as §2.2 requires: the abbot to the monks (plural), Berengar, Jorge and Nicola to Guillermo, and Guillermo to Jorge (ÄREVÖRDIGE JORGE). None of these rows carries a §1.11 fact. g63 keeps the player hint to visit Nicola in his workshop (NU MÅSTE JAG GÅ TILL MIN VERKSTAD. SÖK UPP MIG SÅ SNART NI KAN).
+
+The differences that do appear are documented choices, so I did not report them:
+- g59: SÅ GOTT NI KAN for EN LA MEDIDA DE LO POSIBLE is a fixed §7 phrase.
+- g61: FÖRST MED MINA GLASÖGON KAN JAG URSKILJA is explained in the row note. GOTT SINNE FÖR HUMOR is the normal Swedish collocation (§7.1 SINNE FÖR HUMOR).
+- g62: KOMEDIN for Aristotle's AL HUMOR and SKÄMT for the saints' HUMOR are fixed in §7.1 and §3.3, which say AL HUMOR means comedy here, as en/fr/it say. JU for SI HASTA SE SABE is in the note, and §1.2 allows JU. LÖJLIGA TING is fixed in §7.1, DÄR SER NI is in the note, and BRODER VILHELM for FRAY GUILLERMO is in §2.3.
+- g63: ÖGON AV GLAS for OJOS DE VIDRIO is fixed in §7.1.
+
+The back-translator's unclear items are all fine:
+- g61 HAHAHAHA without punctuation mirrors the Spanish JAJAJAJA, which has none either.
+- g61 @13 (Nicola) laughing before he introduces himself in g63 is right, because the @N sequence must follow the Spanish (@5 > @13 > @7).
+- g62 JU has no exact Spanish equivalent, but it is idiomatic Swedish, so the back-translator was right to leave it out.
+- g62 MINA ORD comes straight from MIS PALABRAS, which refers to Jorge's ¡BASTA! ¡SILENCIO! at the end of g61. The irony is already in the Spanish, so a Swedish reader gets the same reference.
+- g63 ETT PAR ÖGON AV GLAS mirrors the deliberately quaint Spanish UNOS OJOS DE VIDRIO. To a Swedish reader the image is clear, because GLASÖGON literally means 'glass eyes', and ETT PAR and LÄSER MED show it is a reading aid. It is not unclear.
+
+No fixes are needed.
+
+### c04 (es): g64–g70 (7 messages)
+
+- **g64:** @13 BIENVENIDO A MI TALLER, HERMANO. _ AQUÍ REPARO LAS VIDRIERAS Y HAGO OTROS TRABAJOS DE ARTESANÍA. _ ¿PODÉIS MOSTRARME VUESTROS OCULI DE VITRO CUM CAPSULA?@0 AQUÍ LOS TIENES. _ FABRICARLOS REQUIERE MUCHO TRABAJO Y MUCHO TIEMPO. _ PUES EL GROSOR DEL VIDRIO DEBE AJUSTARSE AL OJO DE QUIEN LOS LLEVA.@13 ¡QUÉ PRODIGIO! Y AUN ASÍ, MUCHOS LO LLAMARÍAN BRUJERÍA.@0 SIN DUDA. PERO NO ES MAGIA DIABÓLICA. _ ES MAGIA DIVINA QUE SE REVELA A TRAVÉS DE LA CIENCIA HUMANA.@13 LA BIBLIOTECA, POR DESGRACIA, ES OTRA COSA. _ ALLÍ LOS SECRETOS DE LA CIENCIA ESTÁN PROTEGIDOS POR ARTIFICIOS MÁGICOS. _ DE NOCHE SE VE LUZ EN EL PISO MÁS ALTO DEL EDIFICIO. _ DICEN QUE UNA NOCHE UN MONJE SE ATREVIÓ A ENTRAR EN LA BIBLIOTECA. _ BUSCABA UN LIBRO Y TUVO VISIONES EXTRAÑAS. _ CUANDO SALIÓ DEL LABERINTO, CASI HABÍA PERDIDO EL JUICIO.@0 ¿POR QUÉ HABLAS DE MAGIA Y NO DE APARICIONES DIABÓLICAS?@13 SOY VIDRIERO, PERO NO POR ELLO IGNORANTE. _ HACE AÑOS REPARÉ UNA VENTANA DEL HOSPITAL. _ ENTONCES HOJEÉ UNO DE LOS LIBROS DE SEVERINO. _ ALLÍ SE EXPLICABA CÓMO PROVOCAR VISIONES: _ SE UNTA LA MECHA DE UNA LÁMPARA CON CIERTAS SUSTANCIAS.@0 INTERESANTE. ALGUIEN PARECE QUERER DOMINAR A LOS MONJES. _ QUE NO PUEDAN ELEGIR LIBREMENTE ADÓNDE VAN, QUÉ HACEN NI QUÉ LEEN.@13 AHORA DEBO VOLVER A MI TRABAJO. _ ESTOY A VUESTRO SERVICIO PARA CUANTO NECESITÉIS.
+- **g65:** @0 ADSO, DEBERÍAMOS DESCANSAR. EL VIAJE HA SIDO LARGO. _ CUANDO QUIERA DORMIR, ME PONDRÉ JUNTO A LA CAMA.
+- **g66:** @11 ¡VENID! ¡HAY UN CADÁVER EN LA POCILGA!
+- **g67:** @3 SEGUIDME, HERMANO GUILLERMO. VEAMOS QUÉ HA OCURRIDO.
+- **g68:** @3 DIOS MÍO... ¡ES VENANCIO!@0 PUEDE QUE ADELMO SE QUITARA LA VIDA, PERO ESTE, SIN DUDA, NO. _ Y TAMPOCO CABE PENSAR QUE CAYERA EN LA TINAJA POR ACCIDENTE.@3 COMO VEIS, HERMANO GUILLERMO, ALGO ESTÁ OCURRIENDO EN LA ABADÍA, _ ALGO QUE REQUIERE TODA VUESTRA SABIDURÍA. ¡PERO OBRAD CON PRESTEZA, OS LO SUPLICO!
+- **g69:** @2 HE EMPEZADO A EXAMINAR EL CADÁVER, PERO NO TIENE HERIDAS NI MORATONES. _ TAMPOCO ESTÁ HINCHADO, ASÍ QUE NO SE HA AHOGADO.@0 QUIZÁ LO ENVENENARON Y DESPUÉS ALGUIEN LO ARROJÓ A LA TINAJA.@2 ES POSIBLE...
+- **g70:** @0 ¿ES ARSÉNICO LO QUE TIENES AQUÍ?@2 SÍ. EN PEQUEÑAS DOSIS ES UN BUEN REMEDIO CONTRA LAS ENFERMEDADES DE LA MENTE.@0 ¿Y EN DOSIS NO TAN PEQUEÑAS?@2 ENTONCES ES MORTAL, NATURALMENTE.
+
+*Flagged as unclear (9):*
+
+- g64: "OM NATTEN SYNS DET LJUS": "LJUS" can be singular or plural (a light or lights). I translated it as "SE VE LUZ".
+- g64: "DJÄVULSKA UPPENBARELSER": "UPPENBARELSER" can mean apparitions or revelations. I chose "APARICIONES".
+- g64: "VARSÅGOD": the Swedish has no form of address. Because William uses DU with the glassmaker elsewhere, I wrote "AQUÍ LOS TIENES" (tú).
+- g64: "DE SKA INTE FÅ VÄLJA FRITT ...": this gives the unnamed controller's intent, but the Swedish does not say so outright. I translated it as a dependent clause: "QUE NO PUEDAN ELEGIR...".
+- g64: "SJUKHUSET": I translated it as "HOSPITAL", the abbey's infirmary run by Severinus. "ENFERMERÍA" would also work.
+- g65: "NÄR JAG VILL SOVA STÄLLER JAG MIG VID SÄNGEN": this is a gameplay hint spoken in character, and it reads oddly. The Swedish present tense could be habitual ("when I want to sleep, I stand by the bed") or future. I chose the future.
+- g66: "KOM!": it is not clear whether the speaker addresses one person or several, and no NI/DU is used. "¡VENID!" works both for vos and for vosotros.
+- g66: "SVINSTIAN" (pigsty): later lines say the body is in "KARET" (a vat or jar), presumably inside the pigsty. The two are consistent but not explicitly linked.
+- g68: "KARET": the word can mean a vat, tub or large jar. I chose "TINAJA", which fits the jar of pig's blood in the source story.
+
+**Meaning check** (`es-meaning:c04`, 0/0/0 must/should/nit):
+
+I found no real meaning differences in g64 to g70. The back-translation matches the original Spanish everywhere. Where the wording differs, the change is documented in the row note or the glossary, or it is ordinary rewording.
+
+Rows g64 to g70, checked against the Spanish, the Swedish in translation/strings_sv.tsv, the row notes and docs/GLOSSARY.md:
+
+- **Address (GLOSSARY §2.2) is correct in every row.**
+  - Nicola says NI to Vilhelm (KAN NI VISA MIG ERA ..., JAG STÅR TILL ER TJÄNST, VAD NI ÄN BEHÖVER).
+  - Vilhelm says DU to Nicola (VARFÖR TALAR DU) and to Severinus in g70 (ÄR DET ARSENIK DU HAR HÄR?). The Spanish vos in g70 is deliberately not copied.
+  - The abbot says NI to Vilhelm in g67 and g68.
+  - The villager's KOM! in g66 is a pronoun-free imperative, the form the matrix gives for that pair.
+- **Player information (GLOSSARY §1.11):** g65 keeps the fixed wording NÄR JAG VILL SOVA STÄLLER JAG MIG VID SÄNGEN. The Spanish hint (ME COLOCARÉ JUNTO A LA CAMA) is just as stiff, and Swedish present tense reads as future here. Nothing is lost.
+- **g64, documented changes I did not report:**
+  - TYVÄRR EN ANNAN SAK for LÁSTIMA QUE
+  - BÄRARENS ÖGA for OJO DEL PACIENTE
+  - the monk story split into two sentences, with the monk as the subject of NÄSTAN FRÅN VETTET
+  - the lamp recipe after a colon
+  - NÅGON VERKAR VILJA STYRA MUNKARNA. _ DE SKA INTE FÅ VÄLJA FRITT ... The SKA INTE FÅ wording is meant to show the unknown person's will.
+  - ÄNDÅ for SIN EMBARGO, and GÖR EN DEL ANNAT HANTVERK.
+- **g68:** MEN DET HAR DENNE UTAN TVIVEL INTE is documented in its note. KARET follows the glossary place list.
+- **g69:** the meaning is unchanged. DET refers back to LIKET, and SVULLET matches g94, both as the note says.
+- **g70:** I SMÅ DOSER ... ETT GOTT MEDEL MOT SINNESSJUKDOMAR is the glossary's own example for REMEDIO (§7.1). OCH I INTE FULLT SÅ SMÅ DOSER? keeps the understatement, and DÅ ÄR DET DÖDLIGT, NATURLIGTVIS matches CAUSARÍA LA MUERTE, OBVIAMENTE.
+
+The back-translator's unclear items. None of them is unclear or wrong for a Swedish reader:
+
+1. **OM NATTEN SYNS DET LJUS:** Spanish SE VE LUZ is also uncountable. The Swedish is idiomatic and says the same thing.
+2. **DJÄVULSKA UPPENBARELSER:** UPPENBARELSE is the normal Swedish word for an apparition. It also echoes the earlier GUDOMLIG MAGI SOM UPPENBARAR SIG, so no reader takes it as Revelation here.
+3. **VARSÅGOD:** fixed in GLOSSARY §7 for AQUÍ TENÉIS when handing something over. It uses no pronoun, which fits the DU pair.
+4. **DE SKA INTE FÅ VÄLJA FRITT:** documented on purpose. Straight after NÅGON VERKAR VILJA STYRA MUNKARNA, SKA INTE FÅ clearly states that person's will, which matches PARECE QUE HAY ALGUIEN QUE NO QUIERE QUE.
+5. **SJUKHUSET:** fixed in GLOSSARY §3.4 for both la enfermería and el hospital, so it is Severinus's infirmary.
+6. **SVINSTIAN and KARET in g66 and g68:** the Spanish is equally implicit (POCILGA, then TINAJA). Both are glossary terms, and the player sees the vat at the pigsty.
+7. **The KOM! address in g66:** this is the documented case in §2.2: plural NI, imperative only.
+
+Two small nuances I did not report, because they are natural rewording or set by the glossary:
+
+- g66 DET LIGGER ETT LIK has no "has turned up" sense (HA APARECIDO). The English, French and Italian all say "there is a corpse" too.
+- g70 SINNESSJUKDOMAR is a little stronger than TRASTORNOS MENTALES, but it is the glossary's fixed example.
+
+I made no edits.
+
+### c05 (es): g71–g74 (4 messages)
+
+- **g71:** @0 VEO QUE TIENES UNA PIEDRA IMÁN SOBRE LA MESA. _ ES UN MINERAL POCO COMÚN.@2 SÍ, PERO YA NO RECUERDO QUIÉN LA TRAJO. _ QUIZÁ YA ESTABA AQUÍ ANTES DE MI TIEMPO. _ SI QUERÉIS EXAMINARLA, OS LA PRESTO CON GUSTO.@0 GRACIAS, HERMANO. _ PERO, VOLVIENDO A VENANCIO, ¿CUÁL ERA SU TAREA AQUÍ?@2 ERA NUESTRO MEJOR TRADUCTOR DEL GRIEGO. _ SE DEDICABA POR ENTERO A LAS OBRAS DE ARISTÓTELES.@0 ¿SE LLEVABA BIEN CON EL JOVEN Y HERMOSO ADELMO?@2 POR SUPUESTO. TRABAJABAN JUNTOS EN EL SCRIPTORIUM. _ PERO SU AMISTAD ERA FRATERNAL... _ BERENGARIO, EN CAMBIO, SE SENTÍA ATRAÍDO POR ADELMO. _ LE OFRECIÓ ACCESO A UN SABER PROHIBIDO. _ A CAMBIO, QUERÍA SUS FAVORES.
+- **g72:** @0 AQUÍ HAY UN LIBRO EXTRAÑO EN GRIEGO. _ A SU LADO HAY UN MANUSCRITO EN PERGAMINO.
+- **g73:** @13 HERMANO, BERENGARIO ME HA PEDIDO QUE VIGILE EL PUPITRE DE VENANCIO. _ EL LIBRO QUE AHORA ESTÁ SOBRE SU PUPITRE NO ESTABA ALLÍ CUANDO SE MARCHÓ AYER.@0 PERO MALAQUÍAS CIERRA EL EDIFICIO CON LLAVE DESDE DENTRO CADA DÍA. _ ¿HAY ALGUNA MANERA DE ENTRAR CUANDO LAS PUERTAS ESTÁN CERRADAS?@13 SÍ, MUCHOS MONJES LA CONOCEN. _ SE PUEDE ENTRAR POR EL OSARIO. _ EN LA CAPILLA HAY UN ALTAR CON MIL ESQUELETOS ESCULPIDOS. _ HAY QUE HUNDIR LOS OJOS DE LA CUARTA CALAVERA EMPEZANDO POR LA IZQUIERDA. _ ENTONCES EL ALTAR SE ABRE.@0 INTERESANTE. ASÍ PUES, SE PUEDE ENTRAR EN EL EDIFICIO DE NOCHE.@13 ASÍ ES. PERO NECESITARÉIS UNA LÁMPARA. _ HABLAD CON REMIGIO EN LA COCINA. ÉL PUEDE CONSEGUIROS UNA.
+- **g74:** @0 REMIGIO, ¿SABÉIS DÓNDE PUEDO CONSEGUIR UNA LÁMPARA?@8 AHORA MISMO IBA A PREPARAR UNA AQUÍ EN LA COCINA. TOMADLA SI LA NECESITÁIS. _ SI ASÍ LO DESEÁIS, OS DEJARÉ CADA DÍA UNA LÁMPARA LLENA DE ACEITE. _ ESTARÁ SIEMPRE EN EL MISMO SITIO DE LA COCINA.@0 MUCHAS GRACIAS, HERMANO. _ ¿HABÉIS VISTO A BERENGARIO? NO ESTÁ EN EL SCRIPTORIUM.@8 DIJO QUE IBA A PASEAR UN RATO POR EL CLAUSTRO. _ HERMANO GUILLERMO, DEBO CONTAROS UNA COSA. _ LA NOCHE EN QUE MURIÓ ADELMO, LO VI IR A LA CELDA DE BERENGARIO. _ LUEGO FUE A CONFESARSE CON JORGE. _ DESPUÉS HABLÓ CON VENANCIO EN LA IGLESIA Y LE DIO ALGO. _ TRAS ESO, ESTUVO HABLANDO CON BERENGARIO EN EL CEMENTERIO.@0 ASÍ QUE BERENGARIO FUE EL ÚLTIMO QUE VIO CON VIDA AL JOVEN ADELMO...
+
+*Flagged as unclear (5):*
+
+- g71: William (@0) addresses @2 as DU ('JAG SER ATT DU HAR EN MAGNETSTEN') while @2 answers with NI ('OM NI VILL UNDERSÖKA DEN'), and in g74 William uses NI to Remigio ('REMIGIO, VET NI VAR...'). It is unclear whether the DU here is intended or a slip; translated as tú, following the source.
+- g73: 'NÄR HAN GICK I GÅR': it is unclear who 'HAN' is, Venantius (whose desk it is, but who is presumably dead) or Berengar. The Spanish 'CUANDO SE MARCHÓ AYER' keeps it just as open.
+- g73: 'MALACHIAS LÅSER BYGGNADEN INIFRÅN VARJE DAG': locking the building 'from the inside' 'every day' is odd, since the point is that it is locked at night (one would expect 'varje kväll/natt'), and it is unclear how he leaves if he locks it from inside. Translated literally.
+- g73: 'ETT ALTARE MED TUSEN UTHUGGNA SKELETT': 'a thousand carved skeletons' reads as hyperbole, and the next line talks about skulls ('DÖSKALLEN'). Probably intended; translated literally.
+- g74: 'JAG SKA JUST GÖRA I ORDNING EN HÄR I KÖKET. TA DEN OM NI BEHÖVER DEN.': Remigio says he is only about to prepare the lamp, then straight away tells William to take it, which is slightly illogical. Translated as 'AHORA MISMO IBA A PREPARAR UNA... TOMADLA'.
+
+**Meaning check** (`es-meaning:c05`, 0/0/0 must/should/nit):
+
+I found no real meaning differences in g71 to g74. Every difference the back-translation shows is natural rewording, matches something the Spanish already does, or is documented in the row's note or the GLOSSARY.
+
+What I checked for each row (the original Spanish, the Swedish in translation/strings_sv.tsv with its note column, GLOSSARY §1.11 and §2.2, and docs/DECISIONS.md, which says nothing about these rows):
+
+g71
+- Every fact matches the Spanish: the magnet stone, Severinus not remembering who brought it, the offer to lend it, Venantius as the best translator from Greek who worked only on Aristotle, the brotherly bond with Adelmo, and Berengar's attraction, offer of forbidden knowledge and the favours he wanted in return.
+- The change from "o si ya estaba cuando llegué" to "KANSKE FANNS DEN REDAN HÄR FÖRE MIN TID" is in the note and says the same thing.
+- **Back-translator's flag (DU from William, NI from Severinus):** this is intended. GLOSSARY §2.2 fixes William → Severinus as DU, with the Spanish vos in g70 and g71 deliberately not copied, and Severinus → William as NI. William → Remigio is NI by the same matrix, so the NI in g74 is also correct.
+
+g72
+- The meaning matches.
+- "PÅ PERGAMENT" is an addition, but it is documented in the note (consistency pass 2: it ties this sheet to the parchment in g78 and g125).
+
+g73
+- The facts the player needs (GLOSSARY §1.11) are all exact: through the ossuary (BENHUSET), the altar in the chapel (KAPELLET), the fixed key "TRYCKA IN ÖGONEN PÅ DEN FJÄRDE DÖSKALLEN FRÅN VÄNSTER", and the lamp from Remigio in the kitchen.
+- "EL SCRIPTORIUM" is dropped from the line about the book, and "PARA ABRIRLO" becomes "DÅ ÖPPNAS ALTARET". Both are documented in the note and needed for page layout.
+- **Back-translator's flags:**
+  - Who "HAN" is: the Spanish "cuando abandonó" is just as ambiguous, and the note says this was left as in the Spanish on purpose.
+  - "Låser byggnaden inifrån varje dag": this follows the Spanish exactly ("desde dentro todos los días"), and the note records that the evening reading of the French and Italian was rejected. William's next line, "OM NATTEN", makes the timing clear.
+  - "Tusen uthuggna skelett" against "döskallen": both come straight from the Spanish ("tallado con mil esqueletos", "la cuarta calavera"). For a Swedish reader the skulls belong to the carved skeletons.
+- None of these is unclear or wrong in Swedish.
+
+g74
+- Both facts the player needs are kept: "VARJE DAG" and "PÅ SAMMA STÄLLE".
+- "I KÖKET" is an addition, but it is documented and correct: the lamp spot used by g76 is on the kitchen floor.
+- Remigio's account keeps the order and the people (Adelmo goes to Berengar's cell, then to confession with Jorge, then to Venantius in the church, then to Berengar in the cemetery). "HONOM" and "HAN" clearly mean Adelmo.
+- "Me dijo" becoming "HAN SADE" (dropping "to me") is natural rewording, not a lost fact.
+- **Back-translator's flag ("JAG SKA JUST GÖRA I ORDNING EN ... TA DEN OM NI BEHÖVER DEN"):** the Swedish copies the Spanish exactly ("justo ahora voy a preparar una ... cogedla"), and a Swedish reader understands it without trouble. The French and Italian smooth it to "I am preparing / have just prepared one". If the coordinator wants that smoothing anyway, "JAG HÅLLER JUST PÅ ATT GÖRA I ORDNING EN HÄR I KÖKET." would do it, but it is optional and I did not check it with `pages`.
+
+### c06 (es): g75–g85 (11 messages)
+
+- **g75:** @0 ¿ASÍ QUE TÚ FUISTE EL ÚLTIMO QUE VIO A ADELMO CON VIDA?@5 ¿YO? ¿CÓMO PODÉIS DECIR ESO? _ LO VI ANTES DE IRME A ACOSTAR, IGUAL QUE TODOS LOS DEMÁS.@0 NO, LO VISTE MÁS TARDE, Y SABES MÁS DE LO QUE DAS A ENTENDER. _ PERO YA TENEMOS DOS MUERTOS, Y NO PUEDES SEGUIR CALLANDO. _ ¡SABES MUY BIEN QUE HAY MUCHAS MANERAS DE HACER HABLAR A ALGUIEN!@5 SÍ, SÍ, VI A ADELMO AQUELLA NOCHE. PERO ENTONCES YA ESTABA MUERTO.@0 ¿QUÉ DICES? ¿ALLÁ ABAJO, EN EL BARRANCO?@5 NO, NO, LO VI EN EL CEMENTERIO. _ VAGABA ENTRE LAS TUMBAS COMO UN ESPECTRO. _ TENÍA EL ROSTRO DE UN CADÁVER, Y SUS OJOS CONTEMPLABAN EL CASTIGO ETERNO.@0 ¿QUÉ TE DIJO?@5 ME DIJO: ESTOY CONDENADO, BELLO MAESTRO. _ LUEGO DESAPARECIÓ ENTRE LAS TUMBAS. _ A LA MAÑANA SIGUIENTE OÍ QUE HABÍAN ENCONTRADO SU CUERPO AL PIE DE LA TORRE.@0 ¿POR QUÉ TE LLAMÓ BELLO MAESTRO, SI TENÍAIS LA MISMA EDAD? _ ¿ACASO LE HABÍAS ENSEÑADO ALGO?@5 NO SÉ POR QUÉ ME LLAMÓ MAESTRO. _ OS RUEGO QUE OIGÁIS MI CONFESIÓN.@0 NO ME PIDAS QUE SELLE MIS LABIOS CON EL SIGILO DE LA CONFESIÓN. _ ID Y CONFESAD VUESTROS PECADOS AL SEÑOR.
+- **g76:** @0 ADSO, SERÁ MEJOR QUE LLEVES TÚ LA LÁMPARA Y CUIDES DE ELLA.
+- **g77:** @0 ADSO, EXAMINEMOS EL EXTRAÑO LIBRO QUE HAY EN EL PUPITRE DE VENANCIO.
+- **g78:** @0 ¡NO ESTÁ! _ ¡EL LIBRO EN GRIEGO QUE VIMOS ANTES HA DESAPARECIDO! _ SOLO QUEDA EL PERGAMINO.@1 PERO SI EL PUPITRE ESTABA VIGILADO, MAESTRO.@0 EN EFECTO, ADSO. ALGUIEN DEBE DE HABERSE LLEVADO EL LIBRO HACE UN MOMENTO. _ BIEN PODRÍA SEGUIR AQUÍ.@1 ¿EL PERGAMINO ESTÁ ESCRITO EN GRIEGO?@0 SÍ, ES GRIEGO. PERO NO CONSIGO DESCIFRARLO DEL TODO. _ LA LETRA ES PEQUEÑA E IRREGULAR. _ AUN CON MIS LENTES ME CUESTA LEERLO. _ NECESITO MÁS LUZ. ACERCA LA LÁMPARA... _ ¡CUIDADO! ¿QUIERES QUEMARLO?@1 PERDONADME, MAESTRO. _ HE ROZADO SIN QUERER EL PERGAMINO CON LA LLAMA...
+- **g79:** @0 ¡MIRA, ADSO! EL CALOR DE LA LLAMA HA HECHO APARECER EXTRAÑOS SIGNOS DE UN AMARILLO OSCURO. _ NO SE PARECEN A NINGÚN ALFABETO, SALVO AL DE LOS NIGROMANTES...
+- **g80:** @0 ¿QUÉ HA SIDO ESE RUIDO? _ AHÍ ESTÁ NUESTRO HOMBRE. ¡TRAS ÉL, ADSO!
+- **g81:** @0 ¡NOS HA ENGAÑADO! _ ¡DEPRISA, VOLVAMOS AL PUPITRE DE VENANCIO!
+- **g82:** @0 SE HA LLEVADO MIS LENTES.@1 PERO ¿POR QUÉ?@0 PORQUE NO ES NINGÚN NECIO. _ SABE QUE LOS NECESITO PARA DESCIFRAR EL PERGAMINO.
+- **g83:** @0 NECESITAMOS LA LLAVE DE MALAQUÍAS PARA ABRIR LA PUERTA.
+- **g84:** @3 LOS MONJES ESTÁN MUY INQUIETOS POR LOS ÚLTIMOS SUCESOS. _ APRESURAOS CON LA INVESTIGACIÓN.
+- **g85:** @12 DEMASIADOS MUERTOS, DEMASIADOS MUERTOS... _ PERO ESTABA ESCRITO EN EL APOCALIPSIS DE SAN JUAN._ CON LA PRIMERA TROMPETA VINO EL GRANIZO: _ LA NOCHE EN QUE MURIÓ ADELMO SE DESATÓ UNA TERRIBLE TORMENTA._ CON LA SEGUNDA TROMPETA EL MAR SE CONVIRTIÓ EN SANGRE: _ VENANCIO FUE HALLADO EN LA TINAJA DE SANGRE._ CON LA TERCERA TROMPETA CAE UNA ESTRELLA SOBRE LOS RÍOS Y LAS FUENTES: _ EL PRÓXIMO CADÁVER SE ENCONTRARÁ EN EL AGUA.@0 PERO EN LA ABADÍA NO HAY RÍOS NI FUENTES...
+
+*Flagged as unclear (4):*
+
+- g75: "GÅ OCH BEKÄNN ERA SYNDER FÖR HERREN": William says DU to Berengar everywhere else in this scene, then switches to ERA (polite or plural). It could be an oversight for DINA. I kept it as 'ID Y CONFESAD VUESTROS PECADOS'. If the switch is a mistake, use 'VE Y CONFIESA TUS PECADOS AL SEÑOR'.
+- g78: "MEN PULPETEN VAR JU VAKTAD, MÄSTARE." / "MYCKET RIKTIGT, ADSO. NÅGON MÅSTE HA TAGIT BOKEN FÖR EN STUND SEDAN.": William answers 'quite right' to 'but the desk was guarded', then says someone took the book anyway. The logic is a little loose. I translated it as written ('EN EFECTO').
+- g85: "MED DEN TREDJE BASUNEN FALLER EN STJÄRNA": the first two trumpets are in the past tense (KOM, BLEV) and the third is in the present (FALLER). This is probably deliberate, since that part of the prophecy has not happened yet. I kept the present tense ('CAE').
+- g85: There is no space before the page break in "UPPENBARELSE.\_", "OVÄDER.\_" and "BLODKARET.\_", but there is one elsewhere (' _ '). I kept the spacing exactly as in the source.
+
+**Meaning check** (`es-meaning:c06`, 0/0/0 must/should/nit):
+
+I found no real meaning differences in g75-g85. I compared each back-translation with the Spanish and the Swedish in translation/strings_sv.tsv, and checked the row notes, GLOSSARY §1.7, §1.11, §2 and §12, and DECISIONS.md.
+
+Every fact, tense, speaker and tone survives. The player hints are all still there: Venantius's desk (g77, g81), the glasses being needed to decipher the parchment (g78, g82), Malachias's key for the door (g83), and the next corpse being found in water (g85, the fixed wording from §1.4).
+
+The differences the back-translation shows are all either natural rewording or documented choices:
+- g77: LÅT OSS GRANSKA drops the "go" of VAYAMOS A VER. The note says why: a longer wording put the full stop under the blinking continue-marker. The desk is still named, so the hint is intact.
+- g79: the condensed LÅGANS VÄRME HAR LOCKAT FRAM is documented in the note.
+- g83: DÖRREN for ABRIRLA is documented, because the message stands alone.
+- g84: the definite UNDERSÖKNINGEN is documented.
+- g85: JOHANNES UPPENBARELSE is documented.
+
+The back-translator's unclear items:
+1. g75 "GÅ OCH BEKÄNN ERA SYNDER FÖR HERREN": not an oversight. The Spanish itself switches to vos here (NO ME PIDÁIS ... VUESTROS PECADOS). GLOSSARY §2.1 (exception 1) and §2.2 copy that switch on purpose for the cold refusal, and the row note confirms it. Keep it.
+2. g78 "MYCKET RIKTIGT, ADSO. NÅGON MÅSTE HA TAGIT BOKEN FÖR EN STUND SEDAN": the loose logic is in the Spanish too (CIERTO, ADSO. ALGUIEN SE LO HA TENIDO QUE LLEVAR HACE POCO). It means: yes, it was guarded, so it must have been taken just now. A Swedish reader follows it as easily as a Spanish one, and the glossary fixes MYCKET RIKTIGT for this line. Not a problem.
+3. g85 "MED DEN TREDJE BASUNEN FALLER EN STJÄRNA": the present tense is deliberate and documented in the note. It sets the prophecy still to come against the fulfilled KOM and BLEV, and the next line (NÄSTA LIK KOMMER ATT HITTAS I VATTEN) makes the future clear. Spanish ANUNCIA is also present tense. Keep it.
+4. g85 spacing ("UPPENBARELSE._", "OVÄDER._", "BLODKARET._"): this copies the Spanish exactly ("APÓSTOL._", "TORMENTA._", "SANGRE._"), which GLOSSARY §1.7 rule 4 asks for. Nothing to fix.
+
+### c07 (es): g86–g98 (13 messages)
+
+- **g86:** @13 ESTOY INQUIETO, HERMANO. _ CUALQUIERA DE NOSOTROS PUEDE SER EL PRÓXIMO.
+- **g87:** @0 HERMANO NICOLA, HE PERDIDO MIS ANTEOJOS. _ ¿PODRÍAS HACERME UNOS NUEVOS?@13 ¡LO INTENTARÉ CON GUSTO, HERMANO GUILLERMO! _ PERO SE TARDA UNOS DÍAS EN DAR A LOS CRISTALES LA FORMA Y EL GROSOR ADECUADOS. _ ADEMÁS, NECESITO UNA MONTURA DONDE COLOCARLOS.@0 TE LO AGRADEZCO. SI CONSIGO UNA MONTURA, TE LO HARÉ SABER.
+- **g88:** @0 ADSO, AQUÍ TENEMOS UN PERGAMINO Y UN CARBONCILLO. _ CON ELLOS PODRÍAS DIBUJAR UN MAPA DE LA ABADÍA. _ ASÍ NOS SERÁ MÁS FÁCIL ORIENTARNOS.
+- **g89:** @0 EMPIEZO A MAREARME, ADSO.@1 YO TAMBIÉN, MAESTRO. ¿NOTÁIS ESE OLOR EXTRAÑO?@0 SÍ. DEBEN DE SER LAS LÁMPARAS DE LAS QUE HABLÓ NICOLA. _ MÁS VALE QUE NOS VAYAMOS DE AQUÍ.
+- **g90:** @0 YA ME SIENTO MEJOR. _ TENEMOS QUE IDEAR LA MANERA DE NO RESPIRAR ESTOS VAPORES.
+- **g91:** @0 ... _ ¿HAS OÍDO ESO, ADSO?@1 SÍ, MAESTRO.@0 HAY ALGUIEN EN LA COCINA. _ YO MONTARÉ GUARDIA JUNTO AL PASADIZO SECRETO. _ TÚ VE A ECHAR UN VISTAZO JUNTO A LA PUERTA DE LA DESPENSA.
+- **g92:** @1 ...
+- **g93:** @2 ¡HERMANOS! ¡HE ENCONTRADO EL CUERPO DE BERENGARIO EN LOS BAÑOS!
+- **g94:** @2 SE HA AHOGADO, DE ESO NO CABE DUDA. _ TIENE EL ROSTRO HINCHADO, EL VIENTRE TENSO...@0 PERO NO LO HA AHOGADO NADIE, PORQUE ENTONCES SE HABRÍA RESISTIDO, _ Y HABRÍAMOS ENCONTRADO RASTROS DE AGUA ALREDEDOR DE LA BAÑERA. _ AQUÍ, EN CAMBIO, TODO ESTÁ LIMPIO Y EN ORDEN.
+- **g95:** @2 ESTO ES REALMENTE EXTRAÑO... _ EL OTRO DÍA EXAMINÉ A VENANCIO. _ TENÍA NEGRAS LAS YEMAS DE DOS DEDOS DE LA MANO DERECHA, IGUAL QUE BERENGARIO.@0 SEGURAMENTE AMBOS SE HICIERON ESAS MANCHAS AL TOCAR EL MISMO OBJETO.@2 ¡TAMBIÉN TIENE LA LENGUA NEGRA!@0 HMMM... _ ENTONCES AMBOS TOMARON ALGO POR SU PROPIA VOLUNTAD Y SE LO LLEVARON A LA BOCA. _ ¿CONOCES ALGÚN VENENO QUE PRODUZCA ESTAS MANCHAS?@2 HACE MUCHOS AÑOS, UN HERMANO ME TRAJO UN VENENO MUY POTENTE. _ VENÍA DE TIERRAS LEJANAS, Y ME ADVIRTIÓ QUE NO LO TOCARA. _ UN SIMPLE ROCE CON LOS LABIOS PODÍA MATARME EN POCO TIEMPO. _ PERO UN DÍA SE DESATÓ UNA TORMENTA Y MUCHOS DE MIS FRASCOS SE ROMPIERON. _ DEBIÓ DE SER ENTONCES CUANDO SE PERDIÓ EL VENENO, AUNQUE NO PUEDO ASEGURARLO.
+- **g96:** @3 BERNARDO GUI HA LLEGADO A LA ABADÍA. _ LE HE INFORMADO DE LOS CRÍMENES QUE SE HAN COMETIDO. _ PODÉIS COMER.
+- **g97:** @12 ¡LA PROFECÍA SE HA CUMPLIDO! _ EL CADÁVER ESTABA EN EL AGUA, TAL COMO PREDIJO EL LIBRO. _ LA CUARTA TROMPETA ANUNCIA QUE EL CIELO CAERÁ SOBRE NOSOTROS.@0 UBERTINO, NO CREO QUE EL CIELO VAYA A CAERSE...@12 EL SOL, LA LUNA Y LAS ESTRELLAS... LA OSCURIDAD SERÁ TOTAL.
+- **g98:** @0 NICOLA, HE RECUPERADO MIS ANTEOJOS, PERO ESTÁN ROTOS. _ AUN ASÍ, QUIZÁ PUEDAS APROVECHAR LA MONTURA PARA LOS NUEVOS.@13 ¡CLARO QUE PUEDO! _ PERO NECESITO ALGO QUE CORTE EL VIDRIO CON MUCHA PRECISIÓN. _ SI NO, NO PODRÉ ENCAJAR LOS CRISTALES EN LA MONTURA. _ NO QUIERO ARRIESGARME A QUE SE ROMPAN MIENTRAS TRABAJO.
+
+*Flagged as unclear (5):*
+
+- g87: "BRODER VILHELM": I gave the name as the usual Spanish form, Guillermo, just as the Swedish uses Vilhelm. I did the same with the other names: Berengar became Berengario and Venantius became Venancio.
+- g95: "TUNGAN ÄR OCKSÅ SVART!": the line does not say whose tongue it is. I took it to be Berengar's, since that is the body in front of them, and translated it as "TAMBIÉN TIENE LA LENGUA NEGRA".
+- g95: "PRECIS SOM BERENGARS": this assumes we already know Berengar's fingertips are black, but this scene has not said so.
+- g96: "NI MÅ ÄTA": the wording is old-fashioned, and NI could mean one person (polite) or several. I read it as the abbot speaking to all the monks at the meal, so I used vosotros: "PODÉIS COMER".
+- g97: "DEN FJÄRDE BASUNEN BEBÅDAR ATT HIMLEN SKA FALLA NER ÖVER OSS": this is a loose paraphrase. In Revelation the fourth trumpet darkens the sun, moon and stars, and it does not make the sky fall. I kept the Swedish image as it is.
+
+**Meaning check** (`es-meaning:c07`, 0/0/0 must/should/nit):
+
+I found no meaning differences in g86 to g98, so there are no must, should or nit issues. Each back-translation matches the original Spanish in facts, tense, who does what, and tone. Address follows GLOSSARY §2.2: Guillermo says DU to Nicola (g87, g98) and to Severinus (g95). Adso says NI to Guillermo (g89, KÄNNER NI). The abbot says plural NI to the monks (g96). Guillermo says DU to Adso (g91, DU GÅR OCH SER EFTER, which also mirrors the emphatic TÚ). The player information is intact. g87 says Nicola needs a frame and will need a few days. g88 says Adso can draw a map with the parchment and charcoal; it keeps the fixed key RITA EN KARTA ÖVER KLOSTRET, and its two-sentence split is documented in the row note. g90 asks for a way to avoid the fumes and uses the fixed DESSA ÅNGOR. g98 says Nicola needs something that cuts glass very precisely, or he cannot fit the lenses into the frame. Every page renders without problems, and each page break falls at a clause boundary (pages run on g87, g94, g95 and g98). The other differences are natural rewording or documented choices. In g97, HAR GÅTT I UPPFYLLELSE renders ERA CORRECTA and means the same. In g91 and g93, LÖNNGÅNGEN, SKAFFERIET and BADHUSET are fixed place terms from GLOSSARY §3.4. In g95, FLASKOR and GIFTET KOM BORT are documented in the row note, and SVARTA followed by DESSA FLÄCKAR is a documented glossary variant. I checked the five items the back-translator found unclear. (1) g87, the name forms: Vilhelm, Berengar and Venantius are the fixed names in GLOSSARY §0 and §3, so this is not an issue. (2) g95, TUNGAN ÄR OCKSÅ SVART!: the Spanish is just as impersonal (¡LA LENGUA TAMBIÉN ESTÁ NEGRA!). Berengar's body is in front of them during the 'mano' animation, and the wording is fixed in GLOSSARY §7.1. The back-translator read it correctly as Berengar's tongue. Not an issue. (3) g95, PRECIS SOM BERENGARS: the Spanish IGUAL QUE BERENGARIO makes the same assumption. The scene shows Berengar's hand and opens with Severinus remarking on it (ESTO SÍ QUE ES CURIOSO). Not an issue. (4) g96, NI MÅ ÄTA: this is the abbot's fixed permission formula, the documented old-fashioned MÅ in GLOSSARY §1.3 and §1.4. NI is plural here (Abad to the monks, §2.2), so the reading as vosotros is correct. Not an issue. (5) g97, the fourth trumpet and the falling sky: the Spanish says exactly this (LA CUARTA TROMPETA ANUNCIA LA CAÍDA DEL CIELO SOBRE NOSOTROS), and Guillermo's reply depends on it. Faithful to the original. Not an issue. Files read: translation/strings_sv.tsv, docs/GLOSSARY.md and docs/DECISIONS.md.
+
+### c08 (es): g99–g111 (13 messages)
+
+- **g99:** @0 SEVERINO, EN LA BIBLIOTECA ARDEN LÁMPARAS POR LA NOCHE. _ ¿CONOCES ALGÚN REMEDIO CONTRA SU EFECTO?@2 ¿LAS LÁMPARAS DE LA BIBLIOTECA? _ PERO... _ ¿CÓMO SABÉIS QUE EXISTEN?@0 NICOLA NOS HABLÓ EL OTRO DÍA DE UN MONJE. _ SE AVENTURÓ UNA NOCHE EN LA BIBLIOTECA Y TUVO EXTRAÑAS VISIONES.@2 COMPRENDO... _ EL MEJOR REMEDIO ES, SIN DUDA, NO RESPIRAR LOS VAPORES DE LAS LÁMPARAS.@0 SI, DIOS NO LO QUIERA, TUVIÉRAMOS QUE RESPIRARLOS, ¿QUÉ PODRÍA ENTONCES MITIGAR SU EFECTO?@2 UN BUEN REMEDIO SERÍA ENTONCES UN PAÑO EMPAPADO EN UNA DECOCCIÓN DE CIERTAS HIERBAS. _ LAS TENGO EN EL LABORATORIO.@0 ¿Y PODRÍAS PREPARAR ESE REMEDIO AHORA?@2 ¡¿AHORA?! _ ENTONCES TENDRÉIS QUE TRAERME AGUA CALIENTE PARA LA DECOCCIÓN. _ PEDIDLE UN FRASCO A SALVATORE. _ MIENTRAS TANTO, YO PREPARARÉ LAS HIERBAS Y UN TROZO DE GASA.@0 GRACIAS, HERMANO.
+- **g100:** @0 HERMANO, SEVERINO DICE QUE PUEDES CONSEGUIRNOS UN FRASCO. ¿ES CIERTO?@10 ¡SÍ, SÍ! FRASCO DI VITRIO EN DESPENSA EST. _ SALVATORE TRAER, SALVATORE TRAER.
+- **g101:** @10 FRASCO TUYO EST.
+- **g102:** @0 HAY AGUA EN EL POZO Y UN CUBO PARA SACARLA.
+- **g103:** @0 YA TENEMOS EL AGUA. AHORA SOLO FALTA CALENTARLA.
+- **g104:** @0 EL HORNO ESTÁ CALIENTE. AQUÍ SE PODRÍA CALENTAR ALGO RÁPIDAMENTE.
+- **g105:** @0 ESPERO QUE EL AGUA ESTÉ YA LO BASTANTE CALIENTE.
+- **g106:** @0 AQUÍ TIENES EL AGUA CALIENTE QUE ME PEDISTE, SEVERINO.@2 ESPERAD UN MOMENTO MIENTRAS PREPARO LA DECOCCIÓN.
+- **g107:** @2 TOMAD ESTE PAÑO Y SOSTENEDLO SOBRE LA BOCA Y LA NARIZ CUANDO RESPIRÉIS. _ ESTÁ EMPAPADO EN LA DECOCCIÓN DE LA QUE OS HABLÉ. _ RESPIRAD A TRAVÉS DE ÉL Y OS PROTEGERÁ DEL EFECTO DE LAS LÁMPARAS DE LA BIBLIOTECA.
+- **g108:** @1 MAESTRO, TODAS LAS SALAS PARECEN IGUALES. _ NO CONSIGO ORIENTARME, Y ASÍ NO PUEDO DIBUJAR EL MAPA.@0 TIENES RAZÓN, ADSO. NECESITAMOS ALGO QUE NOS SIRVA PARA ORIENTARNOS. _ HE LEÍDO ACERCA DE UN ARTILUGIO QUE SIEMPRE SEÑALA EN LA MISMA DIRECCIÓN. _ CON LA PIEDRA DE SEVERINO, QUE ATRAE EL METAL, DEBERÍA PODER CONSTRUIRSE UNO.
+- **g109:** @6 HERMANO GUILLERMO, DEBÉIS ACOMPAÑARME. _ QUIERO QUE VEÁIS LO QUE HA DESCUBIERTO UNO DE MIS HOMBRES DE ARMAS.
+- **g110:** @6 ¡UNA MUJER EN ESTE LUGAR SAGRADO! ¡Y CON UN MONJE! _ PERO ESO NO ES LO PEOR. MIRAD AQUÍ: UN GALLO NEGRO Y UN GATO NEGRO. _ RECONOZCO ESTA PARAFERNALIA. _ VOS TAMBIÉN LA RECONOCÉIS, ¿NO ES ASÍ, HERMANO GUILLERMO?@0 NO CREO QUE NECESITÉIS MI EXPERIENCIA DE ANTAÑO _ PARA SACAR VUESTRAS PROPIAS CONCLUSIONES.@6 VEO CLARAMENTE LO QUE HA SUCEDIDO. _ UNA BRUJA, UN MONJE SEDUCIDO Y UN RITO QUE, POR FORTUNA, NO LLEGÓ A CONSUMARSE. _ ¿CON QUÉ FIN? ESO DEBEMOS AVERIGUARLO. _ Y PARA ELLO DEBEMOS OBTENER DE ELLA UNA CONFESIÓN.@1 PERO, MAESTRO, ELLA...@0 CALLA, INSENSATO...
+- **g111:** @2 HERMANO GUILLERMO, HE ENCONTRADO UN LIBRO EXTRAÑO EN EL HOSPITAL.@0 VUELVE AL HOSPITAL, CIERRA LA PUERTA Y NO LE ABRAS A NADIE. _ IRÉ EN CUANTO PUEDA.
+
+*Flagged as unclear (8):*
+
+- g99: "KÄNNER DU TILL NÅGOT MEDEL MOT DERAS VERKAN?" - William speaks of the lamps' "effect" before saying what it is; it only becomes clear from his next line (the strange visions). Translated literally as "SU EFECTO".
+- g100: "FLASKA DI VITRIO I FÖRRÅD EST. _ SALVATORE HÄMTA, SALVATORE HÄMTA." - Salvatore's deliberately broken mixed-language speech (Italian-like "di vitrio", i.e. "of glass", Latin "est", verbs not conjugated). I kept the same pidgin style in Spanish, with "DI VITRIO" and "EST" left as they are.
+- g101: "FLASKA DIN EST." - more of Salvatore's intentionally ungrammatical speech ("your flask is"). I kept that style.
+- g106: "VÄNTA ETT ÖGONBLICK" - the imperative does not show whether it is du or ni. Because Severinus addresses William with NI elsewhere, I translated it as vos ("ESPERAD").
+- g107: "NI" here could be the polite singular (William) or a plural (William and Adso). The vos/vosotros verb forms in Spanish work for both readings.
+- g110: "ATTIRALJ" - a colloquial, slightly scornful word (gear, paraphernalia) and a bit out of tone for an inquisitor's formal speech. Translated as "PARAFERNALIA".
+- g111: "SJUKHUSET" - "hospital" is a slightly modern-sounding word for a medieval abbey's infirmary ("infirmariet"/"sjukstugan"). I kept "HOSPITAL", which also works in medieval Spanish; "ENFERMERÍA" would be an alternative.
+- g111: "GÅ TILLBAKA ... STÄNG ... ÖPPNA INTE" - the imperatives do not show du or ni. Because William addresses Severinus with DU elsewhere, I translated them with tú.
+
+**Meaning check** (`es-meaning:c08`, 0/0/1 must/should/nit):
+
+I compared rows g99 to g111 (Spanish source, the Swedish in translation/strings_sv.tsv, and the row notes) with GLOSSARY §1.2, §1.10, §1.11, §2 and the term table. Only one nit came up, in g110. There are no must or should problems.
+
+Meaning and player information:
+- g99 keeps the facts the player needs (§1.11): HETT VATTEN, EN FLASKA, SALVATORE, and the herbs kept in LABORATORIET.
+- g107 keeps the cloth (DENNA DUK) and the instruction to breathe through it (ANDAS GENOM DEN). MUN OCH NÄSA is added; en and fr have it too, and it only makes the instruction clearer.
+- g102 to g105 are faithful: the well, the bucket, the hot oven, and heating the water.
+
+Documented choices I did not report:
+- g99: the split into a statement and a question, LAMPORNAS ÅNGOR, and the dropped Y (all in the row note).
+- g108: BÖR MAN KUNNA (row note).
+- g109: MINA KNEKTAR (row note).
+- g110: ATTIRALJ (§1.2 and the term table).
+- g111: SJUKHUSET for ENFERMERÍA (term table; I SJUKHUSET is used the same way everywhere).
+- g100 and g101: Salvatore's fixed pidgin lines (§1.10).
+
+Items the back-translator found unclear:
+- g99 DERAS VERKAN: not a problem. The Spanish (LOS EFECTOS QUE PRODUCEN LAS LÁMPARAS) is just as vague, and William's next line explains it in both languages.
+- g100 and g101 pidgin: intentional, exactly as fixed in §1.10.
+- g106 VÄNTA: under §2.1 an imperative works for both du and ni. The Severino to Guillermo/Adso pair is NI, so it is correct.
+- g107 NI: §2.2 lists Severino 107 as clearly plural (Guillermo and Adso), so it is correct.
+- g110 ATTIRALJ: documented and intended. The faint scorn fits Bernardo's contempt for the witchcraft objects, and the Spanish PARAFERNALIA has the same ring.
+- g111 SJUKHUSET: documented and intended (§ term table; §12 explains why SJUKSTUGAN was rejected).
+- g111 imperatives: Guillermo to Severino is DU, so they are correct.
+
+Small rewordings I judged natural and did not report:
+- g100: SÄGER for NOS HA DICHO.
+- g103: BARA in NU ÅTERSTÅR BARA ATT VÄRMA DET.
+- g110: DÄRFÖR for PARA ELLO.
+
+I checked the g110 fix with `uv run tools/translate_tool.py pages`.
+
+### c09 (es): g112–g121 (10 messages)
+
+- **g112:** @3 DEBÉIS SABER QUE REMIGIO Y SALVATORE TIENEN UN PASADO OSCURO. DURANTE SU ESTANCIA ENTRE NOSOTROS NO HAN CAUSADO NINGÚN PROBLEMA. _ PERO TRAS LOS ÚLTIMOS ACONTECIMIENTOS EMPIEZO A DUDAR DE ELLOS...
+- **g113:** @6 LLEGÁIS A TIEMPO, HERMANO GUILLERMO.@0 ¡DIOS MÍO! ¡SEVERINO ESTÁ MUERTO!@6 HE ENCONTRADO AL ASESINO QUE BUSCABAIS. _ REMIGIO HA MATADO A SEVERINO CON ESTA ESFERA ARMILAR.@8 YO NO LO HE MATADO. ¡LO JURO! _ YA ESTABA MUERTO CUANDO LLEGUÉ.@6 MÁS ADELANTE TENDRÁS UN JUICIO JUSTO Y OCASIÓN DE DEFENDERTE. _ HASTA ENTONCES QUEDARÁS BAJO CUSTODIA.
+- **g114:** @0 NICOLA, SÉ QUE AÚN ESTÁS OCUPADO CON LAS LENTES, _ PERO DEBO PEDIRTE UN FAVOR MÁS.@13 ¿DE QUÉ SE TRATA, HERMANO GUILLERMO?@0 HACE TIEMPO LEÍ ACERCA DE UN INSTRUMENTO PARA ORIENTARSE. _ PARA HACER UNO, SE COLOCA UNA AGUJA SOBRE LA PIEDRA QUE TE DOY. _ LUEGO SE PASA LA AGUJA A UNA VASIJA DONDE PUEDA GIRAR LIBREMENTE.@13 ENTIENDO. INTENTARÉ HACER ESE ARTILUGIO HOY MISMO. _ EN CUANTO ESTÉ TERMINADO, LO DEJARÉ EN VUESTRA CELDA.@0 GRACIAS, HERMANO.
+- **g115:** @12 HERMANO, YA NO ESTOY A SALVO AQUÍ, AHORA QUE HA LLEGADO BERNARDO. _ ESTA NOCHE ABANDONARÉ LA ABADÍA.
+- **g116:** @6 VENID, HERMANO GUILLERMO. EL ABAD DESEA QUE ME ASISTÁIS EN EL JUICIO.
+- **g117:** @6 DEBÉIS ACOMPAÑARME. ES DESEO DEL ABAD.
+- **g118:** @6 DOY COMIENZO AHORA AL INTERROGATORIO. _ REMIGIO, ¿POR QUÉ MATASTE A SEVERINO?@8 ¡JURO QUE NO LO MATÉ! _ YA ESTABA MUERTO CUANDO LLEGUÉ, Y MALAQUÍAS ESTABA ALLÍ.@6 ¡NO JURES! QUIERES CONFUNDIRNOS CON ARTIMAÑAS DE HEREJE Y ECHAR LA CULPA A OTROS. _ PERO A NOSOTROS NO NOS ENGAÑAS. SALVATORE LO HA CONFESADO TODO.@8 ¿QUÉ LES HAS DICHO, NECIO?@10 IO NO SER HOMO LITERATUS, PECCAVI SINE MALITIA, _ Y SEÑOR BERNARDO MUY MAGNÍFICO ÉL SABER, _ ET IO ESPERAR INDULGENTIA SUYA _ IN NOMINE PATRE ET FILIO ET SPIRITIS SANCTIS...@8 SOLO HA DICHO LO QUE QUERÍAIS OÍR, PARA LIBRARSE DE MÁS TORTURA.@6 ¡REMIGIO, CONFIESA AHORA! ASÍ EVITARÁS UN LARGO Y PENOSO INTERROGATORIO.@8 ¡NO ME TORTURÉIS! ¿QUÉ QUERÉIS QUE CONFIESE?@6 CONFIESA QUE ERES UN HEREJE. _ QUE FUISTE TÚ QUIEN MATÓ A SEVERINO Y A LOS DEMÁS MONJES.@8 SÍ, SÍ... ES VERDAD. LO HICE YO, PERO NO ME TORTURÉIS.@6 ¡¿VEIS AHORA QUE YO TENÍA RAZÓN?! _ EL INTERROGATORIO HA CONCLUIDO. LOS ACUSADOS HAN CONFESADO Y QUEDAN CONDENADOS A LA HOGUERA.
+- **g119:** @4 ÉL ME LO HABÍA DICHO... _ ERA VERDAD. TENÍA EL PODER DE MIL ESCORPIONES.
+- **g120:** @3 MALAQUÍAS HA MUERTO.@0 BERNARDO, ¿QUIÉN HA MATADO A ESTE? _ ESO LO SABRÉIS VOS, QUE HABÉIS ENCONTRADO A LOS ASESINOS Y LOS HABÉIS PUESTO BAJO CUSTODIA.@6 NO ME LO PREGUNTÉIS A MÍ. _ NUNCA DIJE QUE HUBIERA APRESADO A TODOS LOS MALVADOS QUE RONDAN POR AQUÍ.@0 COMO SOSPECHABA: LA LENGUA Y LAS YEMAS DE LOS DEDOS ESTÁN NEGRAS.
+- **g121:** @3 BERNARDO ABANDONA LA ABADÍA HOY. _ SEGUIDME, QUIERO MOSTRAROS ALGO.
+
+*Flagged as unclear (7):*
+
+- g114: "LÄGGER MAN EN NÅL PÅ STENEN SOM JAG GER DIG" / "ETT KÄRL DÄR DEN KAN VRIDA SIG FRITT": the description is vague. It does not say that the stone is a lodestone or that the needle is rubbed on it, and it does not mention water in the vessel. This may be deliberate for the puzzle, so it is kept vague in the Spanish too.
+- g118: Salvatore's line is deliberately ungrammatical Swedish mixed with Latin and Italian ("IO INTE VARA", "HERR BERNARDO MYCKET MAGNIFIK HAN VETA", "HOPPAS PÅ INDULGENTIA HANS"). It is rendered as equally broken Spanish.
+- g118: "IN NOMINE PATRE ET FILIO ET SPIRITIS SANCTIS" is incorrect Latin (correct: PATRIS ET FILII ET SPIRITUS SANCTI). It is presumably Salvatore's bad Latin on purpose, so it is kept unchanged.
+- g118: "SER NI NU ATT JAG HADE RÄTT?!": NI could mean William (polite) or everyone present (plural). The Spanish "VEIS" covers both readings.
+- g119: "HAN HADE SAGT DET TILL MIG... DEN HADE TUSEN SKORPIONERS KRAFT": the line never says who HAN and DEN refer to (presumably a monk and the book). These are a dying man's last words, so the vagueness is likely intentional. The Spanish "TENÍA" keeps DEN unspecified.
+- g120: "DET VET NI VÄL, NI SOM HAR FUNNIT MÖRDARNA" comes after the page break inside William's (@0) speech, with no speaker change. It reads as William being ironic, which works, and it is translated that way.
+- g121: "FÖLJ MIG, JAG VILL VISA ER NÅGOT": ER could be polite singular (William) or plural (William and Adso). The Spanish "SEGUIDME" and "OS" fit both readings.
+
+**Meaning check** (`es-meaning:c09`, 0/0/0 must/should/nit):
+
+I found no real meaning differences in g112 to g121. I compared each row's Swedish in translation/strings_sv.tsv with the original Spanish and with the back-translation. I also checked the row notes, GLOSSARY §1.10, §1.11, §2.2 and §7, and the Swedish page layout for g119 and g120. Facts, tense, who does what, tone and address (vos/tú) all match.
+
+The five items the back-translator found unclear:
+- g114 (the compass): the Swedish is exactly as vague as the Spanish. The Spanish also says only to place a needle on the stone and then put it in a container where it can turn freely; it never mentions rubbing or water. The row note documents this. Nicola builds the device himself, so the player loses nothing. The facts the player needs are kept: Nicola will try to make it today and leave it in the cell (SÅ SNART DEN ÄR FÄRDIG LÄMNAR JAG DEN I ER CELL).
+- g118 (Salvatore and Bernardo's last line): Salvatore's broken Swedish and his bad Latin are the fixed line from GLOSSARY §1.10 and §4, on purpose. In SER NI NU ATT JAG HADE RÄTT?! the NI follows the address table's rule that Bernardo speaks here to everyone present, in the plural, and the Spanish VÉIS is just as open.
+- g119 (Malachias's last words): the Spanish ME LO HABÍA DICHO... TENÍA EL PODER also names no subject. Swedish has to supply one, so HAN is used. The glossary entry for this phrase fixes DEN as meaning the book. These are a dying man's last words, so the vagueness is the original's.
+- g120 (the page break in William's speech): the page break after VEM HAR DÖDAT DENNE? stays inside one @0 speaker segment. The game shows the speaker's face for each segment (text.md §0), so William's face stays on screen and nobody will read the next page as Bernardo replying. DET VET NI VÄL, NI SOM HAR FUNNIT MÖRDARNA keeps the irony of the Spanish VOS LO SABRÉIS.
+- g121 (FÖLJ MIG ... VISA ER): ER is as open as the Spanish OS. The abbot uses NI to William throughout, and the player still learns that they should follow the abbot.
+
+Changes I checked and accepted because the row notes document them:
+- g112: NI BÖR VETA (Spanish DEBÉIS SABER) and MÖRKT FÖRFLUTET.
+- g115: INTE LÄNGRE TRYGG (Spanish LUGAR SEGURO).
+- g118: the dropped * line break; DU VILL FÖRVIRRA OSS MED KÄTTARKNEP; and DÖMS TILL BÅLET for SERÁN QUEMADOS EN LA HOGUERA, which keeps the fact that the accused will burn.
+- g120: HÄR instead of ESTA ABADÍA, and I FÖRVAR for CUSTODIADO.
+
+Small changes that are natural rewording and not worth reporting: DENNA ARMILLARSFÄR for ESA in g113, MEN OSS BEDRAR DU INTE for NO CONSEGUIRÁS ENGAÑARNOS in g118, and FÖR ATT SLIPPA MER TORTYR for PARA QUE DEJASEN DE TORTURARLE in g118. No changes are needed.
+
+### c10 (es): g122–g125 (4 messages)
+
+- **g122:** @3 COMO VEIS, HERMANO GUILLERMO, NUESTRA ABADÍA ES RICA EN RELIQUIAS RARAS. _ HAN SIDO TRAÍDAS AQUÍ DESDE TIERRAS LEJANAS. _ TAMBIÉN ES RICA EN SABER Y EN LIBROS QUE OTRAS BIBLIOTECAS NO POSEEN. _ PERO DEBO CONFESAR QUE ESPERABA MÁS DE VOS. _ DEBÍAIS VELAR POR QUE EL BUEN NOMBRE DE NUESTRA ABADÍA NO SE MANCHARA. _ HAN PASADO SEIS DÍAS DESDE QUE LLEGASTEIS. ADEMÁS DE ADELMO, HAN MUERTO CUATRO MONJES. _ Y OTROS DOS HAN SIDO APRESADOS POR LA INQUISICIÓN. _ CONVENDRÉIS EN QUE TENÍA MOTIVOS PARA ESPERAR UN DESENLACE MUY DISTINTO _ CUANDO OS PEDÍ QUE INVESTIGARAIS LA MUERTE DE ADELMO...@0 ... _ ES CIERTO, NO HE ESTADO A LA ALTURA DE VUESTRAS EXPECTATIVAS. _ PERO OS CONTARÉ LO QUE HE DESCUBIERTO: _ TODA LA ABADÍA CONOCÍA LA PASIÓN DE BERENGARIO POR LOS JÓVENES HERMOSOS. _ EL HERMOSO ADELMO QUERÍA LEER UN LIBRO PROHIBIDO. _ BERENGARIO LE OFRECIÓ UN PERGAMINO QUE INDICABA EN CLAVE DÓNDE ESTABA EL LIBRO. _ A CAMBIO, ADELMO HABRÍA DE PAGAR CON CARICIAS CONTRA NATURA. _ ACEPTÓ Y CEDIÓ A LOS DESEOS LASCIVOS DE BERENGARIO. _ PERO LUEGO, ATORMENTADO POR LOS REMORDIMIENTOS, VAGÓ SIN RUMBO POR LA ABADÍA. _ ENTONCES SE ENCONTRÓ CON VENANCIO Y LE DIO EL PERGAMINO. _ MÁS TARDE SE QUITÓ LA VIDA ARROJÁNDOSE DESDE LA TORRE. _ VENANCIO SIGUIÓ LAS INSTRUCCIONES CIFRADAS DURANTE MI PRIMERA NOCHE AQUÍ. _ ESTAS LO CONDUJERON A LA BIBLIOTECA PROHIBIDA, DONDE ENCONTRÓ EL LIBRO. _ LO LLEVÓ A SU PUPITRE Y EMPEZÓ A LEERLO. _ ALCANZÓ A ESCRIBIR UNAS LÍNEAS EN EL PERGAMINO. _ DESPUÉS MURIÓ CON MANCHAS NEGRAS EN LOS DEDOS. _ BERENGARIO ENCONTRÓ EL CADÁVER Y LO ARRASTRÓ HASTA LA POCILGA. _ ALLÍ LO ARROJÓ A LA TINAJA DE SANGRE PARA NO CAER BAJO SOSPECHA. _ EL LIBRO Y EL PERGAMINO QUEDARON EN EL PUPITRE DE VENANCIO. _ BERENGARIO VOLVIÓ A LA NOCHE SIGUIENTE Y LEYÓ EL LIBRO. _ POCO DESPUÉS LE SOBREVINIERON DOLORES ESPANTOSOS. _ INTENTÓ ALIVIARLOS CON UN BAÑO Y SE AHOGÓ. _ SUS DEDOS Y SU LENGUA TAMBIÉN ESTABAN ENNEGRECIDOS. _ SEVERINO ENCONTRÓ EL LIBRO QUE BERENGARIO HABÍA ESCONDIDO EN EL HOSPITAL. _ PERO MALAQUÍAS LO MATÓ Y SE LLEVÓ EL LIBRO. _ CUANDO LO HUBO LEÍDO, SE ARRASTRÓ MORIBUNDO HASTA LA IGLESIA Y MURIÓ ALLÍ. _ TODOS MURIERON A CAUSA DE UN LIBRO QUE MATA, O POR EL QUE LOS HOMBRES MATAN.@3 VUESTRA OSCURA EXPLICACIÓN NO ARROJA LA MENOR LUZ SOBRE LO OCURRIDO. _ VUESTRO TIEMPO HA TERMINADO. DEBÉIS INTERRUMPIR LA INVESTIGACIÓN. _ MAÑANA ABANDONARÉIS LA ABADÍA.
+- **g123:** @0 HERMANO NICOLA, CON ESTE DIAMANTE DEBERÍAS PODER CORTAR LOS CRISTALES CON PRECISIÓN.@13 ¡ES JUSTO LO QUE NECESITABA! _ LOS TENDRÉ LISTOS EN UN INSTANTE. _ ... YA CASI ESTÁN TERMINADOS... _ ¡AQUÍ ESTÁN!
+- **g124:** @0 ESTA ES LA LLAVE QUE BERNARDO LE QUITÓ A REMIGIO.
+- **g125:** @0 ADSO, CREO QUE HE LOGRADO DESCIFRAR EL MANUSCRITO DE VENANCIO: _ SECRETUM FINIS AFRICAE _ MANUS SUPRA IDOLUM AGE PRIMUM ET SEPTIMUM DE QUATUOR.
+
+*Flagged as unclear (5):*
+
+- g122: "DE LEDDE HONOM TILL DET FÖRBJUDNA BIBLIOTEKET": "DE" has to refer back to "ANVISNINGARNA I CHIFFER" in the previous page; on its own page the referent is a little loose. Rendered as "ESTAS LO CONDUJERON".
+- g122: "DE DOG ALLA AV EN BOK SOM DÖDAR, ELLER SOM MÄNNISKOR DÖDAR FÖR": "DOG AV" (died of) only fits the first half, so the second half reads as a zeugma. Rendered as "A CAUSA DE UN LIBRO QUE MATA, O POR EL QUE LOS HOMBRES MATAN".
+- g122: "@0 ... \_": William's speech opens with a page that holds only an ellipsis (a silent pause). Kept as is.
+- g122: Names are given in their Swedish/Latin forms (VILHELM, BERENGAR, VENANTIUS, SEVERINUS, MALACHIAS). I used the standard Spanish forms (GUILLERMO, BERENGARIO, VENANCIO, SEVERINO, MALAQUÍAS).
+- g123: "SKÄRA GLASEN EXAKT": "GLASEN" could mean the lens glasses/pieces of glass or the spectacles themselves, and "EXAKT" is a slightly odd adverb here ("precisely/accurately"). Rendered as "CORTAR LOS CRISTALES CON PRECISIÓN".
+
+**Meaning check** (`es-meaning:c10`, 0/0/0 must/should/nit):
+
+I found no real meaning differences in g122 to g125. I compared each row's original Spanish, the back-translation, the Swedish in translation/strings_sv.tsv, the row notes, GLOSSARY §1.7, §1.11, §2.2, §3 and §7, and docs/DECISIONS.md. All four rows lay out with no problems: g122 has 39 pages, g123 has 5, g124 has 1 and g125 has 3.
+
+g122. Every fact matches the Spanish: Adelmo plus four more monks dead, two arrested, Berengar's offer and Adelmo yielding, the parchment passed to Venantius, the suicide, the book read at the desk, the body in the blood vat, Berengar's bath, Severinus killed by Malachias, and Malachias dying in the church. Address is NI in both directions, with BRODER VILHELM from the abbot and no title from Guillermo, as §2.2 requires. Several wordings that differ from the Spanish are deliberate and written up in the row's note:
+- the sentences re-cut at page breaks;
+- NI SKULLE SE TILL ATT VÅRT KLOSTERS GODA NAMN INTE BEFLÄCKADES, which echoes g1, where the abbot does ask for exactly this;
+- UNDER MIN FÖRSTA NATT HÄR for LA NOCHE DE MI LLEGADA;
+- HAN HANN SKRIVA NER NÅGRA RADER;
+- ÄR FYRA MUNKAR DÖDA;
+- the abbot's closing line rebuilt as ER DUNKLA UTLÄGGNING KASTAR INTE MINSTA LJUS.
+
+SJUKHUSET (§3.4) and TORNET are glossary terms.
+
+The back-translator's four unclear points:
+1. DE LEDDE HONOM: clear. ANVISNINGARNA ends the page just before, it is the only plural noun nearby, and no group of people is in play. The note documents this as a deliberate choice.
+2. DE DOG ALLA AV EN BOK SOM DÖDAR, ELLER SOM MÄNNISKOR DÖDAR FÖR: correct, natural Swedish. DÖ AV can name any cause, the double reading echoes the Spanish A CAUSA DE ... O POR EL CUAL, and PÅ GRUND AV would push FÖR onto a new page.
+3. @0 ... _ is the same as in the Spanish.
+4. The name forms come from the glossary (§3).
+
+g123. BORDE DU KUNNA replacing ESPERO QUE ... TE SIRVA is documented, and DU follows §2.2. GLASEN is the glossary term for LAS LENTES (§7.1), and in context a Swedish reader takes it as the pieces of glass Nicola cuts for the spectacles. EXAKT is natural Swedish for cutting precisely. PRECIST or NOGGRANT would make line 2 37 glyphs, and MED PRECISION would push the end onto a new page. HÄR ÄR DE! is the fixed phrase.
+
+g124. This is exact, and TA IFRÅN is the correct construction.
+
+g125. This is exact. The Latin is unchanged byte for byte, QUATUOR is kept, and the change from semicolon to colon and the 3-page layout are documented.
+
+### c11 (es): g126–g144 (19 messages)
+
+- **g126:** @1 ¡UN DEMONIO! @0 ¡JAJAJAJAJA! VERDADERAMENTE INGENIOSO. ¡UN ESPEJO!@1 ¿UN ESPEJO?@0 ASÍ ES, QUERIDO ADSO. _ UN ESPEJO QUE MUESTRA TU PROPIA IMAGEN AUMENTADA Y DEFORMADA.@1 ¡SEÑOR JESÚS! _ ¿SON ESTAS, PUES, LAS VISIONES QUE ALGUNOS DICEN HABER TENIDO EN LA BIBLIOTECA?@0 TAL VEZ. LA IDEA ES SIN DUDA ASTUTA. _ HIERBAS, ESPEJOS... TANTOS Y TAN SABIAMENTE IDEADOS ARTIFICIOS, _ TODO PARA PROTEGER ESTE LUGAR, CONSAGRADO AL SABER PROHIBIDO.
+- **g127:** @0 EL ESPEJO ESTÁ FIRMEMENTE SUJETO A LA PARED. _ PERO DEBE DE HABER ALGUNA MANERA DE ABRIRLO... _ EL MANUSCRITO DE VENANCIO PODRÍA TRADUCIRSE ASÍ: _ EL SECRETO DEL FIN DE ÁFRICA, FINIS AFRICAE: _ LA MANO SOBRE LA IMAGEN, OPRIME EL PRIMERO Y EL SÉPTIMO DE LOS CUATRO.@1 NO ENTIENDO, MAESTRO.@0 HMMM... DÉJAME PENSAR UN MOMENTO... _ ¡MIRA LA INSCRIPCIÓN QUE HAY SOBRE EL ESPEJO! _ SUPER THRONOS VIGINTI QUATUOR. SOBRE VEINTICUATRO TRONOS. _ SE REFIERE A LA PALABRA QUATUOR. _ ¡LA PRIMERA Y LA SÉPTIMA LETRA DE QUATUOR!
+- **g128:** @0 BUENAS NOCHES, VENERABLE JORGE. ¿NOS ESPERABAIS?@7 ¿ERES TÚ, GUILLERMO? TE ESTABA ESPERANDO. _ AQUÍ TENÉIS VUESTRA RECOMPENSA.
+- **g129:** @7 SOIS HOMBRE MUERTO, HERMANO GUILLERMO. HABÉIS CAÍDO EN LA TRAMPA.
+- **g130:** @7 ES EL COENA CYPRIANI DE ARISTÓTELES. _ AHORA ENTENDERÉIS POR QUÉ TENÍA QUE PROTEGERLO. _ CADA PALABRA DEL FILÓSOFO HA DESTRUIDO UNA PARTE DEL SABER DE LA CRISTIANDAD. _ SÉ QUE HE OBRADO SEGÚN LA VOLUNTAD DEL SEÑOR... _ LEEDLO, PUES, HERMANO GUILLERMO. DESPUÉS TE LO MOSTRARÉ A TI, MUCHACHO.
+- **g131:** @1 VENERABLE JORGE, VOS NO PODÉIS VERLO, PERO MI MAESTRO LLEVA GUANTES. SIN ELLOS HABRÍA TENIDO QUE HUMEDECERSE LOS DEDOS CON LA LENGUA _ PARA SEPARAR LAS HOJAS, HASTA HABER INGERIDO SUFICIENTE VENENO.@0 EL MISMO VENENO QUE VOS ROBASTEIS HACE MUCHO TIEMPO DEL LABORATORIO DE SEVERINO.
+- **g132:** @7 FUE UNA BUENA IDEA, ¿VERDAD? PERO AHORA ES DEMASIADO TARDE.
+- **g133:** @1 ¡SE ESTÁ COMIENDO EL LIBRO, MAESTRO!@0 ¡CUIDADO, ADSO!@7 ¡AAARGH!@0 ¡JORGE HA VOLCADO LA LÁMPARA! _ EL ACEITE SE HA DERRAMADO SOBRE LOS LIBROS DE LA MESA.
+- **g134:** @0 EL FUEGO SE EXTIENDE RÁPIDAMENTE. _ TENEMOS QUE SALIR DE AQUÍ CUANTO ANTES.
+- **g135:** @0 HEMOS ESCAPADO, PERO LA BIBLIOTECA ESTÁ PERDIDA...
+- **g136:** @0 A LO LEJOS SE VEN LAS MONTAÑAS NEVADAS. EL VIENTO ES FRÍO.
+- **g137:** @0 NO VEO DÓNDE TERMINA LA ESCALERA. ESTÁ DEMASIADO OSCURO.
+- **g138:** @0 AVE MARIA PURISSIMA... _ NO PARECE HABER NADIE AHÍ DENTRO.
+- **g139:** @0 AQUÍ HAY UNA TUMBA RECIÉN CAVADA. DEBE DE SER LA DE ADELMO.
+- **g140:** @0 HAN ENTERRADO AL POBRE VENANCIO JUNTO A ADELMO.
+- **g141:** @0 BERENGARIO DESCANSA AHORA ENTRE LOS DEMÁS MONJES.
+- **g142:** @0 ES TIEMPO DE MATANZA. LA TINAJA ESTÁ LLENA DE SANGRE DE CERDO.@1 ¿POR QUÉ LA GUARDAN, MAESTRO?@0 SI SE REMUEVE BIEN, SE CONSERVA VARIOS DÍAS CON EL FRÍO. _ LUEGO SE PUEDEN HACER MORCILLAS CON ELLA.
+- **g143:** @0 AÚN QUEDAN MANCHAS EN EL SUELO DE CUANDO SACARON A VENANCIO. _ LA SANGRE SE HA ECHADO A PERDER Y YA NO PUEDEN USARLA.
+- **g144:** @0 TENEMOS QUE IR A LA BIBLIOTECA Y RESOLVER EL ENIGMA.
+
+*Flagged as unclear (5):*
+
+- g127: "HANDEN ÖVER BILDEN": "bild" (image/picture) renders Latin "idolum" from the novel's riddle; I kept "IMAGEN" to stay with the Swedish, but the standard Spanish version of the novel says "ÍDOLO".
+- g127: "DEN FÖRSTA OCH DEN SJUNDE AV FYRA": "the seventh of four" doesn't make sense literally. This is presumably intentional (it points to the letters of QUATUOR), so I kept it as "DE LOS CUATRO".
+- g128: Jorge switches from DU to NI/ER in one speech: "ÄR DET DU, VILHELM? JAG HAR VÄNTAT PÅ DIG. _ HÄR HAR NI ER BELÖNING." It is unclear whether NI/ER is plural (William and Adso) or a polite singular. I used tú, then vosotros (TENÉIS VUESTRA), which works for either reading.
+- g130: "COENA CYPRIANI AV ARISTOTELES": factually odd, because the Coena Cypriani is not by Aristotle (the forbidden book in the story is the second book of Aristotle's Poetics, bound with other texts). The original Spanish game seems to say the same, so I translated it literally.
+- g132: "DET VAR EN GOD IDÉ, INTE SANT?": it is unclear what idea is meant, William's gloves or Jorge's own poisoned pages. I kept it just as vague in Spanish.
+
+**Meaning check** (`es-meaning:c11`, 0/0/0 must/should/nit):
+
+I compared g126 to g144 against the Spanish and the back-translation and found no meaning differences that need a fix. There are no 'must', 'should' or 'nit' items. I checked the current Swedish in translation/strings_sv.tsv and the notes, GLOSSARY §1.6, §1.10, §1.11, §2, §4 and §7, and DECISIONS.md. I also ran `translate_tool.py pages` on g126, g127, g128, g130, g131, g142 and g143, and all had problems=[].
+
+**The four items the back-translator marked unclear:**
+1. **g127 HANDEN ÖVER BILDEN:** fine. BILDEN for IMAGEN (the idolum, the image in the mirror) is the fixed wording in GLOSSARY §4 and §7.1, and AVBILDEN is forbidden. A Swedish reader reads it as the reflection, which is the intended meaning.
+2. **g127 DEN SJUNDE AV FYRA:** intentional. The odd arithmetic of the riddle is fixed in GLOSSARY §4 so that Adso can answer JAG FÖRSTÅR INTE. The solution DEN FÖRSTA OCH SJUNDE BOKSTAVEN I QUATUOR still points clearly to Q and R, so the player information in GLOSSARY §1.11 is intact.
+3. **g128 DU, then NI/ER:** this is the documented exception in GLOSSARY §2.1 and §2.2. The Spanish AQUÍ TENÉIS VUESTRO PREMIO is just as ambiguous (polite singular or plural), so the Swedish keeps both the switch and the ambiguity.
+4. **g130 COENA CYPRIANI AV ARISTOTELES:** the factual oddness is in the original game (ES LA COENA CYPRIANI DE ARISTÓTELES), and the Swedish renders it faithfully. Not a translation error.
+5. **g132 (vague "good idea"):** the Spanish FUE UNA BUENA IDEA ¿VERDAD? is equally vague, so the Swedish is faithful.
+
+**The other differences are natural rewording or documented choices, so I did not report them:**
+- **g126:** the second INGENIOSA is varied as FYNDIG, and the last sentence is recast. Both are documented in the note.
+- **g127:** the FINIS AFRICAE apposition, the gloss PÅ TJUGOFYRA TRONER and BOKSTAVEN are all documented.
+- **g129:** NI ÄR EN DÖD MAN is a fixed phrase.
+- **g130:** the future and past tenses are documented, and ESCRITA (written) is folded into FILOSOFENS VARJE ORD.
+- **g131:** UTAN DEM is documented. ROBASTE (tú) is kept as NI, as GLOSSARY §2.1 requires. UN DÍA, HACE MUCHO TIEMPO is shortened to FÖR LÄNGE SEDAN, which is natural rewording.
+- **g133:** GOLPEADO becomes SLAGIT OMKULL, which is what happened, since the oil spills.
+- **g135:** LO CONSEGUIMOS becomes VI KOM UNDAN, which is the same meaning in the fire scene.
+- **g139:** RECIENTE becomes NYGRÄVD.
+- **g141:** JUNTO A becomes BLAND.
+- **g143:** SUELO becomes MARKEN, which suits the outdoor pigpen. SACARON becomes DROG UPP, and PODRÁN becomes KAN ... LÄNGRE.
+- **g144:** MISTERIO becomes GÅTAN, a fixed phrase that matches the end screen.
+
+**Address and player information:**
+- All address pairs follow the matrix in GLOSSARY §2.2. Guillermo says DU to Adso (g126). Jorge says DU to Adso (g130). Guillermo, Adso and Jorge say NI to each other, with the one documented DU opening in g128.
+- The player information is kept: the mirror keys in g127, the gloves and poison in g129 and g131, and the instruction in g144.
+
+### c12 (es): g145–g163 (19 messages)
+
+- **g145:** @1 MAESTRO, ¿QUIÉN ES UBERTINO?@0 ES UNO DE LOS PADRES ESPIRITUALES DE NUESTRA ORDEN. _ PARA MUCHOS ES UN SANTO; PARA OTROS, UN HEREJE QUE MERECE ARDER EN LA HOGUERA.
+- **g146:** @0 ESTA ES LA CÁMARA DE LAS RELIQUIAS; AHÍ DENTRO SE GUARDAN LOS MAYORES TESOROS DE LA ABADÍA. _ ALGUNOS LOS TRAJERON MONJES QUE VIAJARON HASTA EL FIN DEL MUNDO.
+- **g147:** @0 AQUÍ SE ARROJAN LOS DESPERDICIOS DE LA ABADÍA AL ESTERCOLERO. _ EL HEDOR ES INSOPORTABLE.
+- **g148:** @1 TENGO TANTO FRÍO, MAESTRO.@0 YO TAMBIÉN, ADSO. ESTA HUMEDAD CALA HASTA LA MÉDULA.
+- **g149:** @0 ESTE LIBRO CONTIENE OBRAS DEL HERMANO FRANCISCO DE AVILÉS. _ VERDADERAMENTE SE ADELANTÓ A SU TIEMPO. _ SU BUEN AMIGO, EL HERMANO JUAN, ADORNÓ EL LIBRO CON EXQUISITAS MINIATURAS.
+- **g150:** @0 EL LIBRO ESTÁ ABIERTO POR UNA HOMILÍA DE SAN GREGORIO.
+- **g151:** @0 DESDE AQUÍ ME OIRÍAN EN TODA LA NAVE CENTRAL.
+- **g152:** @0 DESDE AQUÍ VEO LA PUERTA DE LA ABADÍA Y EL HUERTO DE SEVERINO.
+- **g153:** @0 AL PIE DE LA ABADÍA SE VE UNA PEQUEÑA ALDEA ARROPADA POR LA NIEVE.
+- **g154:** @0 ESTA CHIMENEA SIRVE PARA CALDEAR EL SCRIPTORIUM. _ EL CALOR SUBE AL PISO SUPERIOR Y SE EXTIENDE POR ÉL.
+- **g155:** @0 HERMANO, HE CONSEGUIDO ALGO CON LO QUE QUIZÁ PUEDAS CORTAR CRISTAL.@13 AHORA MISMO NO TENGO TIEMPO DE AYUDAROS. _ BUSCADME EN EL TALLER DESPUÉS DE LA COMIDA.
+- **g156:** @1 MAESTRO, ¿QUÉ PIEDRA ES ESA QUE BRILLA TANTO?@0 ES UN DIAMANTE, ADSO. ES LA SUSTANCIA MÁS DURA QUE SE CONOCE. _ NICOLA PODRÍA CORTAR LOS CRISTALES CON ÉL.
+- **g157:** @0 ESTA ABADÍA ES MARAVILLOSAMENTE HERMOSA, HERMANO. Y ESTÁ TAN SABIAMENTE DISPUESTA.@8 ASÍ ES. EL CORO Y EL ALTAR MIRAN A ORIENTE. _ DE ESTE MODO, AL ALBA, EL SOL DESPIERTA A LOS MONJES EN SUS CELDAS.
+- **g158:** @8 ESTE ES EL CLAUSTRO. _ UN LUGAR SERENO PARA EL PASEO Y LA CONTEMPLACIÓN.
+- **g159:** @8 MÁS TARDE CONOCERÉIS AL RESTO DE LOS MONJES DE LA ABADÍA. _ AHORA ESTÁN OCUPADOS EN SUS QUEHACERES.@0 COMPRENDO.@8 YA CASI HEMOS LLEGADO.
+- **g160:** @0 ¿LO OYES, ADSO?@1 SÍ, MAESTRO.@0 POR ALGUNA EXTRAÑA RAZÓN, ESTA MELODÍA ME RESULTA FAMILIAR.
+- **g161:** @0 ¡DATE PRISA, ADSO! _ ¡EL TECHO ESTÁ CEDIENDO! _ PUEDE DERRUMBARSE SOBRE NOSOTROS EN CUALQUIER MOMENTO.@1 LO INTENTO, MAESTRO... _ PERO APENAS PUEDO RESPIRAR CON TANTO HUMO.
+- **g162:** @0 ALEJÉMONOS DE ESTE LUGAR ANTES DE QUE SEA DEMASIADO TARDE.
+- **g163:** @1 MAESTRO, ¿HABÉIS ESTADO ENAMORADO ALGUNA VEZ?@0 ¿ENAMORADO? _ SÍ, MUCHAS VECES.@1 ¿DE VERAS?@0 NATURALMENTE. _ DE ARISTÓTELES, DE OVIDIO, DE VIRGILIO...@1 NO, NO, NO... QUIERO DECIR DE UNA...@0 AH... ¿NO ESTARÁS CONFUNDIENDO EL AMOR CON LA LUJURIA?@1 QUIZÁ. _ NO LO SÉ. _ SOLO QUIERO SU BIEN. _ QUIERO QUE SEA FELIZ. _ QUIERO SACARLA DE LA POBREZA.@0 ¡SANTO CIELO! _ ¡ESTÁS ENAMORADO!@1 ¿Y ESTÁ MAL? _ ¿QUÉ OPINÁIS, MAESTRO?@0 BUENO... CLARO QUE YO NO TENGO TU EXPERIENCIA DE LA QUE ECHAR MANO. _ PERO ¿IBA DIOS A CREAR A LA MUJER, POR IMPURA QUE SEA, SIN VIRTUD ALGUNA? _ ME CUESTA CREERLO. _ QUÉ APACIBLE SERÍA LA VIDA SIN AMOR, ADSO. _ QUÉ SEGURA. _ QUÉ SERENA. _ Y QUÉ ABURRIDA.
+
+*Flagged as unclear (6):*
+
+- g152: "SEVERINUS ÖRTAGÅRD": genitive of a name ending in -s written without an apostrophe ("Severinus'"), so it reads at first like the bare name. The name is rendered with the Spanish form Severino.
+- g155: Asymmetric address: William says "DU" to the brother, but the brother answers with "ER". "ER" could be polite singular (to William) or plural (William and Adso). It is kept as "ayudaros"/"buscadme", which fits both readings.
+- g155: "MÅLTIDEN" does not say which meal (dinner/supper); rendered generically as "la comida".
+- g156: "GLASEN" (definite plural): it is not clear whether this means glass pieces/panes or the lenses for William's spectacles. Rendered as "LOS CRISTALES", which keeps the same ambiguity.
+- g157: Logical jump: "KORET OCH ALTARET VETTER MOT ÖSTER. _ PÅ SÅ VIS VÄCKER SOLEN I GRYNINGEN MUNKARNA I CELLERNA". Which way the choir and altar face would not explain the sun waking the monks in their cells.
+- g163: "JAG HAR FÖRSTÅS INTE DIN ERFARENHET ATT ÖSA UR": the tone is unclear. It may be gentle irony (as if the novice were the experienced one), or it may imply that Adso really has experience. The literal sense is kept.
+
+**Meaning check** (`es-meaning:c12`, 0/0/0 must/should/nit):
+
+I found no real meaning differences in g145 to g163, so there is no must, should or nit to report. I compared each back-translation with the Spanish from `show` and checked the Swedish rows in translation/strings_sv.tsv, docs/GLOSSARY.md and docs/DECISIONS.md. Everything that differs is natural rewording or a documented choice:
+- g145 BÖR BRÄNNAS for LO HARÍAN QUEMAR.
+- g148 ÄNDA IN I MÄRGEN.
+- g149 VERK AV, and PRYTT BOKEN MED MINIATYRER (row note, §7.1 REALIZAR).
+- g150 UPPSLAGEN PÅ (row note).
+- g157 SÅ KLOKT ANLAGT and CELLERNA (row note, §3.4, §12, D12 tick cap).
+- g158 and g159 (length-capped wording fixed in §1.9).
+- g163 KVINNAN, SÅ OREN HON ÄN ÄR and UTAN ALL DYGD (row note), VORE (§1.3), MILDA MAKTER (§1.6) and VÄLLUST (§7).
+Address matches the §2.2 matrix in every row. The one piece of player information, where and when to meet Nicola in g155 (VERKSTADEN, EFTER MÅLTIDEN), is kept.
+
+My verdicts on the items the back-translator found unclear:
+- **g152 SEVERINUS ÖRTAGÅRD:** correct Swedish. Leaving the -S ending without an apostrophe is the documented rule (GLOSSARY §3.1 point 3, §3.4, and §1.8 bans apostrophes). SEVERINUS is the fixed name (§3.2). No issue.
+- **g155 DU/ER asymmetry:** this is exactly the §2.2 matrix: Guillermo says DU to Nicola, and Nicola says NI to Guillermo. ER is ambiguous between one person and two in the same way as the Spanish ATENDEROS / ID.
+- **g155 EFTER MÅLTIDEN:** a fixed §7 phrase row. The Spanish LA COMIDA is just as generic; no message has CENA. The message plays at day-6 TERCIA, so the next meal is the only reading. No issue.
+- **g156 GLASEN:** a fixed §7.1 term for the lens pieces to grind or cut. The player has already met it in g87 and g98 (GE GLASEN RÄTT FORM, PASSA IN GLASEN I BÅGEN), and g123 uses it again. Clear in context.
+- **g157, the jump from the altar facing east to the sun waking the monks:** the gap is in the source itself (es DE ESA FORMA, en THIS WAY, fr AINSI). The Swedish PÅ SÅ VIS reproduces it faithfully. The row is also capped by D12 at 215 ticks. Not a translation fault.
+- **g163 JAG HAR FÖRSTÅS INTE DIN ERFARENHET ATT ÖSA UR:** the double reading is in the Spanish NO GOZO DEL BENEFICIO DE TU EXPERIENCIA. It is Guillermo's dry irony after Adso's night with the girl, and it fits his voice in GLOSSARY §1.1, which cites g163 for his occasional wit. ÖSA UR is an established Swedish idiom (ösa ur sin erfarenhet). Tone kept. No issue.
+
+### u01 (es): g2, g3, g13, g16, g25–g30, g32, g38, g40–g42, g44–g48 (20 messages)
+
+- **g2:** DEJAD EL MANUSCRITO DE VENANCIO, O EL ABAD SE ENTERARÁ.
+- **g3:** DADME EL MANUSCRITO, FRAY GUILLERMO.
+- **g13:** @2 ESCUCHAD, HERMANO. HE ENCONTRADO UN LIBRO EXTRAÑO EN MI CELDA.
+- **g16:** @1 ¿DORMIMOS, MAESTRO?
+- **g25:** @3 VENID, FRAY GUILLERMO. DEBEMOS ENCONTRAR A SEVERINO.
+- **g26:** @3 DIOS SANTO... ALGUIEN HA ASESINADO A SEVERINO Y LO HA ENCERRADO.
+- **g27:** @3 BERNARDO ABANDONARÁ HOY LA ABADÍA.
+- **g28:** @3 MAÑANA ABANDONARÉIS LA ABADÍA.
+- **g29:** @4 ERA VERDAD. TENÍA LA FUERZA DE MIL ESCORPIONES.
+- **g30:** @3 MALAQUÍAS HA MUERTO.
+- **g32:** @2 ES MUY EXTRAÑO, FRAY GUILLERMO. _ BERENGARIO TENÍA MANCHAS NEGRAS EN LA LENGUA Y EN LOS DEDOS.
+- **g38:** @2 ESPERAD, HERMANO.
+- **g40:** @3 QUIERO QUE CONOZCÁIS AL HOMBRE MÁS ANCIANO Y SABIO DE LA ABADÍA.
+- **g41:** @3 VENERABLE JORGE, ANTE VOS ESTÁ FRAY GUILLERMO, NUESTRO HUÉSPED.
+- **g42:** @7 SED BIENVENIDO, VENERABLE HERMANO, Y ESCUCHAD LO QUE OS DIGO. _ EL ANTICRISTO SE ACERCA LENTAMENTE Y POR CAMINOS TORTUOSOS. _ LLEGA CUANDO MENOS SE ESPERA. NO DESPERDICIÉIS LOS ÚLTIMOS DÍAS.
+- **g44:** @4 SI ASÍ LO DESEÁIS, BERENGARIO OS MOSTRARÁ EL SCRIPTORIUM.
+- **g45:** AQUÍ TRABAJAN LOS MEJORES COPISTAS DE OCCIDENTE.
+- **g46:** AQUÍ TRABAJABA VENANCIO.
+- **g47:** @2 VENERABLE HERMANO, _ SOY SEVERINO, EL ENCARGADO DEL HOSPITAL. _ QUIERO ADVERTIROS: EN NUESTRA ABADÍA OCURREN COSAS MUY EXTRAÑAS. _ ALGUIEN NO QUIERE QUE LOS MONJES DECIDAN POR SÍ MISMOS LO QUE DEBEN SABER.
+- **g48:** @1 S : SÍ * N : NO
+
+*Flagged as unclear (5):*
+
+- g2: "LÄMNA" can mean either 'leave (it alone / put it down)' or 'hand over'; translated as 'DEJAD' (leave), which keeps a similar ambiguity.
+- g2: "VENANTIUS MANUSKRIPT": the genitive of a name ending in -s has no ending or apostrophe. That is acceptable Swedish, but 'Venantius'' would read more clearly.
+- g13: "LYSSNA" has no pronoun, so the form of address is not marked. Vos was used because speaker @2 says ER to William elsewhere.
+- g29: "DEN HADE TUSEN SKORPIONERS KRAFT": the line does not say what 'DEN' (it) is, presumably the book or its poison. The Spanish 'TENÍA' leaves it unstated too.
+- g48: "J : JA": the key letter J comes from the Swedish word JA. In Spanish it becomes S (SÍ), so the game's yes key must also be changed from J to S, or this label will not match the key.
+
+**Meaning check** (`es-meaning:u01`, 0/0/0 must/should/nit):
+
+I found no real meaning differences in the 20 rows. None of them are shown in the game: FORMAT.md §1.6 lists all 20 as never displayed (left over from the 1987 table). The back-translation matches the original Spanish in facts, tense, who does what, tone and address. The differences that remain are documented choices or natural rewording:
+- g2 uses the fixed GLOSSARY variant ANNARS SKA ABBOTEN FÅ VETA DET.
+- g27 and g28 are fixed phrases (BERNARDO LÄMNAR KLOSTRET I DAG; I MORGON SKA NI LÄMNA KLOSTRET).
+- g42's rebuilt Antichrist clause is explained in its note column. Its LO ESPERAS becomes MAN, as the generic-tú rule in GLOSSARY §2.1 says. LOS ÚLTIMOS DÍAS is kept as ambiguous as the Spanish on purpose.
+- g47 renders ESTA ABADÍA as VÅRT KLOSTER, the host form in GLOSSARY §3.4. The vocative gets its own page, and the note explains why.
+- g46's past tense ARBETADE follows the Spanish TRABAJABA. The English present WORKS differs.
+- Address follows the §2.2 matrix: Severino, the Abbot, Malaquías and Jorge use NI to Guillermo, and the Abbot uses NI to Jorge in g41. ÄREVÖRDIGE appears only with NI.
+
+The back-translator's unclear items:
+- g2, LÄMNA: bare LÄMNA + object reads as 'leave (it)', which is what DEJAD means. The Genitive VENANTIUS with no -s and no apostrophe is the documented rule for names ending in -us (as with SEVERINUS). Not a defect.
+- g13, LYSSNA: Swedish imperatives carry no pronoun. GLOSSARY §2.1 says this explicitly, and the BRODER vocative matches §2.2 for this pair. Not a defect.
+- g29, DEN: this is the fixed phrase also used in g119, and glossary.tsv says 'DEN = the book'. In g119 the context (HAN HADE SAGT DET TILL MIG...) points to the book, just as the Spanish null subject does. Not a defect.
+- g48, J : JA: this concern is about the back-translator's own Spanish text, not the Swedish. J : JA * N : NEJ is natural Swedish. GLOSSARY §1.7 item 5 fixes it, and the message is never displayed, so no key ever has to match it. Not a defect.
+
+Nothing needed fixing, so no fix needed a check with translate_tool.py pages. No files were edited.
+
+### ui (es): the UI rows that have text (29)
+
+The Swedish as stored and its back-translation, in quotes to show any edge spaces:
+
+| Row | Swedish | Back-translation |
+|---|---|---|
+| a0 | `"DU HAR LÖST"` | `"HAS RESUELTO EL"` |
+| a1 | `" PROCENT"` | `" POR CIENTO"` |
+| a2 | `"AV GÅTAN"` | `"DEL ENIGMA"` |
+| a3 | `"TRYCK PÅ MELLANSLAG"` | `"PULSA ESPACIO"` |
+| b0 | `" NATT  "` | `" NOCHE "` |
+| b1 | `" PRIM  "` | `" PRIMA "` |
+| b2 | `" TERS  "` | `"TERCIA "` |
+| b3 | `" SEXT  "` | `" SEXTA "` |
+| b4 | `"  NON  "` | `"  NONA "` |
+| b5 | `"VESPER "` | `"VÍSPERAS"` |
+| b6 | `"NATTBÖN"` | `"COMPLETAS"` |
+| c0 | `"AV"` | `"NO"` |
+| c1 | `"PÅ"` | `"SÍ"` |
+| d0 | `"KLASSISK STYRNING"` | `"CONTROL CLÁSICO"` |
+| d1 | `"RIKTNINGSSTYRNING"` | `"CONTROL DIRECCIONAL"` |
+| e0 | `"RÖSTER, EFFEKTER"` | `"VOCES, EFECTOS"` |
+| e1 | `"EFFEKTER"` | `"EFECTOS"` |
+| e2 | `"AV"` | `"NO"` |
+| f0 | `"FORTSÄTT"` | `"CONTINUAR"` |
+| f1 | `"SPARA SPEL"` | `"GUARDAR PARTIDA"` |
+| f2 | `"LADDA SPEL"` | `"CARGAR PARTIDA"` |
+| f3 | `"LJUD: "` | `"SONIDO: "` |
+| f4 | `"MUSIK: "` | `"MÚSICA: "` |
+| f6 | `"HELSKÄRM: "` | `"PANTALLA COMPLETA: "` |
+| f7 | `"VISA INDIKATORER: "` | `"MOSTRAR INDICADORES: "` |
+| f8 | `"STARTA OM"` | `"REINICIAR"` |
+| f9 | `"AVSLUTA"` | `"SALIR"` |
+| w.t[4] | `"DAG "` | `"DÍA "` |
+| w.u[4] | `"TOM"` | `"VACÍO"` |
+
+*Flagged as unclear in one list beside the lines (7); the meaning check did not see these (§4.2):*
+
+- "TOM" (w.u4) is ambiguous: it can mean "empty" (for example an empty save slot or empty hand) or be the name Tom. I translated it as "VACÍO". If it describes a feminine noun, such as "ranura" (slot), it would need to be "VACÍA".
+- "AV" (c0, e2) can mean "off" or "of". From the context (it is paired with "PÅ" and is an option for "LJUD"), it is read as an off setting and rendered "NO". "DESACTIVADO" would be the longer alternative.
+- The hour labels (b0-b6) are padded with spaces to a fixed width of 7 characters. "VÍSPERAS" (8) and "COMPLETAS" (9) are longer than that and may need abbreviating (for example "VÍSPERA" or "COMPLET.") if the field cannot grow.
+- "NATTBÖN" (literally "night prayer") is an unusual Swedish name for Compline (usually "completorium"). I translated it as the standard Spanish canonical hour "COMPLETAS".
+- "NATT" as the first canonical hour is non-standard (Matins or Vigils would be expected). I kept it as "NOCHE".
+- a0-a2 form one sentence split around a number ("DU HAR LÖST [n] PROCENT AV GÅTAN"). The Spanish keeps this split, "HAS RESUELTO EL [n] POR CIENTO DEL ENIGMA", and keeps the leading space in a1.
+- There is no f5 line: the menu numbering jumps from f4 to f6. This may be intentional.
+
+**Meaning check** (`es-meaning:ui`, 0/0/0 must/should/nit):
+
+I found no real meaning differences in the 28 UI rows: no must, should or nit. The back-translation matches the original Spanish on every row once the documented choices are taken into account, and I suggest no Swedish changes.
+
+I checked each row against translation/strings_sv.tsv, GLOSSARY §5 and §6, and DECISIONS D8, D9 and D11 (unit x01). I also checked what the menu options actually do in the decompiled code (work/decompiled_cfr/abadia/w.java, h_0.java and e_0.java).
+
+- **a0–a3** (end screen): DU HAR LÖST / N PROCENT / AV GÅTAN / TRYCK PÅ MELLANSLAG. The back-translator wrote ENIGMA where the Spanish says INVESTIGACIÓN. That shift is the deliberate GÅTAN choice in GLOSSARY §6.1, chosen to match g144 LÖSA GÅTAN. The player still learns how much of the case they solved.
+- **b0–b6** (HUD hours): NATT, PRIM, TERS, SEXT, NON, VESPER and NATTBÖN all came back as the right Spanish hours, including NATTBÖN as COMPLETAS. They follow GLOSSARY §5.1 and D8.
+- **c0, c1, e2**: the back-translator rendered AV/PÅ as NO/SÍ, and in the sound row AV comes back as NO where the Spanish says SILENCIO. LJUD: AV means the sound is off, so the player gets the same information.
+- **d0, d1**: KLASSISK STYRNING and RIKTNINGSSTYRNING came back as CONTROL CLÁSICO and CONTROL DIRECCIONAL, matching the Spanish row. The empty f5 label is the documented choice in D9 and §6.3.
+- **e0, e1**: RÖSTER, EFFEKTER and EFFEKTER match VOCES,SFX and SFX. The option order makes EFFEKTER (effects only) clear.
+- **f0–f4, f6, f8, f9**: these are natural Swedish menu labels.
+  - STARTA OM leaves out the Spanish word for "game" in REINICIAR PARTIDA. In a pause menu it is natural, and English shortens it the same way (RESTART).
+  - AVSLUTA is correct: row 9 closes the program (it calls System.exit(0)).
+- **f7**: VISA INDIKATORER came back as MOSTRAR INDICADORES, against the Spanish MOSTRAR EXTRAS. This is the documented choice in §6.3, and it is accurate. The code shows the switch only controls on-screen displays (the lamp gauge and two overlay icons), so the player loses nothing.
+- **w.t4, w.u4**: DAG and TOM match DÍA and VACÍO, as in §5.3 and §6.4.
+
+The back-translator flagged nothing as unclear in this batch. Earlier rounds flagged RIKTNINGSSTYRNING and INDIKATORER, and both still read clearly to a Swedish player, as D11 concluded.
+
+### perg1 (es): intro parchment (pergamino1), 17 paragraphs and credits lines
+
+- **p1:** Mi vida de pecador toca ya a su fin, y espero el momento en que habré de perderme en el abismo sin fondo de la divinidad desierta y silenciosa; en esta celda de mi querido monasterio de Melk, donde aún me retiene mi cuerpo enfermo y pesado, me dispongo a consignar en este pergamino los hechos asombrosos y terribles que me fue dado presenciar en mi juventud.
+- **p2:** Quiera el Señor concederme la gracia de dar fiel testimonio de lo que sucedió en la abadía, cuyo solo nombre conviene ahora cubrir con el piadoso manto del silencio; fue hacia finales del año 1327 cuando mi padre decidió que yo acompañara a fray Guillermo de Occam, un sabio franciscano que estaba a punto de emprender una misión durante la cual habría de visitar muchas ciudades famosas y antiquísimas abadías. Así fue como llegué a ser a la vez su amanuense y su discípulo; y nunca hube de arrepentirme, pues a su lado fui testigo de hechos dignos de quedar por escrito, como memoria para quienes vengan después de nosotros.
+- **p3:** Mientras así, día tras día, iba conociendo mejor a mi maestro, llegamos al pie del monte donde se alzaba la abadía. Y ya es hora de que mi relato, como hicimos nosotros entonces, ascienda hasta allí; que no me tiemble la mano ahora que me dispongo a narrar lo que sucedió después...
+- **p4:** Basado en el juego de
+- **p5:** Paco Menéndez
+- **p6:** Juan Delcán
+- **p7:** Programación:
+- **p8:** Manuel Pazos
+- **p9:** Gráficos:
+- **p10:** Daniel Celemín
+- **p11:** Música:
+- **p12:** David Cañadas
+- **p13:** En memoria
+- **p14:** de
+- **p15:** Paco Menéndez
+- **p16:** y
+- **p17:** Umberto Eco
+
+*Flagged as unclear (4):*
+
+- p2: "broder Vilhelm av Occam": in Eco's novel the friar is William of Baskerville; "Occam" comes from the original game, so I kept it and rendered the name as "fray Guillermo de Occam".
+- p3: "liksom vi den gången" leaves out the verb ("as we [did] that time"). It reads as intended, but the ellipsis is a bit abrupt in Swedish.
+- p4: "Efter spelet av" literally means "after the game by". I read it as "based on the game by", but in Swedish it could also be taken as "after (following) the game".
+- p13: "Till minne" / "av" is one phrase ("Till minne av" = "In memory of") split over two lines (p13 and p14). I translated it as "En memoria" / "de" so it splits the same way.
+
+**Meaning check** (`es-meaning:perg1`, 0/0/0 must/should/nit):
+
+I found no real meaning differences in pergamino1. I compared each back-translated segment with the Spanish (work/jar/res/es/pergamino1) and the Swedish (translation/pergamino1_sv.txt), and checked en/fr/it where the meaning needed it. The parchment has no rows in strings_sv.tsv.
+
+Paragraph 1 keeps every fact: the end of his life, waiting to lose himself in the abyss of the divinity, the cell at Melk, the heavy and sick body, the record on the parchment, and the events he witnessed in his youth. 'Nu lider mitt syndiga liv mot sitt slut' for 'Ya al final de mi vida de pecador' is natural rewording.
+
+Paragraph 2 has the same facts as the Spanish: the abbey whose very name should be veiled ('vars blotta namn' keeps the 'incluso'), late 1327, his father's decision, Vilhelm av Occam as a learned Franciscan, the mission to famous cities and ancient abbeys, scribe and disciple, no regret, and the events worth recording for those who come after. 'Må Herren ge mig nåden' is a wish, while the Spanish has the plain statement 'El Señor me concede'. This is not reported because it is a deliberate, documented choice: the change was made in whole-game pass 1 (docs/TRANSLATION_REVIEW.md, perg1), and fr ('Que le Seigneur m'accorde'), it ('E Dio mi conceda') and Eco also use the wish form.
+
+Paragraph 3 keeps every fact. 'söker sig dit upp' for 'a ella se acerque' is a documented choice: TRANSLATION_REVIEW.md perg1 declined the literal 'närmar sig det' because 'det' could point to 'berget'. 'må min hand inte darra' is set by GLOSSARY §9.1. The credits match the Spanish name for name and role for role.
+
+The back-translator's unclear points:
+(1) 'broder Vilhelm av Occam' is the game's own naming, documented in GLOSSARY §4 and §9.1. It is not an error.
+(2) 'liksom vi den gången' is an idiomatic elliptical comparison in literary Swedish. It mirrors the verbless Spanish 'como nosotros entonces' and is not unclear for a Swedish reader.
+(3) 'Efter spelet av' is the established Swedish credit idiom for 'based on' ('efter en roman av'), documented in GLOSSARY §8/§9.1 and DECISIONS.md. A reader will not take it as 'after' in time, since it heads a credits block.
+(4) 'Till minne' / 'av' is split and centred on purpose, to mirror the Spanish 'Dedicado a la memoria' / 'de' line for line (TRANSLATION_REVIEW.md perg1). It reads naturally as one phrase.
+
+No address (vos/tú) or player-information issues apply to this text.
+
+### perg2 (es): ending parchment (pergamino2), 16 paragraphs and credits lines
+
+- **p1:** La abadía ardió durante tres días y tres noches, y todo esfuerzo por apagar el fuego fue en vano. Al tercer día, después de haber atendido a los heridos y de haber dado sepultura a los cadáveres que habían quedado fuera de los edificios, los monjes y los demás habitantes de la abadía recogieron sus pertenencias y abandonaron la meseta, todavía humeante, como un lugar maldito.
+- **p2:** Guillermo y yo nos alejamos de allí montados en dos caballos que habíamos encontrado en el bosque. Al llegar a Baviera, entre amargas lágrimas, tuve que separarme de mi buen maestro.
+- **p3:** Después de darme muchos buenos consejos para mis futuros estudios, me estrechó entre sus brazos, con la ternura de un padre, y se despidió. Nunca más volví a verlo.
+- **p4:** Ahora, ya en el umbral de la muerte, leo una y otra vez el relato que ha nacido de todo esto, y cuanto más lo leo, menos sé si encierra un designio que pueda distinguirse de la mera sucesión natural de los acontecimientos y de los momentos que los enlazan. Y es duro para este viejo monje no saber si las palabras que ha escrito encierran algún sentido oculto, o más de uno, o muchos, o ninguno.
+- **p5:** Pero esta incapacidad es quizá consecuencia de la sombra que la gran oscuridad que se avecina proyecta sobre este mundo ya envejecido.
+- **p6:** Hace frío en el scriptorium, me duele el pulgar. Dejo este escrito, no sé para quién, este escrito, ya no sé de qué trata.
+- **p7:** F I N
+- **p8:** Basado en el juego de
+- **p9:** Paco Menéndez
+- **p10:** Juan Delcán
+- **p11:** Programación:
+- **p12:** Manuel Pazos
+- **p13:** Gráficos:
+- **p14:** Daniel Celemín
+- **p15:** Música:
+- **p16:** David Cañadas
+
+*Flagged as unclear (3):*
+
+- p4: "läser jag om och om igen" – "läser om" could in principle be read as "read about" rather than "re-read"; context makes "read again and again" the clear meaning.
+- p6: "Jag lämnar denna skrift, jag vet inte åt vem, denna skrift, jag vet inte längre vad den handlar om." – comma-spliced and repetitive. This looks deliberate (it mirrors the ending of Eco's novel), so the Spanish keeps the same broken rhythm.
+- p8: "Efter spelet av" – this could mean "based on the game by" or "after the game, by". In a credits list it most likely means "based on the game by", so it was translated that way.
+
+**Meaning check** (`es-meaning:perg2`, 0/0/0 must/should/nit):
+
+The Swedish ending parchment says the same thing as the original Spanish. I found no meaning differences to report. I compared all 16 segments with the es pergamino2 and with translation/pergamino2_sv.txt.
+
+Checked and not reported:
+- p1: es 'de nada valieron los últimos esfuerzos' became 'all möda att släcka elden var förgäves'. This drops 'últimos' (final) and adds 'att släcka elden'. It is a deliberate fix from whole-game pass 1, logged in docs/TRANSLATION_REVIEW.md under perg2. That pass found the earlier 'De sista ansträngningarna' vague, and the meaning stays the same (the effort to save the abbey failed).
+- p2: 'Munich' became 'Bayern'. This is documented in DECISIONS D10 and GLOSSARY §9.4. 'cabalgaduras' (mounts) became 'hästar', which is natural rewording.
+- p3, p5: the facts, tense and who does what are kept, and the elegiac tone matches.
+- p4: the restructured sentence ('läser jag om och om igen … och ju mer jag läser, desto mindre vet jag') keeps 'cuanto más releo …, menos sé'. 'Redan' keeps 'ya'. The 'mönster'/'tidsföljden' wording was settled in rounds 1–2. The back-translator flagged 'läser … om': it is not unclear. 'om och om igen' is a fixed phrase, and either reading means re-reading over and over.
+- p6: the comma-spliced repetition ('Jag lämnar denna skrift, jag vet inte åt vem, denna skrift, jag vet inte längre vad den handlar om') follows the Spanish structure. GLOSSARY §9.1 requires it, and 'lämna åt' is idiomatic. It is not unclear.
+- p7: 'S L U T' for 'F I N', as GLOSSARY §9.1 sets.
+- p8: the back-translator found 'Efter spelet av' unclear. It is the documented credit idiom (DECISIONS D11, GLOSSARY §9.1). The intro credit screens already use the same wording ('efter spelet av / Paco Menéndez / och Juan Delcán'), so the player meets it at the start. 'Efter … av' + names is standard Swedish for 'based on … by', so it is neither unclear nor wrong.
+- p9–p16: the names and the credit labels (Programmering, Grafik, Musik) are correct.
+
+There is no vos/tú address in this text, and it carries no player information (GLOSSARY §1.11). Since there are no issues, I did not need to check any fix with `pages`.

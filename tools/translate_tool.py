@@ -302,6 +302,9 @@ def cmd_extract(a):
 
 
 def cmd_apply(a):
+    import fcntl
+    lockf = open(pathlib.Path(a.tsv).with_suffix(".tsv.lock"), "w")
+    fcntl.flock(lockf, fcntl.LOCK_EX)   # parallel fixers: read-modify-write the TSV one at a time
     rows = lint_strings.read_tsv(a.tsv)
     by_key = {(r["array"], int(r["index"])): r for r in rows}
     _, crow = read_chunk(a.file)

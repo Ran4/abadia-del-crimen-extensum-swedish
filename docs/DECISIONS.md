@@ -320,9 +320,11 @@ whose full record is `docs/TRANSLATION_REVIEW.md`.
     c11's last editor rounds kept one should, a `check_glossary.py` false positive (the comment
     `(g127)` in the `FINIS AFRICAE` row's note was read as an index). It was cleared at the end
     (`finalfix:c11`) by naming `FINIS AFRICAE` in g127 as an apposition.
-  - **Deviation from the brief:** the brief asks for a back-translation into Spanish. The
-    back-translator wrote literal English (with NI and DU marked), and the meaning check compared
-    that with the Spanish.
+  - **Back-translation language:** the brief asks for a back-translation into Spanish. In this loop
+    (and in the Phase F re-review and unit x01) the back-translator wrote literal English, with NI
+    and DU marked, and the meaning check compared that with the Spanish. The Spanish
+    back-translation now exists for every unit: Phase F2 (below) made it from the final text. The
+    English back-translations stay documented as an extra pass.
 - **Phase C, the whole game.**
   - Two game-order consistency passes over the merged TSV (`consistency:r1`, `r2`): one nit each
     (g96, g95), no must or should.
@@ -341,7 +343,7 @@ whose full record is `docs/TRANSLATION_REVIEW.md`.
   Swedish-language critic and a constraints critic), D8 and D9 settle NATTBÖN and `f[5]`, and the
   Phase E language critic read every row rendered and live. Phases B to E made no back-translation
   of these rows, and the game-order consistency pass read only `g`. The Phase F final verification
-  closed that gap (unit x01, below).
+  closed that gap (unit x01, below), and Phase F2 back-translated them into Spanish.
 - **After the whole-game passes:** the g127 apposition (`finalfix:c11`, above) was the last Phase C
   edit. No Phase C pass saw it; the Phase E language critic did.
 - **Phase E (`wf_dcee03f1-9e3`).** The language critic read every string, both parchments and all
@@ -365,8 +367,8 @@ whose full record is `docs/TRANSLATION_REVIEW.md`.
   and g149.
   - The editor pass included consistency with the rest of the game: the hour names occur in no
     `g` message or parchment; DAG, GÅTAN and TRYCK match the HUD image, g144 and `pulsa`.
-  - The blind back-translation was made by a separate Claude Code process started with every tool
-    disabled (`claude -p --tools "" --safe-mode --no-session-persistence`). It saw only the Swedish
+  - The blind back-translation (into English) was made by a separate Claude Code process started
+    with every tool disabled (`claude -p --tools "" --safe-mode --no-session-persistence`). It saw only the Swedish
     lines and where each UI text appears on screen.
   - The meaning check compared that back-translation with es.
   - Result: editor 0/0/0 and meaning 0/0/0 must/should/nit. The back-translator flagged 7 segments
@@ -375,6 +377,29 @@ whose full record is `docs/TRANSLATION_REVIEW.md`.
     documented glossary decision. The loop was clean in one round and no row changed.
   - **Deviation:** the editor and the meaning checker were one agent; only the back-translator was a
     separate, blind reader. Details are in `docs/TRANSLATION_REVIEW.md` §3.4.
+- **Phase F2, the Spanish back-translation (`wf_b66191f2-dd4`).** The back-translation into Spanish
+  that the brief asks for, made from the final text (the TSV and parchments at commit `99c3661`)
+  for all 16 units: c01–c12 and u01 as in Phase C, the 29 UI rows that have text (all but g0, f5
+  and `E.h[4]`, as for x01) and both parchments. TRANSLATION_REVIEW §4 and Appendix C hold the
+  whole record, including every back-translation.
+  - Per unit: `read:<unit>` returned the unit's Swedish unchanged (`translate_tool.py extract`; a
+    parchment's paragraphs with the hand-wrapping undone). `es-backtr:<unit>` was a separate agent
+    given only those lines and told to read no files, run no commands and use no web; it translated
+    them into Spanish (NI as vos, DU as tú) and listed what read as unclear. `es-meaning:<unit>`
+    compared that with the original Spanish and judged every flag. A unit with a must or should
+    would have gone to a fixer (`fix:`) and an editor check of the fix (`fixcheck:`).
+  - Result: 225 lines back-translated, 94 segments flagged, meaning 0/0/1 must/should/nit. The one
+    nit (g110: EN FÖRFÖRD MUNK makes the monk more passive than UN MONJE QUE SE HA DEJADO SEDUCIR)
+    went to no fixer, by the pass's rule. No fix step ran and no row or parchment line changed.
+  - Gap: the ui back-translator returned its 7 flags in one list beside its lines, and the meaning
+    check was given only the lines, so it did not judge them. They concern TOM, AV, the hour names
+    and widths, NATTBÖN, NATT, the end-screen split and the empty f5, all settled in GLOSSARY §5–§6
+    and D8/D9, and the meaning check's row-by-row verdict covers each of those rows.
+  - `tools/review_record.py` cross-checks that the read text equals the TSV and parchments at
+    `99c3661`, that the units cover every row but g0, f5 and `E.h[4]`, and that each
+    back-translation answers its lines one for one. After the pass: lint 0 errors,
+    `check_glossary.py` 0 errors, BUILD OK (jar `43846c9e…`, unchanged), `render_strings.py` and
+    `regress.py` RESULT: OK.
 - **Where the outcome lives:** the texts are `translation/strings_sv.tsv` (each row's note records
   its decisions) and `translation/pergamino{1,2}_sv.txt`; the rendered pages are in
   `screenshots/strings/de/`.

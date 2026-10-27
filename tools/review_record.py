@@ -16,12 +16,18 @@ Inputs
   <journals>/wf_dcee03f1-9e3/journal.jsonl   Phase E: rendered-text and runtime critics, fixers
   <journals>/wf_4230a7f1-04d/journal.jsonl   Phase F: re-review of the 17 strings changed in Phase E
   <journals>/wf_cb1d7e9e-f32/journal.jsonl   Phase B: glossary critics (counts only, optional)
+  <journals>/<wf>/journal.jsonl              Phase F2: the blind back-translation into Spanish of
+                                             every unit. Found by its step labels, not by name: the
+                                             newest journal with read:, es-backtr: and es-meaning:
+                                             steps (fix:, fixcheck: and fix2: appear only for a unit
+                                             with a must or should).
   work/phaseC/plan.json, work/phaseC/chunks/*.json, work/phaseF/rereview_result.json
   work/phaseF/ui_review/x01_result.json      Phase F final verification: the UI rows and the
                                              round-3 nits (editor, blind back-translation, meaning
                                              check). Not in any journal: without it a cross-check fails.
-  translation/strings_sv.tsv (working tree and git commits e7b6230 = Phase C, 0450eaa = Phase E)
-  translation/pergamino{1,2}_sv.txt
+  translation/strings_sv.tsv (working tree and git commits e7b6230 = Phase C, 0450eaa = Phase E,
+                              99c3661 = Phase F)
+  translation/pergamino{1,2}_sv.txt (working tree and the same commits)
 
 Each journal line is a JSON object. "started" lines carry an agent's "label" keyed by "agentId";
 "result" lines carry that agent's full return value.
@@ -47,7 +53,17 @@ DEFAULT_JOURNALS = (
     / "8dfa1262-e7c1-4492-8c56-1b182a40f8ec/subagents/workflows"
 )
 WF_B, WF_C, WF_E, WF_F = "wf_cb1d7e9e-f32", "wf_4a0ebacc-9c0", "wf_dcee03f1-9e3", "wf_4230a7f1-04d"
-COMMIT_C, COMMIT_E = "e7b6230", "0450eaa"
+COMMIT_C, COMMIT_E, COMMIT_F = "e7b6230", "0450eaa", "99c3661"
+F2_STEPS = ("read", "es-backtr", "es-meaning")  # every Phase F2 unit has these three steps
+# TSV rows that no Phase F2 unit holds, and why
+F2_SKIPPED = {("g", 0): "empty", ("f", 5): "empty by D9", ("E.h", 4): "the Spanish window title, kept by D6"}
+# Where the rows behind flags that a Phase F2 meaning check never saw are settled (see §4.2 of the record)
+F2_UNSEEN_NOTE = {
+    "ui": "The rows they concern are settled in the glossary and DECISIONS: TOM in GLOSSARY §5.3 and §6.4, AV and"
+          " PÅ in §6.2, the hour names and their 7-cell field in §5.1 and D8 (NATT as the night period in §5.2), the"
+          " end-screen split around the number in §6.1, and the empty f5 in D9 and §6.3. The meaning check's"
+          " row-by-row verdict covers each of these rows.",
+}
 CHANGED17 = [52, 54, 61, 64, 75, 77, 85, 114, 118, 122, 125, 131, 143, 149, 150, 155, 163]
 LENSES = ["language", "visual", "completeness", "runs"]
 MAX_ROUNDS_C = 4  # MAX_ROUNDS in the Phase C workflow script
@@ -159,6 +175,19 @@ def md(s: str) -> str:
 
 def cell(s: str) -> str:
     return md(s).replace("|", "\\|")
+
+
+def md_game(s: str) -> str:
+    """md() for game text: a '*' or '_' that could open emphasis (one not followed by a space) is escaped.
+
+    The page breaks `._ ` and ` _ ` and the line break ` * ` cannot open emphasis, so they stay as written."""
+    return md(re.sub(r"[*_](?=\S)", lambda m: "\\" + m.group(0), s))
+
+
+def md_report(s) -> list[str]:
+    """An agent's multi-line Markdown report as lines: project paths made relative, '<' escaped."""
+    s = str(s or "").replace(str(ROOT) + "/", "").strip()
+    return [md(line.rstrip()) for line in s.splitlines()]
 
 
 def smn(issues) -> tuple[int, int, int]:
@@ -339,6 +368,121 @@ def changed_text(entry, unit: str) -> str:
     return f"{len(ch)} changed" if ch else "0 changed"
 
 
+def keys_desc(keys) -> str:
+    """Row keys as a compact list per array: 'a0–a3, b0–b6, w.t[4]'."""
+    by = defaultdict(list)
+    for a, i in keys:
+        by[a].append(i)
+    return ", ".join(
+        (compress(v, a) if len(a) == 1 and len(v) > 1 else ", ".join(row_label(a, i) for i in sorted(v)))
+        for a, v in by.items()
+    )
+
+
+# ---------------------------------------------------------------------------- Phase F2
+
+
+def find_f2_journal(jdir: Path) -> Path | None:
+    """The newest journal whose steps include read:, es-backtr: and es-meaning: (Phase F2).
+
+    Its fix:, fixcheck: and fix2: steps exist only for a unit with a must or should, so they are
+    not needed to find it (Phase C's journal has fix: steps too, but no es-* steps)."""
+    hits = []
+    for p in jdir.glob("wf_*/journal.jsonl"):
+        kinds = set()
+        with open(p, encoding="utf-8") as f:
+            for line in f:
+                if '"started"' in line:
+                    o = json.loads(line)
+                    if o.get("type") == "started":
+                        kinds.add(str(o.get("label", "")).split(":")[0])
+        if kinds.issuperset(F2_STEPS):
+            hits.append(p)
+    return max(hits, key=lambda p: p.stat().st_mtime) if hits else None
+
+
+def row_key(rid):
+    """'g52' -> ('g', 52); 'w.t4' or 'w.t[4]' -> ('w.t', 4); anything else -> None."""
+    m = re.fullmatch(r"\s*([A-Za-z](?:\.[A-Za-z])?)\[?(\d+)\]?\s*", str(rid))
+    return (m.group(1), int(m.group(2))) if m else None
+
+
+def row_keys_in(text: str) -> set:
+    """The TSV row keys named in a free-text list such as a fixer's 'changed'."""
+    return {(a, int(i)) for a, i in re.findall(r"(?<![\w.])(g|[a-f]|w\.[tu]|E\.h)\[?(\d+)\]?(?!\w)", text)}
+
+
+def analyse_f2(J: Journal, units: list[str]) -> dict:
+    out = {}
+    for u in units:
+        rd, bt, me = (J.get(f"{s}:{u}") for s in F2_STEPS)
+        if rd is None and bt is None and me is None:
+            continue
+        bt_lines = (bt or {}).get("lines") or []
+        out[u] = {
+            "complete": rd is not None and bt is not None and me is not None,
+            "read": (rd or {}).get("lines") or [],
+            "bt": bt_lines,
+            "unclear": sum(len(x.get("unclear") or []) for x in bt_lines),
+            # flags a back-translator returned in one list beside its lines instead of per line
+            "unclear_top": (bt or {}).get("unclear") or [],
+            "issues": (me or {}).get("issues") or [],
+            "summary": (me or {}).get("summary", ""),
+            "fix": J.get(f"fix:{u}"),
+            "fixcheck": J.get(f"fixcheck:{u}"),
+            "fix2": J.get(f"fix2:{u}"),
+        }
+    return out
+
+
+def f2_where(issue_id: str, unit: str) -> str:
+    m = re.match(r"(p)(\d+)\b" if unit.startswith("perg") else r"([A-Za-z](?:\.[A-Za-z])?)\[?(\d+)\]?", str(issue_id))
+    if not m:
+        return str(issue_id)
+    return f"paragraph {m.group(2)}" if unit.startswith("perg") else row_label(m.group(1), int(m.group(2)))
+
+
+def f2_issue_line(i: dict, unit: str, src: str) -> str:
+    seg = clean(i.get("segment", "")).replace("`", "'")
+    return (f"- **{i.get('severity', '?')}** {f2_where(i.get('id', ''), unit)} (`{src}`), segment `{seg}`:"
+            f" {md(clean(i.get('problem', '')))} *Suggested fix:* {md(clean(i.get('fix', '')))}")
+
+
+def verdict_sentence(summary: str, limit: int = 320) -> str:
+    """The first sentence of a meaning-check report that states its finding."""
+    sents = re.split(r"(?<=[.!?])\s+(?=[A-Z])", clean(summary))
+    for x in sents:
+        if re.search(r"\b(found|no (?:real )?meaning|musts?|shoulds?|nits?|same thing)\b", x, re.IGNORECASE):
+            return brief(x, limit)
+    return brief(sents[0] if sents else "", limit)
+
+
+def ids_named(text: str) -> set:
+    """Row keys a report names, ranges such as 'a0–a3' or 'g64 to g70' expanded."""
+    out = set()
+    for a, i, j in re.findall(r"(?<![\w.])(w\.[tu]|E\.h|[a-g])\[?(\d+)\]?(?:\s*(?:–|-|to)\s*(?:\1)?\[?(\d+)\]?)?(?!\w)", text):
+        out |= {(a, k) for k in range(int(i), int(j or i) + 1)}
+    return out
+
+
+def f2_changed(entry) -> str:
+    ch = [clean(x) for x in (entry or {}).get("changed") or []]
+    return ", ".join(ch) if ch else "nothing"
+
+
+def f2_fix_text(d: dict) -> str:
+    blocking = [i for i in d["issues"] if i.get("severity") != "nit"]
+    fx = d["fix"]
+    if not fx:
+        return "**no fix step**" if blocking else "none needed"
+    t = f"`fix`: changed {md(f2_changed(fx))}; {len(fx.get('rejected') or [])} rejected"
+    if d["fixcheck"]:
+        t += f"; `fixcheck` {fmt3(smn(d['fixcheck'].get('issues')))}"
+    if d["fix2"]:
+        t += f"; `fix2`: changed {md(f2_changed(d['fix2']))}, {len(d['fix2'].get('rejected') or [])} rejected"
+    return t
+
+
 # ---------------------------------------------------------------------------- main
 
 
@@ -356,6 +500,9 @@ def main() -> int:
     F = Journal(fj) if fj.exists() else None
     bj = args.journals / WF_B / "journal.jsonl"
     B = Journal(bj) if bj.exists() else None
+    f2j = find_f2_journal(args.journals) if args.journals.is_dir() else None
+    F2 = Journal(f2j) if f2j else None
+    WF_F2 = f2j.parent.name if f2j else "not found"
     # work/ is git-ignored scratch. Each input taken from it has a fallback, so the record can
     # still be rebuilt from the journals and git after work/ is deleted.
     if args.phasef.exists():
@@ -379,6 +526,7 @@ def main() -> int:
     tsv_now = load_tsv((ROOT / "translation/strings_sv.tsv").read_text(encoding="utf-8"))
     tsv_c = load_tsv(git_show(COMMIT_C, "translation/strings_sv.tsv") or "")
     tsv_e = load_tsv(git_show(COMMIT_E, "translation/strings_sv.tsv") or "")
+    tsv_f = load_tsv(git_show(COMMIT_F, "translation/strings_sv.tsv") or "")
 
     plan_path = ROOT / "work/phaseC/plan.json"
     if plan_path.exists():
@@ -397,6 +545,7 @@ def main() -> int:
         ui = {"rows": [{"array": a, "index": i, "sv": r["sv"]} for (a, i), r in tsv_c.items() if a != "g" or i == 0]}
         ui_src = f"the TSV at {COMMIT_C}"
     ui_keys = [(r["array"], int(r["index"])) for r in ui["rows"]]
+    ui_desc = keys_desc(ui_keys)
 
     units, U = analyse_c(C, plan)
     g_units = [u for u in units if not u.startswith("perg")]
@@ -434,26 +583,31 @@ def main() -> int:
     if have_files:
         check(files_ok == 163, f"the last Phase C journal state equals work/phaseC/chunks/*.json for {files_ok}/163 g rows")
     check(journal_c_ok == 163, f"the last Phase C journal state equals the TSV at commit {COMMIT_C} (Phase C) for {journal_c_ok}/163 g rows")
-    ui_now = sum(1 for r in ui["rows"] if tsv_now.get((r["array"], int(r["index"])), {}).get("sv") == r["sv"])
+    # Phases C to F are checked against the TSV and parchments at the Phase F commit, so a later
+    # Phase F2 fix does not break them; the Phase F2 checks below account for the working tree.
+    ui_f = sum(1 for r in ui["rows"] if tsv_f.get((r["array"], int(r["index"])), {}).get("sv") == r["sv"])
     ui_c = sum(1 for r in ui["rows"] if tsv_c.get((r["array"], int(r["index"])), {}).get("sv") == r["sv"])
     if ui_path.exists():
-        check(ui_now == ui_c == len(ui_keys), f"the {len(ui_keys)} ui rows equal {ui_src} in the TSV at {COMMIT_C} ({ui_c}) and now ({ui_now})")
+        check(ui_f == ui_c == len(ui_keys), f"the {len(ui_keys)} ui rows equal {ui_src} in the TSV at {COMMIT_C} ({ui_c}) and at {COMMIT_F} ({ui_f})")
     else:
-        check(ui_now == len(ui_keys), f"the {len(ui_keys)} ui rows are unchanged since {COMMIT_C} ({ui_now})")
+        check(ui_f == len(ui_keys), f"the {len(ui_keys)} ui rows are unchanged from {COMMIT_C} to {COMMIT_F} ({ui_f})")
+    perg_f = {}
     for n in (1, 2):
         fp = f"translation/pergamino{n}_sv.txt"
-        now = (ROOT / fp).read_text(encoding="utf-8")
+        perg_f[n] = git_show(COMMIT_F, fp)
         st = U[f"perg{n}"]["state"] or ""
         then = git_show(COMMIT_C, fp)
-        check(st.rstrip("\n") == now.rstrip("\n"), f"the last Phase C journal text of pergamino{n} equals {fp}")
-        check(then is not None and then == now, f"{fp} is unchanged since commit {COMMIT_C} (Phase C)")
+        check(perg_f[n] is not None and st.rstrip("\n") == perg_f[n].rstrip("\n"),
+              f"the last Phase C journal text of pergamino{n} equals {fp} at {COMMIT_F}")
+        check(then is not None and then == perg_f[n], f"{fp} is unchanged from commit {COMMIT_C} (Phase C) to {COMMIT_F} (Phase F)")
 
     diff_ce = sorted(i for (a, i) in tsv_e if a == "g" and tsv_e[(a, i)]["sv"] != tsv_c.get((a, i), {}).get("sv"))
-    diff_en = sorted(i for (a, i) in tsv_now if a == "g" and tsv_now[(a, i)]["sv"] != tsv_e.get((a, i), {}).get("sv"))
+    diff_en = sorted(i for (a, i) in tsv_f if a == "g" and tsv_f[(a, i)]["sv"] != tsv_e.get((a, i), {}).get("sv"))
     other_ce = [k for k in tsv_e if k[0] != "g" and tsv_e[k]["sv"] != tsv_c.get(k, {}).get("sv")]
-    other_en = [k for k in tsv_now if k[0] != "g" and tsv_now[k]["sv"] != tsv_e.get(k, {}).get("sv")]
+    other_en = [k for k in tsv_f if k[0] != "g" and tsv_f[k]["sv"] != tsv_e.get(k, {}).get("sv")]
     check(diff_ce == CHANGED17 and not other_ce, f"the TSV diff {COMMIT_C} → {COMMIT_E} (Phase E) is exactly the 17 messages {glist(diff_ce)}")
-    check(not other_en and set(diff_en) <= set(CHANGED17), f"since {COMMIT_E} only messages among the 17 changed ({glist(diff_en)})")
+    check(bool(tsv_f) and not other_en and set(diff_en) <= set(CHANGED17),
+          f"from {COMMIT_E} to {COMMIT_F} (Phase F) only messages among the 17 changed ({glist(diff_en)})")
     for cmd, pat, what in (
         (["uv", "run", "tools/lint_strings.py", "translation/strings_sv.tsv"], r"(\d+) error\(s\)", "`lint_strings.py` on the current TSV"),
         (["uv", "run", "tools/check_glossary.py", "-q"], r"(\d+) errors", "`check_glossary.py -q` on the current TSV and parchments"),
@@ -611,7 +765,7 @@ def main() -> int:
         f_rounds.append({"round": r, "ed": ed, "me": me, "bt": bt, "kind": kind, "changed": changed, "how": how,
                          "rejected": rejected, "summary": summ})
     f_union = sorted({i for fr in f_rounds for i in fr["changed"]})
-    check(f_union == diff_en, f"Phase F: the messages its revisions changed ({glist(f_union)}) equal the TSV diff {COMMIT_E} → working tree ({glist(diff_en)})")
+    check(f_union == diff_en, f"Phase F: the messages its revisions changed ({glist(f_union)}) equal the TSV diff {COMMIT_E} → {COMMIT_F} ({glist(diff_en)})")
 
     # ------------------------------------------------------------ Phase F final verification (unit x01)
     X = json.loads(args.x01.read_text(encoding="utf-8")) if args.x01.exists() else None
@@ -619,18 +773,73 @@ def main() -> int:
     x_keys: list[tuple[str, int]] = []
     if check(X is not None, f"the Phase F final-verification record {x_rel} exists"):
         x_keys = [(r["array"], int(r["index"])) for r in X["rows"]]
-        x_same = sum(1 for r in X["rows"] if tsv_now.get((r["array"], int(r["index"])), {}).get("sv") == r["sv"])
-        check(x_same == len(X["rows"]), f"unit x01: {x_same}/{len(X['rows'])} reviewed rows equal the current TSV")
+        x_same = sum(1 for r in X["rows"] if tsv_f.get((r["array"], int(r["index"])), {}).get("sv") == r["sv"])
+        check(x_same == len(X["rows"]), f"unit x01: {x_same}/{len(X['rows'])} reviewed rows equal the TSV at {COMMIT_F}")
         x_expect = sorted(k for k in ui_keys if k not in (("g", 0), ("E.h", 4))) + [("g", 61), ("g", 64), ("g", 149)]
         check(sorted(x_keys) == sorted(x_expect),
               f"unit x01 holds every ui row but g0 and E.h[4] ({len(x_expect) - 3}), plus g61, g64 and g149")
         x_bt = X["backtr"]["items"]
-        x_nonempty = [row_label(a, i) for (a, i) in x_keys if tsv_now[(a, i)]["sv"].strip()]
+        x_nonempty = [row_label(a, i) for (a, i) in x_keys if tsv_f[(a, i)]["sv"].strip()]
         x_bt_ids = [{"w.t": "w.t[4]", "w.u": "w.u[4]"}.get(b["id"], b["id"]) for b in x_bt]
         check(x_bt_ids == x_nonempty, f"unit x01: the blind back-translation covers the {len(x_nonempty)} non-empty rows, in order")
         x_flags = sum(len(b.get("unclear") or []) for b in x_bt)
         check(x_flags == len(X["meaning"]["judged_unclear"]),
               f"unit x01: the meaning check judged all {x_flags} segments the back-translator flagged")
+
+    # ------------------------------------------------------------ Phase F2: Spanish back-translation
+    f2_units = g_units + ["ui", "perg1", "perg2"]
+    E2: dict = {}
+    f2_changed_rows: set = set()
+    f2_changed_perg: list[str] = []
+    if check(F2 is not None, "the Phase F2 journal (Spanish back-translation) is found by its step labels"
+             f" ({', '.join(s + ':' for s in F2_STEPS)}): `{WF_F2}`"):
+        E2 = analyse_f2(F2, f2_units)
+        complete = [u for u in f2_units if u in E2 and E2[u]["complete"]]
+        check(complete == f2_units, f"Phase F2: all {len(f2_units)} units (c01–c12, u01, ui, perg1, perg2) have a read,"
+              f" a back-translation and a meaning-check result ({len(complete)} do)")
+        f2_rows = [row_key(x.get("id")) for u in f2_units if u in E2 and not u.startswith("perg") for x in E2[u]["read"]]
+        f2_expect = sorted(k for k in tsv_f if k not in F2_SKIPPED)
+        check(None not in f2_rows and len(f2_rows) == len(set(f2_rows)) and sorted(f2_rows) == f2_expect,
+              f"Phase F2: the read steps of c01–c12, u01 and ui hold {len(f2_rows)} TSV rows, each once: every row but "
+              + and_list(f"{row_label(*k)} ({why})" for k, why in F2_SKIPPED.items()))
+        same_chunks = [u for u in g_units if u in E2
+                       and sorted(k[1] if k and k[0] == "g" else -1 for k in (row_key(x.get("id")) for x in E2[u]["read"])) == chunk_rows[u]]
+        check(same_chunks == g_units, f"Phase F2: each `g` unit holds the same messages as its Phase C chunk ({len(same_chunks)}/{len(g_units)})")
+        read_same = sum(1 for u in f2_units if u in E2 and not u.startswith("perg") for x in E2[u]["read"]
+                        if row_key(x["id"]) in tsv_f and tsv_f[row_key(x["id"])]["sv"] == x.get("text"))
+        check(read_same == len(f2_rows), f"Phase F2: the Swedish each back-translator was given is the TSV text at"
+              f" {COMMIT_F} (end of Phase F) for {read_same}/{len(f2_rows)} rows")
+        for n in (1, 2):
+            u = f"perg{n}"
+            paras = [x.get("text", "") for x in E2.get(u, {}).get("read", [])]
+            bare = re.sub(r"[\s\-]", "", "".join(paras))
+            check(bool(paras) and perg_f[n] is not None and bare == re.sub(r"[\s\-]", "", perg_f[n]),
+                  f"Phase F2: the {len(paras)} paragraphs read for {u} are translation/pergamino{n}_sv.txt at {COMMIT_F}"
+                  " with the hand-wrapping undone (identical once spaces and hyphens are ignored)")
+        bt_ok = [u for u in f2_units if u in E2 and [x.get("id") for x in E2[u]["bt"]] == [x.get("id") for x in E2[u]["read"]]]
+        n_lines = sum(len(E2[u]["bt"]) for u in E2)
+        check(bt_ok == f2_units, f"Phase F2: every back-translation answers its unit's read lines one for one and in order"
+              f" ({len(bt_ok)}/{len(f2_units)} units, {n_lines} lines)")
+        blocking_units = [u for u in f2_units if u in E2 and any(i.get("severity") != "nit" for i in E2[u]["issues"])]
+        fixed_units = [u for u in f2_units if u in E2 and E2[u]["fix"]]
+        check(blocking_units == fixed_units, f"Phase F2: the units with a must or should ({len(blocking_units)}) are exactly"
+              f" the units with a fix step ({len(fixed_units)})")
+        for u in fixed_units:
+            for step in ("fix", "fix2"):
+                if E2[u][step] and not u.startswith("perg"):
+                    f2_changed_rows |= row_keys_in(" ".join(E2[u][step].get("changed") or []))
+                elif E2[u][step] and E2[u][step].get("changed"):
+                    f2_changed_perg.append(u)
+        diff_fn = {k for k in set(tsv_now) | set(tsv_f) if tsv_now.get(k, {}).get("sv") != tsv_f.get(k, {}).get("sv")}
+        check(diff_fn == f2_changed_rows, f"Phase F2: the TSV diff {COMMIT_F} → working tree"
+              f" ({', '.join(row_label(*k) for k in sorted(diff_fn)) or 'none'}) is exactly the rows its fixers changed"
+              f" ({', '.join(row_label(*k) for k in sorted(f2_changed_rows)) or 'none'})")
+        for n in (1, 2):
+            fp = f"translation/pergamino{n}_sv.txt"
+            same = perg_f[n] == (ROOT / fp).read_text(encoding="utf-8")
+            fixed = f"perg{n}" in f2_changed_perg
+            check(same != fixed, f"Phase F2: {fp} " + ("changed since" if fixed else "is unchanged since") + f" {COMMIT_F}"
+                  + (", as its fixer reports" if fixed else ", as no fixer changed it"))
 
     # ======================================================================== write
     o: list[str] = []
@@ -640,6 +849,17 @@ def main() -> int:
     n_fix_rej = sum(len(f["rejected"]) for p in passes for f in p["fixers"].values())
     f_tot = (sum(h["must"] for h in f_hist), sum(h["should"] for h in f_hist), sum(h["nit"] for h in f_hist))
     all_ok = all(ok for ok, _ in CHECKS)
+    f2_tot = (0, 0, 0)
+    for d in E2.values():
+        f2_tot = add3(f2_tot, smn(d["issues"]))
+    f2_lines = sum(len(d["bt"]) for d in E2.values())
+    f2_unclear = sum(d["unclear"] for d in E2.values())
+    f2_top = sum(len(d["unclear_top"]) for d in E2.values())
+    f2_fixed = [u for u in f2_units if u in E2 and E2[u]["fix"]]
+    f2_ui_n = len(E2["ui"]["read"]) if "ui" in E2 else 0
+    f2_changed_all = [row_label(*k) for k in sorted(f2_changed_rows)] + [PARCH_NAME[u] for u in f2_changed_perg]
+    f2_outcome = (f"Fixers worked on {and_list(f2_fixed)} and changed {and_list(f2_changed_all) if f2_changed_all else 'nothing'}"
+                  if f2_fixed else "No unit had a must or should, so no fixer ran and no row or parchment line changed")
 
     w("# Translation review record")
     w("")
@@ -675,6 +895,13 @@ def main() -> int:
           f" g61, g64 and g149, through an editor pass, a blind back-translation and a meaning check (editor {fmt3(x_ed)},"
           f" meaning {fmt3(x_me)} must/should/nit). It ended clean in {plural(X['outcome']['rounds'], 'round')}"
           f" and changed {'no row' if not X['outcome']['changed'] else ', '.join(X['outcome']['changed'])} (§3.4).")
+    if E2:
+        w(f"- **Phase F2, Spanish back-translation.** The brief asks for the back-translation to be into Spanish; the"
+          f" passes above back-translated into English (§1.2). Phase F2 back-translated the final Swedish of every unit"
+          f" blind into Spanish: the {len(g_units)} `g` chunks, the {f2_ui_n} UI rows that have text and both parchments"
+          f" ({f2_lines} lines, {f2_unclear + f2_top} segments flagged as unclear). A meaning check compared each"
+          f" back-translation with the original Spanish and raised {fmt3(f2_tot)} must/should/nit issues. {f2_outcome}"
+          f" (§4; the back-translations themselves are in Appendix C).")
     w(f"- **Cross-checks.** The script ran {len(CHECKS)} cross-checks against the project files and git: "
       + ("**all pass**." if all_ok else f"**{sum(1 for ok, _ in CHECKS if not ok)} FAILED**, see §0.") )
     w("")
@@ -686,14 +913,15 @@ def main() -> int:
     w("|---|---|---|---|")
     jdir = "~/" + str(args.journals.relative_to(Path.home())) if args.journals.is_relative_to(Path.home()) else str(args.journals)
 
-    def jnote(j: Journal | None) -> str:
+    def jnote(j: Journal | None, self_label: str | None = None) -> str:
         if not j:
             return "journal not found"
         bits = []
         if j.relaunched:
             bits.append(f"{len(j.relaunched)} agents relaunched under the same label (the relaunch's result is used): " + ", ".join(f"`{x}`" for x in j.relaunched))
         if j.no_result:
-            bits.append("no result when this file was generated: " + ", ".join(f"`{x}`" for x in j.no_result))
+            bits.append("no result when this file was generated: " + ", ".join(
+                f"`{x}`" + (" (the step that regenerated this file)" if x == self_label else "") for x in j.no_result))
         return "; ".join(bits) or "–"
 
     if B:
@@ -701,12 +929,14 @@ def main() -> int:
     w(f"| C, translation | `{WF_C}` | {len(C.items)} | {jnote(C)} |")
     w(f"| E, verification | `{WF_E}` | {len(E.items)} | {jnote(E)} |")
     w(f"| F, re-review | `{WF_F}` | {len(F.items) if F else 0} | the re-review result: {phasef_src}; {jnote(F)} |")
+    w(f"| F2, Spanish back-translation | `{WF_F2}` | {len(F2.items) if F2 else 0} | found by its step labels"
+      f" ({', '.join(f'`{s}:`' for s in F2_STEPS)}); {jnote(F2, 'rebuild')} |")
     w("")
     w(f"Journals: `{jdir}/<workflow>/journal.jsonl`. These are Claude Code session files outside the")
     w("project. They are not in git and may be cleaned up, which is why this record exists. The other")
     w("inputs are: `work/phaseC/plan.json` (chunk → messages); `work/phaseC/chunks/*.json`;")
-    w(f"`translation/strings_sv.tsv` at commit `{COMMIT_C}` (end of Phase C), at `{COMMIT_E}` (end of Phase E) and in the")
-    w("working tree (after Phase F); and the two parchment files.")
+    w(f"`translation/strings_sv.tsv` at commit `{COMMIT_C}` (end of Phase C), at `{COMMIT_E}` (end of Phase E), at `{COMMIT_F}`")
+    w("(end of Phase F) and in the working tree; and the two parchment files at the same points.")
     w("")
     w("Cross-checks:")
     w("")
@@ -719,24 +949,19 @@ def main() -> int:
     w("")
     w("### 1.1 Every row accounted for")
     w("")
-    ui_by_arr = defaultdict(list)
-    for a, i in ui_keys:
-        ui_by_arr[a].append(i)
-    ui_desc = ", ".join(
-        (compress(v, a) if len(a) == 1 and len(v) > 1 else ", ".join(row_label(a, i) for i in sorted(v)))
-        for a, v in ui_by_arr.items()
-    )
+    f2_route = ", Phase F2 Spanish back-translation (§4)" if E2 else ""
     w("| Group | Rows | Count | Review route |")
     w("|---|---|---|---|")
-    w(f"| c01–c12 | the `g` messages the game shows (context USED) | {len(c_ids)} | Phase C per-unit loop (§1.3), whole-game passes (§2), Phase E critics |")
-    w(f"| u01 | `g` messages the game never shows (context UNUSED) | {len(u_ids)} | Phase C per-unit loop (§1.3), Phase E critics |")
+    w(f"| c01–c12 | the `g` messages the game shows (context USED) | {len(c_ids)} | Phase C per-unit loop (§1.3), whole-game passes (§2), Phase E critics{f2_route} |")
+    w(f"| u01 | `g` messages the game never shows (context UNUSED) | {len(u_ids)} | Phase C per-unit loop (§1.3), Phase E critics{f2_route} |")
     w(f"| ui | {ui_desc} | {len(ui_keys)} | fixed in GLOSSARY §5.1 and §6 (Phase B, §1.4), Phase E critics"
-      + (", Phase F final-verification unit x01 (§3.4; all but g0 and E.h[4])" if X else "") + " |")
+      + (", Phase F final-verification unit x01 (§3.4; all but g0 and E.h[4])" if X else "")
+      + (", Phase F2 Spanish back-translation (§4; all but g0, f[5] and E.h[4])" if E2 else "") + " |")
     w(f"| **all rows of `translation/strings_sv.tsv`** | | **{len(groups)}** | |")
     for u in ("perg1", "perg2"):
         n = int(u[-1])
         nl = len((ROOT / f"translation/pergamino{n}_sv.txt").read_text(encoding="utf-8").splitlines())
-        w(f"| {u} | {PARCH_NAME[u]} | {nl} lines | Phase C per-unit loop (§1.3), player pass (§2), Phase E critics |")
+        w(f"| {u} | {PARCH_NAME[u]} | {nl} lines | Phase C per-unit loop (§1.3), player pass (§2), Phase E critics{f2_route} |")
     w("")
     w("The 195 TSV rows are the brief's 185 strings (`a` 4, `c` 2, `d` 2, `e` 3, `f` 10, `g` 164) plus the 7 HUD")
     w("hour names (`b`) and the three slot-4 strings outside `abadia.k` (`w.t`, `w.u`, `E.h`).")
@@ -761,17 +986,24 @@ def main() -> int:
     w("- **Severity:** *must* means wrong: ungrammatical, wrong meaning, a broken rule or glossary form,")
     w("  wrong address, or lost player information. *should* means clearly unidiomatic, stiff or off-register,")
     w("  a noticeable shift in nuance, or a poor page cut. *nit* means a small preference.")
-    w("- **Deviation from the brief:** the brief asks for a back-translation into Spanish. The")
-    w("  back-translator wrote literal English instead, and the meaning checker compared that with the Spanish.")
+    if E2:
+        w("- **Back-translation language:** the brief asks for a back-translation into Spanish. In this loop the")
+        w("  back-translator wrote literal English instead, and the meaning checker compared that with the Spanish.")
+        w("  The Spanish back-translation now exists for every unit: Phase F2 made it from the final text of each")
+        w("  unit, the UI rows and both parchments (§4, Appendix C). The English back-translations of this loop, of")
+        w("  the Phase F re-review and of unit x01 stay documented here as an extra pass.")
+    else:
+        w("- **Deviation from the brief:** the brief asks for a back-translation into Spanish. The")
+        w("  back-translator wrote literal English instead, and the meaning checker compared that with the Spanish.")
     w("")
     w("### 1.3 Summary per unit and round")
     w("")
-    w("Issue counts are must/should/nit. *Back-translation* gives the lines back-translated (messages,")
-    w("or paragraphs for the parchments) and, in brackets, how many segments the back-translator flagged as")
+    w("Issue counts are must/should/nit. *Back-translation (en)* gives the lines back-translated into English")
+    w("(messages, or paragraphs for the parchments) and, in brackets, how many segments the back-translator flagged as")
     w("unclear. *Then* says what followed the round and how many messages it changed (lines, for a")
     w("parchment).")
     w("")
-    w("| Unit | Messages (count) | Round | Editor | Meaning | Back-translation | Then |")
+    w("| Unit | Messages (count) | Round | Editor | Meaning | Back-translation (en) | Then |")
     w("|---|---|---|---|---|---|---|")
     o.extend(table)
     w(f"| **all** | **163 `g` + 2 parchments** | **{n_rounds}** | **{fmt3(totals['edit'])}** | **{fmt3(totals['meaning'])}** | **{n_bt_lines} ({n_unclear})** | **{rej_review} rejected** |")
@@ -1014,12 +1246,12 @@ def main() -> int:
         fc = [str(fr["round"]) if fr["kind"] == "revised" else "nits" for fr in f_rounds if g in fr["changed"]]
         w(f"| g{g} | {chunk_of[g]} | {er} | {fi} | {('yes (' + ', '.join(fc) + ')') if fc else 'no'} |")
     w("")
-    w("What changed, as word-level differences (Phase C → Phase E, then Phase E → now; `_` is a page break):")
+    w("What changed, as word-level differences (Phase C → Phase E, then Phase E → Phase F; `_` is a page break):")
     w("")
     for g in CHANGED17:
         c_sv = tsv_c[("g", g)]["sv"]
         e_sv = tsv_e[("g", g)]["sv"]
-        n_sv = tsv_now[("g", g)]["sv"]
+        n_sv = tsv_f[("g", g)]["sv"]
         line = f"- **g{g}** ({chunk_of[g]}). Phase E: {md(hunks_text(c_sv, e_sv))}."
         if n_sv != e_sv:
             line += f" Phase F: {md(hunks_text(e_sv, n_sv))}."
@@ -1091,6 +1323,127 @@ def main() -> int:
         w(f"**Outcome.** {md(clean(X['outcome']['summary']))}")
         w("")
 
+    # ---- §4 Phase F2
+    if E2:
+        f2_label = lambda u, rid: rid if u.startswith("perg") else (row_label(*row_key(rid)) if row_key(rid) else str(rid))
+        w("## 4. The Spanish back-translation (Phase F2)")
+        w("")
+        w("The brief's back-translation pass asks for the Swedish to be translated back into Spanish without")
+        w("seeing the source, and compared with the source. The Phase C loop, the Phase F re-review and unit x01")
+        w(f"back-translated into English (§1.2). Phase F2 (`{WF_F2}`) made the Spanish back-translation of the final")
+        w(f"text, the TSV and parchments at `{COMMIT_F}`, for every unit: the {len(g_units)} `g` chunks of Phase C, the UI rows")
+        w("and both parchments. Each unit went through these steps once:")
+        w("")
+        w("- **Read** (`read:<unit>`): an agent took the unit's rows from the TSV with `translate_tool.py extract` and")
+        w("  returned their Swedish unchanged. For a parchment it returned one entry per paragraph and per credits")
+        w("  line, with the hand-wrapping and the line-end hyphens undone. §0 checks both against the files.")
+        w("- **Blind back-translation** (`es-backtr:<unit>`): a separate agent was given only those lines and told")
+        w("  that they come from a game set in a 14th-century abbey. It was told to read no files, run no commands")
+        w("  and use no web. It translated every line into Spanish: NI/ER as vos/vosotros and DU/DIG as tú, the")
+        w("  Latin kept, and the `@N` speaker marks, `_` page breaks and `*` line breaks left in place. It also")
+        w("  listed whatever in the Swedish read as unclear, ambiguous, ungrammatical or strange.")
+        w("- **Meaning check** (`es-meaning:<unit>`): an agent compared each back-translation with the original")
+        w("  Spanish (`translate_tool.py show`, or the es parchment in the jar), reading the Swedish, the row notes,")
+        w("  the glossary and DECISIONS where needed. It reported omissions, additions, changed facts, tense or")
+        w("  agent, tone shifts, changed address (vos/tú against GLOSSARY §2) and lost player information")
+        w("  (GLOSSARY §1.11). It did not report natural rewording or documented choices, and it judged every")
+        w("  segment the back-translator flagged. *must*: the player is told something different, or misses")
+        w("  something; *should*: a noticeable shift in nuance, tone or clarity; *nit*: trivial.")
+        w("- **Fix** (`fix:<unit>`), only for a unit with a must or should: a fixer verified each issue against the")
+        w("  Spanish, applied it or rejected it with a reason, and ran the lint and `check_glossary.py`. A Swedish")
+        w("  editor then checked the changed text (`fixcheck:<unit>`), and a second fix (`fix2:<unit>`) answered any")
+        w("  must or should it raised. Nits went to no fixer.")
+        w("")
+        w("### 4.1 Summary per unit")
+        w("")
+        w("Counts are must/should/nit. *Lines* are the lines back-translated: messages, UI rows, or a parchment's")
+        w("paragraphs and credits lines. *Flagged* is how many segments the back-translator listed as unclear.")
+        w("")
+        w("| Unit | Rows (count) | Lines | Flagged | Meaning check | Fix |")
+        w("|---|---|---|---|---|---|")
+        for u in f2_units:
+            d = E2.get(u)
+            if not d:
+                w(f"| {u} | | | | **no result** | |")
+                continue
+            if u.startswith("perg"):
+                rows = PARCH_NAME[u]
+            else:
+                rows = f"{keys_desc([k for k in map(row_key, (x.get('id') for x in d['read'])) if k])} ({len(d['read'])})"
+            flagged = str(d["unclear"]) + (f" + {len(d['unclear_top'])} beside the lines (§4.2)" if d["unclear_top"] else "")
+            w(f"| {u} | {cell(rows)} | {len(d['bt'])} | {flagged} | {fmt3(smn(d['issues']))} | {f2_fix_text(d)} |")
+        n_rows_f2 = sum(len(E2[u]["read"]) for u in E2 if not u.startswith("perg"))
+        w(f"| **all** | **{n_rows_f2} rows + 2 parchments** | **{f2_lines}** | **{f2_unclear + f2_top}** | **{fmt3(f2_tot)}** |"
+          f" **{plural(len(f2_fixed), 'unit') + ' fixed' if f2_fixed else 'none needed'}** |")
+        w("")
+        w("Not back-translated: " + and_list(f"{row_label(*k)} ({why})" for k, why in F2_SKIPPED.items()) + ".")
+        w("")
+        w("### 4.2 Issues, fixes and rejections")
+        w("")
+        all_iss = [(u, i) for u in f2_units if u in E2 for i in E2[u]["issues"]]
+        if f2_fixed:
+            w(f"{f2_outcome}. Every issue, fix and rejection:")
+        elif all_iss:
+            w("No unit had a must or should issue, so no fix step ran, and Phase F2 changed no row and no parchment line")
+            w(f"(§0 checks the TSV and both parchments against `{COMMIT_F}`). The meaning checks raised {plural(len(all_iss), 'nit')},")
+            w("recorded here and not acted on, since nits go to no fixer:")
+        else:
+            w("The meaning checks raised no issue, so no fix step ran and Phase F2 changed no row and no parchment line.")
+        w("")
+        for u in f2_units:
+            d = E2.get(u)
+            if not d or (not d["issues"] and not d["fix"]):
+                continue
+            w(f"**{u}** ({fmt3(smn(d['issues']))}):")
+            w("")
+            for i in d["issues"]:
+                w(f2_issue_line(i, u, f"es-meaning:{u}") + (" *Not routed:* a nit." if i.get("severity") == "nit" else ""))
+            for step in ("fix", "fix2"):
+                fx = d[step]
+                if not fx:
+                    continue
+                w(f"- `{step}:{u}`: changed {md(f2_changed(fx))}. {md(brief(fx.get('summary', ''), 600))}")
+                for x in fx.get("rejected") or []:
+                    w("  " + rejection_line(x))
+                if step == "fix" and d["fixcheck"]:
+                    fc = d["fixcheck"]
+                    w(f"- `fixcheck:{u}` ({fmt3(smn(fc.get('issues')))}): {md(brief(fc.get('summary', ''), 600))}")
+                    for i in fc.get("issues") or []:
+                        w("  " + f2_issue_line(i, u, f"fixcheck:{u}"))
+            w("")
+        for u in f2_units:
+            d = E2.get(u)
+            if not d or not d["unclear_top"]:
+                continue
+            unseen = bool(re.search(r"flagged nothing|nothing as unclear|no (?:unclear|flagged)", d["summary"]))
+            w(f"**Flags the meaning check did not see ({u}).** The {u} back-translator returned its"
+              f" {plural(len(d['unclear_top']), 'flag')} in one list beside its lines, not per line. The workflow gave the meaning"
+              " check only the lines, so it judged none of them" + (" (its report says nothing was flagged)" if unseen else "")
+              + ". Appendix C quotes them." + (" " + F2_UNSEEN_NOTE[u] if u in F2_UNSEEN_NOTE else ""))
+            w("")
+        w("### 4.3 The meaning checks' verdicts")
+        w("")
+        w("Each report's finding, in its own words; the whole report is in Appendix C.")
+        w("")
+        mism = []
+        for u in f2_units:
+            d = E2.get(u)
+            if not d:
+                continue
+            first = verdict_sentence(d["summary"])
+            w(f"- **{u}:** {md(first)}")
+            m = re.search(r"\b(\d+) (?:UI )?rows\b", first)
+            if m and int(m.group(1)) != len(d["read"]):
+                keys = {row_key(x.get("id")) for x in d["read"]}
+                named = keys <= ids_named(d["summary"])
+                mism.append(f"the {u} report speaks of {m.group(1)} rows, while the unit has {len(d['read'])}"
+                            + (f" and the report's row-by-row verdict names all {len(d['read'])}" if named else ""))
+        w("")
+        if mism:
+            w("All counts in this section come from the lists themselves. Where a report's own count differs: "
+              + "; ".join(mism) + ".")
+            w("")
+
     # ---- Appendix A
     w("## Appendix A. Every issue and rejection, by unit")
     w("")
@@ -1100,6 +1453,8 @@ def main() -> int:
     w("sometimes with a different wording that the row's note explains. The exceptions are the nits of")
     w("whole-game pass 2, marked *not routed*. The Phase E fixers did not reject issues one by one: their")
     w("rejections and deferrals are quoted at the end of Appendix B, and round-3 issues had no fixer.")
+    if E2:
+        w("The Phase F2 issues, fixes and rejections are all in §4.2.")
     w("")
     for u in units:
         d = U[u]
@@ -1213,6 +1568,61 @@ def main() -> int:
             w("")
             for i in fx["issues"]:
                 w(f"- **{i.get('severity')}** {i.get('area')}, {md(brief(i.get('where', ''), 70))}: {md(brief(i.get('problem', ''), 160))}")
+            w("")
+
+    # ---- Appendix C
+    if E2:
+        w("## Appendix C. The Spanish back-translations (Phase F2)")
+        w("")
+        w("For each unit: the blind back-translation as the back-translator wrote it (`@N` marks a speaker, `_` a")
+        w("page break and `*` a line break, as in the Swedish), the segments it flagged as unclear, and the meaning")
+        w("check's whole report, which judges each flag. The Swedish of each line is the row's `sv` in")
+        w(f"`translation/strings_sv.tsv` at `{COMMIT_F}` (for perg1 and perg2, the parchment file), and the original is the row's `es`.")
+        w("")
+        for u in f2_units:
+            d = E2.get(u)
+            if not d:
+                continue
+            if u.startswith("perg"):
+                head = f"{PARCH_NAME[u]}, {len(d['bt'])} paragraphs and credits lines"
+            elif u == "ui":
+                head = f"the UI rows that have text ({len(d['bt'])})"
+            else:
+                head = f"{keys_desc([k for k in map(row_key, (x.get('id') for x in d['read'])) if k])} ({len(d['bt'])} messages)"
+            w(f"### {u} (es): {head}")
+            w("")
+            if u == "ui":
+                w("The Swedish as stored and its back-translation, in quotes to show any edge spaces:")
+                w("")
+                w("| Row | Swedish | Back-translation |")
+                w("|---|---|---|")
+                sv_of = {x.get("id"): x.get("text", "") for x in d["read"]}
+                for b in d["bt"]:
+                    w(f"| {f2_label(u, b.get('id'))} | {cell(chr(96) + chr(34) + sv_of.get(b.get('id'), '') + chr(34) + chr(96))} |"
+                      f" {cell(chr(96) + chr(34) + b.get('spanish', '') + chr(34) + chr(96))} |")
+            else:
+                for b in d["bt"]:
+                    w(f"- **{f2_label(u, b.get('id'))}:** {md_game(clean(b.get('spanish', '')))}")
+            w("")
+            flags = [(b.get("id"), f) for b in d["bt"] for f in (b.get("unclear") or [])]
+            if flags:
+                w(f"*Flagged as unclear ({len(flags)}):*")
+                w("")
+                for rid, f in flags:
+                    w(f"- {f2_label(u, rid)}: {md_game(clean(f))}")
+            elif not d["unclear_top"]:
+                w("*Flagged as unclear:* nothing.")
+            if d["unclear_top"]:
+                if flags:
+                    w("")
+                w(f"*Flagged as unclear in one list beside the lines ({len(d['unclear_top'])}); the meaning check did not see these (§4.2):*")
+                w("")
+                for f in d["unclear_top"]:
+                    w(f"- {md_game(clean(f))}")
+            w("")
+            w(f"**Meaning check** (`es-meaning:{u}`, {fmt3(smn(d['issues']))} must/should/nit):")
+            w("")
+            o.extend(md_report(d["summary"]))
             w("")
 
     text = "\n".join(o).rstrip() + "\n"

@@ -26,3 +26,4 @@ screenshots/**
 __pycache__/
 # derived game images: rebuilt by tools/images/build_*.py from the original assets
 assets_sv/res/
+translation/*.lock
