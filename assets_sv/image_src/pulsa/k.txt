@@ -1,0 +1,24 @@
+char k
+# Hand-drawn k for "Tryck", pulsa blackletter. Format: see T.txt.
+#
+# Ascender top and stem: the es l (pulsa.png es, x 105..110, rows 167..179: "973AF4" /
+# "3FFF7" / "AFC", stem "9F9"). Upper right: a small closed bowl at the top of the x-height
+# (rows 171..176) whose top is the en r's flag ("8B", "BFE1", "DF7", rows 171..173) and which
+# returns into the stem at row 176. Leg: a diagonal stroke from the bowl down to the baseline
+# (rows 177..182) with a foot like the stem's. Stem foot: the l's/r's ("DFE", "6FFF", "28C").
+167 973AF4....
+168 3FFF7.....
+169 .AFC......
+170 .9F9......
+171 .9F9.8B6..
+172 .9F9BFFE1.
+173 .9F96.DF7.
+174 .9F9..AF4.
+175 .9F9.7F7..
+176 .9FF9D5...
+177 .9F9.BB...
+178 .9F9.5FB..
+179 .9F9..AF6.
+180 .DFE..6FD.
+181 6FFFC.6FFE
+182 .28C1..3C8

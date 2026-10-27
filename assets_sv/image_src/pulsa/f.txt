@@ -1,0 +1,36 @@
+char f
+# Hand-drawn f for "för", pulsa blackletter. Format: see T.txt.
+#
+# A textura f is a tall r with a crossbar, and that is how it is built here, from the font's
+# own parts:
+#   - top (rows 167..170): the head of the en r (pulsa.png en, x 119..126, rows 171..174:
+#     ".8B..86." / "CFF9BFE1" / "3BFC1DF7" / ".9F9.59."), the stem's diamond with the teardrop
+#     flag on its right, column for column (column 0 here = en x 119; the head's apex "8B" stands
+#     over the stem's "FF"), moved up 4 rows. The f starts at row 167 like the font's other
+#     ascenders (the es l, and the k built from it), not at the capitals' 166.
+#   - the flag ends one column earlier than the r's and tapers into anti-alias there: the r's
+#     "E1" / "F7" become "9" / "7". It ends with the crossbar, 3 px right of the stem. An earlier
+#     version ended in a curled hook 5 px right of the stem; at 4x it pushed the ö away from the
+#     crossbar and the word read "f ör".
+#   - stem: the r's / es l's "9F9";
+#   - crossbar (row 172): the en t's ("9FFFF9" + "BF7" under it), one pixel longer on the right;
+#   - foot: the en r's ("DFE49" / "6FFFF5" / "27D3").
+# With the flag no wider than the crossbar, layout.txt sets the o's left stroke 2 empty columns
+# after the f (as tight as the en "to"), and the first dot of the ö stays 2 dark columns clear of
+# the flag.
+167 .8B..86
+168 CFF9BF9
+169 3BFC1D7
+170 .9F9.59
+171 .9F9...
+172 9FFFFF9
+173 .BF7...
+174 .9F9...
+175 .9F9...
+176 .9F9...
+177 .9F9...
+178 .9F9...
+179 .9F9...
+180 .DFE49.
+181 6FFFF5.
+182 .27D3..

@@ -1,0 +1,34 @@
+# Hand-pixelled 'g' for the Swedish loading line "LADDAR: var god vänta..." (res/de/intro/loading.png).
+# Read by tools/images/build_loading.py, which places column 0 at the x its LAYOUT gives the g
+# (x 177 in the shipped build: "god" = g 177..181, o 183..187, d 188..195).
+# Rows are absolute image rows: the loadline font has the same rows in every language.
+#
+# The shipped loadline has no g (images.md 3.4). Model:
+#   - bowl, rows 184..189: the es 'o' of "Por"/"favor" (2-px top at cols 2-3, 1-px slanted oval),
+#     whose right side becomes the stem;
+#   - stem: col 4 from the x-height line (184) to row 190, so the top-right corner is closed and
+#     the letter cannot read as o + j; the bowl closes into it at (3,188) as the a and d do;
+#   - descender: one step left at row 191 like the es 'p' of "espere" (stem 230 -> 229), down to
+#     row 193 as the p does, then a short hook back left and up (cols 2-1 at 193, col 0 at 192),
+#     a cursive g tail. There is no shipped model for the hook: the only shipped descenders are
+#     the straight p/f stems and the pl 'ę' ogonek, which turns right, not left.
+# Font rules (images.md 3.4, FORMAT 6.2): 1-bit, 1-px stroke, x-height rows 184..189, baseline
+# 189, descenders to 192/193. Variants tried in work/phaseD/loading/var_g*/ (2-px open top,
+# 'a'-shaped bowl, straight descender, longer tail); this one read most clearly as g at 4x.
+# The grid is exactly the ink box (5 columns, cols 0..4); the builder spaces glyphs by ink box.
+#
+# symbols: .  nothing (transparent)
+#          #  ink (252,254,252), alpha 255
+#
+#       col: 01234
+y0 184
+184 ..###
+185 .#..#
+186 #...#
+187 #...#
+188 #..##
+189 .##.#
+190 ....#
+191 ...#.
+192 #..#.
+193 .##..

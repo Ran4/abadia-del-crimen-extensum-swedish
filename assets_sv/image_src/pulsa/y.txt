@@ -1,0 +1,24 @@
+char y
+# Hand-drawn y for "Tryck", pulsa blackletter. Format: see T.txt.
+#
+# Built from the es u (pulsa.png es, x 94..104, "Pulsa"): both stems with their diamond heads
+# (rows 171..173) and the hairline that joins the foot of the left stem to the right stem
+# ("8B7", row 180) are the u's pixels. Changed: the left stem has no foot of its own; it tapers
+# into the join (row 181). The right stem continues below the baseline and turns left into a
+# tail (rows 183..185), modelled on the pl j's tail ("1E9" / "2CC1" / "88") and kept within the
+# font's descender rows (the p and j descend to row 185).
+171 .1B7..1A9..
+172 4EFFA1EFFA.
+173 .5FF5.8FF5.
+174 .4FF..4FF..
+175 .4FF..4FF..
+176 .4FF..4FF..
+177 .4FF..4FF..
+178 .4FF..4FF..
+179 .4FF..BFF..
+180 .3FF8B7FF..
+181 ..4CA4.FF..
+182 ......4FF..
+183 .....1EF9..
+184 ...39FC2...
+185 ..4C81.....

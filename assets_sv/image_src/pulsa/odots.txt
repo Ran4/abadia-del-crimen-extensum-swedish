@@ -1,0 +1,25 @@
+char dots of ö
+# The two dots of ö (o = the en o, x 166..173 in "to"). Format: see T.txt.
+#
+# The font has no diaeresis. Its dots are the pl i-dots and j-dot (pulsa.png pl, "Naciśnij"):
+# 2x2 blobs at rows 167..168, two rows of outline above the stem's head at 171. i-dot ".D5" over
+# "18." (x 135..137) slants up to the right; j-dot "D8" over "8." (x 168..169) is upright and
+# lit from the top left. Each dot here has the i-dot's size and rows, upright and with the
+# j-dot's light: "EC" over "C5", the j-dot's pattern (top left brightest, the two side cells
+# equal, bottom right darkest) one step brighter.
+#   - Upright, not slanted: two copies of the slanted i-dot side by side read as a double acute
+#     (Hungarian ő) at 4x; upright ones read as ö.
+#   - Shades raised from the j-dot's D/8/8/0 to E/C/C/5: with the original shades the dots were
+#     faint over the monk's desk in monje.png.
+#   - Round 4: the bottom-right cell lowered from 7 to 5, so each dot rounds off towards the bottom
+#     right as the j-dot does; with "C7" the dots read as slightly squarer, brighter blocks than
+#     the font's own at 6x and above. Ink mass (sum of k/15) 2.9 per dot, j-dot 1.9, i-dot 1.8.
+#     At 3x-4x over the desk they stand out as before.
+# The dots stand over the o's two strokes: columns 0-1 over its left stroke (x 167..168 in en),
+# columns 5-6 over its right stroke (x 172..173), 3 dark columns between them. layout.txt puts
+# column 0 at the o's ink-left ("on 0"), which is en x 167, the left stroke: the shipped o's only
+# k >= 8 pixel in column 166 is the t's foot joining it at row 181, and layout.txt re-shades that
+# to the edge's k 2. (Without the re-shading the ink-left was 166 and "on 0" put both dots 1 px
+# left of the strokes.) The outline around them is made by the builder.
+167 EC...EC
+168 C5...C5

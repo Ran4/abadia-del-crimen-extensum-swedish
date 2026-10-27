@@ -1,0 +1,33 @@
+# Script 'c' of the Swedish conjunction "och" (intro/manuydani, pacoyjuan, pelicula).
+# Read by tools/images/script_och.py; `--show` prints the composed letter and these corrections.
+#
+# Model: the open e of it "e" (it manuydani x76..83, rows 144..154). The e of fr "et" is the same
+# pixels. It is placed with its baseline (it row 153) on row 157. The e's loop stroke, which runs
+# from the back up to the top right (it rows 147..150, x78..82), is erased. The top arc stays as
+# the c's beak; the back, the bottom and the exit flick are the e's own pixels. Hand-set pixels:
+#   row 148, x63..66  2 8 b 6 -> 0 4 7 3   the e is 10 rows tall where the en letters are 9, so
+#                                     its arc rose a full, strong row above the o's flat top. The
+#                                     overshoot is now as faint as the a's in "and" (3 7 4);
+#   (64,149) 9->b and (65,149) b->d  the arc's weight moves down onto row 149, the shared
+#                                     x-height, so the beak does not thin out;
+#   (65,150) 9->3 and (66,150) d->a  the beak ends in a short drop instead of running down into
+#                                     the loop;
+#   (62,153) b->5 and (62,154) 8->4  where the loop met the back, keep only the back's AA edge.
+#
+# Format: see och_o.txt (en manuydani coordinates, baseline 157).
+#
+piece it manuydani 76 144 83 154 at 60 148
+#       x: 60.....67
+x0 60
+y0 148
+148 ...0473.
+149 ....bd..
+150 .....3a.
+151 ....000.
+152 ...000..
+153 ..500...
+154 ..40....
+155 ........
+156 ........
+157 ........
+158 ........

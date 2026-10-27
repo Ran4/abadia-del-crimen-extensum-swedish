@@ -1,0 +1,43 @@
+# Script 'o' of the Swedish conjunction "och" (intro/manuydani, pacoyjuan, pelicula).
+# Read by tools/images/script_och.py (och_layer()); `uv run tools/images/script_och.py --show`
+# prints the composed letter next to a map of these corrections.
+#
+# Font: the credit screens' script (images.md §3.5): cream (253,246,231), alpha in 16 levels
+# (multiples of 17), no glow. It has only a d e i n t y; there is no o.
+#
+# Model: the bowl of the en "and"'s d (en manuydani x72..80, rows 149..158). The d's stem
+# (source x78..79) is the o's right side. Its foot and the exit stroke (source rows 155..157,
+# x78..80) are erased, so the right side closes along the d's own bowl stroke, which runs from
+# (76,155) to (74,157) in source coordinates. Hand-set pixels:
+#   (57,149) c->7 and (58,149) 7->2  round the top-right corner where the d's stem rose upwards;
+#   (57,154) b->9 and (55,156) 1->3  the outer AA of the closing curve, pushed out a little so
+#                                     the lower right is round rather than the d's straight 45-
+#                                     degree hairline (no lemon point). The stroke's core,
+#                                     (57,153) b, (56,154) d, (55,155) a, (54,156) c, (53,157) 8,
+#                                     is the d's own and keeps the weight; (56,155) stays at its
+#                                     source value 7 (the '7' in the grid is a no-op).
+#
+# Format (shared by och_o/c/h.txt):
+#   piece LANG IMAGE x0 y0 x1 y1 at X Y
+#       copies the cream alpha of work/jar/res/LANG/intro/IMAGE.png, box x0..x1, y0..y1
+#       inclusive (pixels whose RGB is not cream count as 0), to top-left X,Y. Pieces of one
+#       letter merge by max.
+#   x0 X / y0 Y, then rows '<y> <chars>': corrections over the composed letter.
+#       '.' keep the composed pixel; hex digit n = alpha 17*n; '0' erases.
+# Coordinates are en manuydani screen coordinates, so the "och" sits where the "and" is: baseline
+# row 157 (row 158 holds only AA), x-height top 149, ascender top 143.
+#
+piece en manuydani 72 149 80 158 at 50 149
+#       x: 50......58
+x0 50
+y0 149
+149 .......72
+150 .........
+151 .........
+152 .........
+153 .........
+154 .......9.
+155 ......70.
+156 .....3000
+157 ......000
+158 .........

@@ -1,0 +1,82 @@
+# Layout of "Tryck för att starta" (GLOSSARY §8) in pulsa.png. Read by tools/images/build_pulsa.py.
+#
+#   <name> en|pl <x0> <x1> gap <n> [shade <x>,<y>=<k> ...]
+#                                    reuse the shipped ink in columns x0..x1 of
+#                                    work/jar/res/<lang>/intro/pulsa.png (rows 158..192);
+#                                    x0..x1 are the Phase A ink boxes (images/glyphs/index.json),
+#                                    widened where noted to take in the glyph's own faint
+#                                    anti-alias pixels (k < 8) next to the box. 'shade' re-shades
+#                                    some of the glyph's own ink pixels (source x,y; hex k 1..F),
+#                                    or drops one from the glyph with k 0 (a neighbour's pixel at
+#                                    the edge of a widened box; it becomes opaque outline)
+#   <name> grid <file> gap <n>       a hand-drawn glyph from this directory
+#   <name> grid <file> on <dx>       a mark: its ink-left goes dx columns right of the previous
+#                                    glyph's ink-left; it does not advance the line
+#   gap = empty ink columns (ink = shade k >= 8, like the Phase A boxes) between the previous
+#   glyph and this one: 0..2 inside a word, 6..7 between words (en/es/pl measure 0..2 and 6..7).
+#   The glyph's ink-left goes to the previous glyph's ink-right + 1 + gap, so a negative gap
+#   overlaps the two ink boxes: that tucks a glyph under an overhang (the r under the T's arm).
+# The builder centres the whole line on x = 160.
+#
+# Joins inside words. In the shipped lines most letters of a word are linked by faint hairlines
+# (k 1..5) at the feet or tops: en "start" s-t ("E26F"), a-r ("F52C") and r-t ("E19") at the
+# top and t-a ("557") at the feet, en e-s ("B31E") and pl a-c ("C277") at the feet; some pairs
+# are not (en r-e, es P-u, r-a; the r's foot never joins). Here, all from the font's own pixels: r-y (the y's head), c-k (the c's own foot tail),
+# o-r and a-t (the r's head-serif hairline of en "start", as a-r there), t-t and the whole of
+# "starta". Not joined: T-r (by design, see the r), y-c (the y's right stem is a descender), c-k
+# at the top, f-o (the f's foot is the r's, which never joins).
+#
+# Word 1: "Tryck"
+T      grid T.txt       gap 0     # hand-drawn (P/N style)
+r      en 119 125       gap -4    # en "Press" r, tucked under the T's right arm as blackletter
+                                  # "Tr" is: its ink-left (the head serif, en 119) 3 columns left
+                                  # of the arm's end, so only (near-)opaque outline separates the
+                                  # T's hairline from the r: 2 columns beside the serif, 3 beside
+                                  # the stem (P and r even touch in en "Pr"). At gap 1 the
+                                  # space under the arm was a transparent pocket that showed the
+                                  # chair rope of monje.png as a grey dash inside the T.
+                                  # Left out on purpose: the r's own faint head-serif pixels at
+                                  # en 118 (k 2 at row 172, k 6 at row 173); taken in, they would
+                                  # join the r to the T. The outline takes their place.
+                                  # NOT widened to 126 (the flag's faint tip, k 1/7): with the y
+                                  # at gap 1 it would land on the y's head and join them with no
+                                  # outline between ("DF75FF5"). The tip becomes outline, so this
+                                  # r's flag is 1 px blunter.
+y      grid y.txt       gap 1     # hand-drawn from es u
+c      pl 127 132       gap 1     # pl "Naciśnij" c (the only c of the font), with its own column
+                                  # 132: the foot's upturned tail ("4" over "2", rows 180..181,
+                                  # after the foot's "C") and the top's flick ("2", row 172, which
+                                  # in pl touches the ś). Here the tail's "2" meets the k's stem
+                                  # foot ("6"), so c and k are joined at the foot ("FFC26FFFC"),
+                                  # like pl a-c ("FFC277"); the flick stays 1 px clear of the k.
+k      grid k.txt       gap 1     # hand-drawn from es l + en r flag
+# Word 2: "för"
+f      grid f.txt       gap 6     # hand-drawn: en r head on the l's stem + en t crossbar
+o      en 166 173       gap 2   shade 166,180=2 166,181=2
+                                  # en "to" o. Its column 166 is the o's faint left edge (k 2),
+                                  # except at rows 180..181 where the t's foot runs into it (6, 8):
+                                  # re-shaded to the edge's 2, so the ö has no join stub pointing
+                                  # at the f. The o's ink-left is then its left stroke (en 167),
+                                  # and gap 2 sets the stroke 2 columns after the f's crossbar
+                                  # (en "to": the o's stroke 1 column after the t's crossbar).
+dots   grid odots.txt   on 0      # ö = o + two upright 2x2 dots over the o's two strokes
+                                  # (on 0: the first dot over the left stroke; see odots.txt)
+r      en 205 213       gap 1   shade 205,173=0
+                                  # en "start" r; 213 = the flag's own tip (k 1/7). 205 = its
+                                  # head-serif hairline (k 2, row 172), the a-r join of en "start"
+                                  # ("F52C"); here it joins o-r at the top ("822C"). The serif's
+                                  # other pixel, en (205,173) k 6, is dropped (shade 0): next to
+                                  # the o's right stroke it would fuse o and r with no outline.
+# Word 3: "att"
+a      en 196 205       gap 6   shade 205,173=0
+                                  # en "start" a (its column 196 is the bowl's edge, k 1 7 9 8 2,
+                                  # kept: the free es a of "para" has the same lit corner).
+                                  # 205 = the r's head-serif hairline after it (k 2, row 172): it
+                                  # joins the a's top to the t's crossbar ("F529FFFF"), as a-r in
+                                  # en "start" ("F52C"). The r's (205,173) k 6 is dropped.
+t      en 160 165       gap 1     # en "to" t (its crossbar runs into the next t, as in blackletter tt)
+t      en 214 219       gap 0     # en "start" final t
+# Word 4: "starta" = the en word "start" as one block + the en a after its final t
+start  en 180 219       gap 6     # en "start", s t a r t with their original joins; 180 = the s
+                                  # swash's own tip (k 1/5)
+a      en 196 204       gap 0     # en a; t->a in en "start" is 0

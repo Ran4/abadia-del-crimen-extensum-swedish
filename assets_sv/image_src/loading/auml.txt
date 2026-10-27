@@ -1,0 +1,26 @@
+# Hand-pixelled 'ä' for the Swedish loading line "LADDAR: var god vänta..." (res/de/intro/loading.png).
+# Read by tools/images/build_loading.py, which places column 0 at the x its LAYOUT gives the ä
+# (x 208 in the shipped build: "vänta" = v 201..206, ä 208..213, n 215..219, t 220..224, a 225..230).
+# Rows are absolute image rows: the loadline font has the same rows in every language.
+#
+# Model: rows 184..189 are the en 'a' of "wait" (work/jar/res/en/intro/loading.png, box
+# x 211..216, y 184..189) pixel for pixel, exit stroke (5,189) included; the builder asserts that.
+# Only the two dots are new. No loadline glyph has a diaeresis; the font's dot is a single pixel
+# (i-dot en (219,182), fr (180,182); colon and full stops), so the diaeresis is two 1-px dots on
+# row 182, the i-dot row, one blank row above the bowl's top (184). Columns 1 and 4 centre the pair
+# over the bowl (its top is cols 2-3); cols 2/4, 1/3 and 2/5 were tried in work/phaseD/loading/var_a*/
+# and read as cramped or lopsided at 4x.
+#
+# symbols: .  nothing (transparent)
+#          #  ink (252,254,252), alpha 255
+#
+#       col: 012345
+y0 182
+182 .#..#.
+183 ......
+184 ..##..
+185 .##.#.
+186 .#..#.
+187 #..##.
+188 #.###.
+189 ##..##

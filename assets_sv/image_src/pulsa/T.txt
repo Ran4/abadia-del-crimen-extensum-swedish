@@ -1,0 +1,52 @@
+char T
+# Hand-drawn capital T for "Tryck", pulsa blackletter (images.md §3.3). Read by
+# tools/images/build_pulsa.py.
+#
+# Format: '<image row> <cells>'; one cell per pixel; '.' = no ink, '1'..'9' 'A'..'F' = shade k
+# (hex): the fill (253,246,231) scaled by k/15 over black, the font's 16-step ramp (palette
+# indices 36+k of the shipped pulsa.png). Only ink is drawn here: the 1 px opaque outline and the
+# semi-transparent fringe are made by the builder (fitted outline model). The grid's horizontal
+# position is set by layout.txt; rows are absolute image rows.
+#
+# Built in the style of the font's two capitals, P (en, x 98..118) and N (pl, x 91..114):
+#   - stem (3 px, shades 7 F D) with the thin second hairline 2 px to its right (shade 7): the P's
+#     stem and hairline. Stem (cols 10..12) and hairline (col 14) stand under the middle of the
+#     bar (cols 4..20, middle col 12; stem + hairline cols 10..14, middle col 12). The r of
+#     "Tryck" is tucked under the right arm (layout.txt);
+#   - the bar: on the left one pixel thick, ending in the P's top-left curl ("6E" over "65", as
+#     the P's "6EFE6" over "65"); on the right two pixels thick. Above the hairline its top row dips
+#     from F to B (row 166 "FBF"), where the P's top breaks between its curl and its bowl; from
+#     the stem's top to the arm the underside brightens step by step (row 167 "9ABC"), so the bar
+#     thickens evenly into the right arm;
+#   - the right arm ends in a short rounded drop (rows 168..169, "5FFE" / "8F7"), the top-right
+#     shoulder of the P's bowl ("BFFB" / "9FF7"). It stops after two rows: a longer drop left a
+#     pocket under the arm that showed monje.png's chair rope as a grey dash inside the T;
+#   - the comb on the left of the stem, as on both capitals: the P's thorn (rows 170..174, one
+#     column shorter than the P's) and below it one spike of the N's comb (rows 176..177,
+#     "3FFC" over "7FFF", after the N's "3FFD" over "7FF" at rows 174..175), with one dark row
+#     between thorn, spike and swash, as between the N's spikes;
+#   - bottom: the P's bottom-left swash (rows 179..181, one row higher than on the P), and the
+#     stem ending in a foot shaped like the r's ("6FFFF5" / "27D3"), the hairline merging into it.
+#     The foot's last row is 182, the baseline, level with the feet of r, y, c and k. (The P's
+#     stem descends to 185, but a T does not; with the foot on 183 the line started 1 px low.)
+# Ink rows 166..182 (caps from 166, like P and N). Ink mass (sum of k/15) 93, P 137, N 130: the
+# T has no bowl or diagonal; the comb spike brings it a little closer.
+# History: round 2 had the stem 2 columns further left (cols 8..10) under the same bar, which
+# read as a Γ with a droop when the T was seen on its own; centred, it reads as T.
+166 ....6EFFFFFFFFBFFEB6..
+167 ...65....5FFC9ABCFFFB.
+168 ..........8FA2B..5FFE.
+169 ..........7FD98...8F7.
+170 ........7B7FD.7.......
+171 .......5D.6FD.7.......
+172 .......9FD8FD.7.......
+173 ........6CFFD.7.......
+174 .........9FFD.7.......
+175 ..........7FD.7.......
+176 ......3FFC8FD.7.......
+177 ........7FFFD.7.......
+178 ..........7FD.7.......
+179 ........7CFFD.7.......
+180 ......5EFFFFD49.......
+181 .....697..6FFFB3......
+182 ..........27D3........
