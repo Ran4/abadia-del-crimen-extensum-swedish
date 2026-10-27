@@ -9,6 +9,9 @@ tools/.xvfb_display
 *.jar
 *.rar
 *.pdf
+# the Swedish manual's .docx holds game frames and art from the original manuals (D14, D15);
+# tools/manual/build_manual.py makes it again
+manual/*.docx
 run.log
 .claude/
 # reproducible pristine reference captures

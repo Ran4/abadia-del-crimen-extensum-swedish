@@ -1,9 +1,9 @@
-TextHarness  lang=de (Abadia.a=4)  jar=/home/ran/the_abbey_of_crime_extensum_swedish/work/.tmp/jar-vasjejh7/TheAbbeyOfCrimeExtensum.jar  res=(jar)
+TextHarness  lang=de (Abadia.a=4)  jar=game/TheAbbeyOfCrimeExtensum.jar  res=(jar)
 fuente.png: 648x8 = 81 glyphs (codes 45..125)
 glyph table: 112 code points produce ink via j.a(int,...); static-rule mismatches: 4 (EMPIRICAL TABLE WINS)
 drawable code points > U+007E: U+00A1(¡) U+00BF(¿) U+00C0(À) U+00C1(Á) U+00C2(Â) U+00C4(Ä) U+00C5(Å) U+00C7(Ç) U+00C8(È) U+00C9(É) U+00CA(Ê) U+00CC(Ì) U+00CD(Í) U+00CE(Î) U+00D1(Ñ) U+00D2(Ò) U+00D3(Ó) U+00D4(Ô) U+00D6(Ö) U+00D9(Ù) U+00DA(Ú) U+00DB(Û) U+00DC(Ü) U+00DF(ß) U+00E4(ä) U+00E5(å) U+00F6(ö) U+0104(Ą) U+0106(Ć) U+0118(Ę) U+0141(Ł) U+0143(Ń) U+0152(Œ) U+015A(Ś) U+0179(Ź) U+017B(Ż)
 ASCII 32..126 with ink ('.' = none): .!.....'....,-..0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ.\]^_`abcdefghijklmnopqrst..wx....}.
-g: 163 messages, 654 pages
+g: 163 messages, 653 pages
 reference check against es: 0 messages with different speaker markers
 parchment code/data: y.class pristine, letras MODIFIED fc0798482f486fdde4e7fcfd4c668b35ab3654e7b592043a3792bafd0810aba4 -> static decoder findings are advisory (warnings); the real y.a() run decides
 parchment: letras 5949 bytes, pergamino.png 190x190, intro 1474 bytes, ending 1494 bytes
@@ -11,16 +11,16 @@ parchment intro: 8 pages, 84 lines, widest line 166 px (text starts x=76), right
 parchment ending: 8 pages, 87 lines, widest line 164 px (text starts x=76), rightmost ink pixel x=238 (parchment image x=65..254), 47888 y.a() steps
 
 resources used:
-  res/caras.png <- jar:file:/home/ran/the_abbey_of_crime_extensum_swedish/work/.tmp/jar-vasjejh7/TheAbbeyOfCrimeExtensum.jar!/res/caras.png
-  res/de/marcador.png <- jar:file:/home/ran/the_abbey_of_crime_extensum_swedish/work/.tmp/jar-vasjejh7/TheAbbeyOfCrimeExtensum.jar!/res/de/marcador.png
-  res/de/pergamino1 <- jar:file:/home/ran/the_abbey_of_crime_extensum_swedish/work/.tmp/jar-vasjejh7/TheAbbeyOfCrimeExtensum.jar!/res/de/pergamino1
-  res/de/pergamino2 <- jar:file:/home/ran/the_abbey_of_crime_extensum_swedish/work/.tmp/jar-vasjejh7/TheAbbeyOfCrimeExtensum.jar!/res/de/pergamino2
-  res/dialog.png <- jar:file:/home/ran/the_abbey_of_crime_extensum_swedish/work/.tmp/jar-vasjejh7/TheAbbeyOfCrimeExtensum.jar!/res/dialog.png
-  res/fuente.png <- jar:file:/home/ran/the_abbey_of_crime_extensum_swedish/work/.tmp/jar-vasjejh7/TheAbbeyOfCrimeExtensum.jar!/res/fuente.png
-  res/letras <- jar:file:/home/ran/the_abbey_of_crime_extensum_swedish/work/.tmp/jar-vasjejh7/TheAbbeyOfCrimeExtensum.jar!/res/letras
-  res/numRoman.png <- jar:file:/home/ran/the_abbey_of_crime_extensum_swedish/work/.tmp/jar-vasjejh7/TheAbbeyOfCrimeExtensum.jar!/res/numRoman.png
-  res/pergamino.png <- jar:file:/home/ran/the_abbey_of_crime_extensum_swedish/work/.tmp/jar-vasjejh7/TheAbbeyOfCrimeExtensum.jar!/res/pergamino.png
-  res/pergamino2.png <- jar:file:/home/ran/the_abbey_of_crime_extensum_swedish/work/.tmp/jar-vasjejh7/TheAbbeyOfCrimeExtensum.jar!/res/pergamino2.png
+  res/caras.png <- jar:file:game/TheAbbeyOfCrimeExtensum.jar!/res/caras.png
+  res/de/marcador.png <- jar:file:game/TheAbbeyOfCrimeExtensum.jar!/res/de/marcador.png
+  res/de/pergamino1 <- jar:file:game/TheAbbeyOfCrimeExtensum.jar!/res/de/pergamino1
+  res/de/pergamino2 <- jar:file:game/TheAbbeyOfCrimeExtensum.jar!/res/de/pergamino2
+  res/dialog.png <- jar:file:game/TheAbbeyOfCrimeExtensum.jar!/res/dialog.png
+  res/fuente.png <- jar:file:game/TheAbbeyOfCrimeExtensum.jar!/res/fuente.png
+  res/letras <- jar:file:game/TheAbbeyOfCrimeExtensum.jar!/res/letras
+  res/numRoman.png <- jar:file:game/TheAbbeyOfCrimeExtensum.jar!/res/numRoman.png
+  res/pergamino.png <- jar:file:game/TheAbbeyOfCrimeExtensum.jar!/res/pergamino.png
+  res/pergamino2.png <- jar:file:game/TheAbbeyOfCrimeExtensum.jar!/res/pergamino2.png
 
 WARNINGS (9):
   glyph rule: static prediction false but game draws true for U+00C5

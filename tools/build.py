@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["pillow"]
+# dependencies = ["pillow==11.3.0"]
 # ///
 """Build the Swedish game (language slot 'de') from original/ + translation/ + assets_sv/.
 
@@ -14,6 +14,8 @@ Inputs (defaults):
   --fuente-add PATH   DIR/glyphs/fuente_add.json
   --letras-add PATH   DIR/glyphs/letras_add.json
   --out DIR           game/      (wiped and recreated; an existing savedata.bin is kept)
+  (not an option) manual/Användarmanual.pdf, if it exists, is copied as is into the game dir as
+                      "User's manual (Swedish).pdf" (DECISIONS D15; made by tools/manual/build_manual.py)
   --placeholder       Spanish placeholder text allowed: untranslated-text lint errors become warnings
   --allow-missing-assets   a missing Swedish image falls back to the original res/de file (WARNING)
   --no-image-rebuild  use the images already in assets_sv/res/de/ instead of rebuilding them
@@ -91,6 +93,8 @@ MOON_IMAGES = ("intro/manuydani.png", "intro/pacoyjuan.png", "intro/novela.png",
                "intro/pulsa.png")                            # drawn while the moon window (250,0,70,100) is up
 PULSA_BAND = (8, 160, 311, 191)    # x0,y0,x1,y1 inclusive; the shipped pulsa text of all 6 languages: x 74..246, y 164..187
 SAVEDATA = "savedata.bin"
+MANUAL_PDF = ROOT / "manual" / "Användarmanual.pdf"     # tools/manual/build_manual.py (D15)
+MANUAL_NAME = "User's manual (Swedish).pdf"            # named like the original manuals
 
 
 class BuildError(Exception):
@@ -833,7 +837,8 @@ def step9b_verify(jar: pathlib.Path, kdata: dict, rows: list[dict]):
 # ------------------------------------------------------------------------------ step 10: game dir
 def game_file_names() -> list[str]:
     names = [p.name for p in sorted(ORIG.iterdir()) if p.suffix in (".sh", ".bat", ".pdf")]
-    return names + ["TheAbbeyOfCrimeExtensum(Swedish).sh", "TheAbbeyOfCrimeExtensum(Swedish).bat", JAR_NAME]
+    names += ["TheAbbeyOfCrimeExtensum(Swedish).sh", "TheAbbeyOfCrimeExtensum(Swedish).bat", JAR_NAME]
+    return names + ([MANUAL_NAME] if MANUAL_PDF.is_file() else [])
 
 
 def check_out_dir(out: pathlib.Path):
@@ -846,7 +851,8 @@ def check_out_dir(out: pathlib.Path):
     if out.exists() and not out.is_dir():
         raise BuildError(f"--out {out} exists and is not a directory")
     if out.exists():
-        allowed = set(game_file_names()) | {SAVEDATA}
+        # MANUAL_NAME always: a game dir from a build made while manual/ had the PDF stays wipeable.
+        allowed = set(game_file_names()) | {SAVEDATA, MANUAL_NAME}
         unknown = sorted(p.relative_to(out).as_posix() for p in out.rglob("*") if p.relative_to(out).as_posix() not in allowed)
         bad = sorted(p.relative_to(out).as_posix() for p in out.iterdir() if p.is_dir() or p.is_symlink())
         if unknown or bad:
@@ -866,6 +872,10 @@ def step10_game(args, jar: pathlib.Path) -> pathlib.Path:
     new_files["TheAbbeyOfCrimeExtensum(Swedish).sh"] = ("data", en_sh[:-3] + b" de")
     new_files["TheAbbeyOfCrimeExtensum(Swedish).bat"] = ("data", en_bat[:-3] + b" de")
     new_files[JAR_NAME] = ("copy", jar)
+    if MANUAL_PDF.is_file():
+        new_files[MANUAL_NAME] = ("copy", MANUAL_PDF)
+    else:
+        log.info(f"no Swedish manual: {rel(MANUAL_PDF)} does not exist (uv run tools/manual/build_manual.py)")
     if sorted(new_files) != sorted(game_file_names()):
         raise BuildError("internal: game file list mismatch")
     keep_save = None

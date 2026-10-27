@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["pillow"]
+# dependencies = ["pillow==11.3.0"]
 # ///
 """Render every Swedish string of the BUILT game with the game's own drawing code (headless
 harness, tools/harness/) into contact sheets, and fail on any missing glyph or layout error.
@@ -31,7 +31,8 @@ the patched jar for regression (tools/regress.py compares them against the prist
 Concurrency: the jar is copied to a private snapshot first (a build replacing game/ mid-run cannot
 mix two jars), the harness classes come from a content-addressed dir that is never deleted
 (tools/harness/build.sh, work/harness_build/), and a lock per output dir refuses a second run
-writing to the same --out.
+writing to the same --out. report.txt names the jar as given (relative to the project root), not
+the snapshot's random work/.tmp/jar-*/ path, so the tracked report changes only when the render does.
 """
 from __future__ import annotations
 
@@ -270,6 +271,10 @@ def render(a, jar: pathlib.Path, snap: pathlib.Path, out: pathlib.Path) -> int:
     print(f"[3] render --lang {a.lang} --ref-lang {ref} from {jar} (private snapshot)")
     safe_reset(out)
     code = run_harness(snap, a.lang, out, ref, a.java, hb)
+    report = out / "report.txt"
+    if report.exists():
+        shown = jar.relative_to(ROOT) if jar.is_relative_to(ROOT) else jar
+        report.write_text(report.read_text(encoding="utf-8").replace(str(snap), str(shown)), encoding="utf-8")
     try:
         layout = json.loads((out / "layout.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):

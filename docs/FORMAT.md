@@ -14,6 +14,21 @@ Source notes (read these for depth): `work/phaseA/text.md`, `font.md`, `parchmen
 `deslot.md`, `images.md`, `runtime.md`, `harness.md`. Reviewer evidence is in
 `work/phaseA/refute_<reader>_{0,1}/`.
 
+**Updated after Phases C–F** (2026-10-27; Phase E's final jar was sha256 `0ad2bbf0…a2a260`;
+after the Phase F string edits the jar is `43846c9e…0c60c`, which differs from it only in
+`abadia/k.class` (entry CRC diff, Phase F final verification). That jar was built, rendered and
+regressed in the Phase F final verification: `work/phaseF/build_final_r1.log`, `render_r1.log`,
+`regress_r1.log` (3711 frames OK), with `manifest_game.json` = `manifest_det1.json` =
+`manifest_det2.json` (sha256 `d3da74a2…f236d`). After the dependency pins of that round the same
+jar was rebuilt and re-checked (`build_final_r2.log`, `render_r2.log`, `regress_r2.log`;
+`manifest_game_r2.json` = `manifest_det3.json`, which differ from `d3da74a2…` only in the
+`image_inputs` key). `work/build/manifest.json` always holds the current hashes). Facts that the
+built Swedish game proved, at runtime or with the game's own code, are marked VERIFIED with their
+evidence path. Settled open questions are closed in §9. The project's own tools are in `tools/`
+(`tools/README_tools.md`); the `work/phaseA/…` tools named below are the Phase A originals.
+Evidence paths under `work/` are git-ignored scratch: the tracked summaries are the `INDEX.md`,
+`report.txt` and `SUMMARY.txt` files under `screenshots/`.
+
 ---
 
 ## 0. Provenance
@@ -23,7 +38,7 @@ Source notes (read these for depth): `work/phaseA/text.md`, `font.md`, `parchmen
 | download `original/LaAbadiaDelCrimenExtensum.rar` | 19,934,302 B, sha256 `d8335c45d479dc4f160400ce09ec04434a19e968b11ec2ef686e1c4ab16e442c` | matches the prompt |
 | `original/TheAbbeyOfCrimeExtensum.jar` | 17,944,815 B, sha256 `1bc6b3fcbaf6116bd0e4a92b96193be54e72686a00c1208ba909b7bd961a36f0` | matches the prompt |
 | `work/jar/` | extracted jar; byte-identical to the original (diff -rq empty) | VERIFIED |
-| launchers | `.sh`: `cd "`dirname "$0"`"` + LF + `java -Xms256M -Xmx256M -jar TheAbbeyOfCrimeExtensum.jar <code>` + LF (90 B). `.bat`: one java line, no cd, no trailing newline. es, en, fr, it, pl only. | VERIFIED |
+| launchers | `.sh` (90 B): `#!/bin/bash` + LF + ``cd "`dirname "$0"`"`` + LF + `java -Xms256M -Xmx256M -jar TheAbbeyOfCrimeExtensum.jar <code>`, **no trailing LF**. `.bat` (58 B): the java line alone, no cd, no trailing newline. es, en, fr, it, pl only. The Swedish `game/TheAbbeyOfCrimeExtensum(Swedish).sh`/`.bat` are the English ones with ` en` → ` de`, the same 90/58 B (`tools/build.py` step 10). | VERIFIED (`od -c`) |
 | JVMs | `java` = OpenJDK 11.0.32 (what the launchers use here); OpenJDK 8 = `/usr/lib/jvm/java-8-openjdk-amd64` (1.8.0_504). Game classes are major 51. | VERIFIED |
 | jar | not signed. META-INF = `MANIFEST.MF` (`Main-Class: abadia.Abadia`, CRLF) + `services/javax.sound.sampled.spi.{AudioFileReader,FormatConversionProvider}`. The services entries are required for OGG audio. | VERIFIED |
 
@@ -76,7 +91,10 @@ Pristine fingerprints, for "only my patch changed" checks (sha256 prefix / size)
     differ between shipped languages.
 12. **The first in-game message is Remigio's `g[49]`, not the abbot's welcome.** The abbot's long
     welcome `g[1]` needs the player to follow Remigio to the cell; the automated tour does not
-    reach it.
+    reach it. **VERIFIED reachable in Phase E:** following Remigio within his ±8-unit box and then
+    stepping into the cell starts `g[1]` (24/24 pages in runs 1, 2 and 4), then `g[5]`. Route in
+    §7.8; evidence `screenshots/runtime_sv/opening/INDEX.md`,
+    `work/phaseE/runs/run{1,2,4}/agent/events.log`.
 13. Parchment files need the `0x1A` terminator and CR-only line breaks. LF is a forced page
     break, so CRLF puts one line per page.
 14. `translation/strings_sv.tsv` must be keyed by **(array, index)**, not by a flat 0..184 index.
@@ -110,7 +128,7 @@ reviewer measurements that agree.
 | ASM frame check | `CheckClassAdapter.verify` catches bad frames | it **accepted** a broken-frame class. Use `ClassReader.accept(new CheckClassAdapter(cw, true), 0)` **and** load/link under `-Xverify:all` on JDK 8 and 11. |
 | temp files | 7 files, 247 MB | **10** `abbey*.tmp` (one per bgm track, `c/a.java:18-28`), 258,056,288 B = 246 MiB |
 | es intro timings | same plateau starts as en | es plateau **starts** are 2.60/10.30/16.94/24.05/30.55/37.09/41.97/46.31 s; en and es differ by up to ~0.85 s |
-| idle game over | deterministic at ~630 s | the sequence is reliable, the timing is not (unseeded `java.util.Random`): 258.6 s (es) vs 274.2 s (en) after play start |
+| idle game over | deterministic at ~630 s | the sequence is reliable; the timing varies between runs (the unseeded `java.util.Random`, or start timing: §7.4): 258.6 s (es) vs 274.2 s (en) after play start |
 | image corrections | (several) | applied in §6: fraktur has only capitals A C D E I J L M N P R T U; pulsa outline = 1 px opaque + 1 px semi-transparent black; existing moon-window intrusions; per-language baselines |
 
 ---
@@ -120,7 +138,7 @@ reviewer measurements that agree.
 ### 1.1 Classes and fields (VERIFIED: reflection dump, raw constant pool, javap)
 
 Language index → class: 0 es=`m`, 1 en=`l`, 2 it=`o`, 3 fr=`n`, **4 de=`k`**, 5 pl=`p`.
-Each class is `public final class abadia.k` (flags 0x0031), major 51, with **only `<clinit>`**
+Each class (`abadia.m l o n k p`) is `public final` (flags 0x0031), major 51, with **only `<clinit>`**
 (no constructor, no SourceFile). Each of the 185 `String` constants has its own Utf8 entry.
 
 | field | descriptor / flags | entries | read by | meaning |
@@ -180,8 +198,17 @@ on 0..9, wraps the cursor at `f.length`, and sizes the box `f.length*10+20`. `e`
 are therefore x 32..311, line 1 y 151..158, line 2 y 163..170, with accents 1–2 px above. The face
 is drawn from `caras.png` (340×80 = 17 columns × 4 mouth frames of 20×20) at clip (6,153,20,20),
 column = speaker id. The blinking "more" glyph 95 (▶▶) is drawn at (306,164) only while
-`!abadia.b.i.c` (scripted scenes). It overlaps the 35th glyph of line 2 (x 304–311). That is
-cosmetic: pristine es already has 20 such pages, en 24, pl 26, fr 33.
+`!abadia.b.i.c` (scripted scenes). It overlaps the 35th glyph of line 2 (x 304–311). In the
+shipped languages that is cosmetic: pristine es already has 20 such pages, en 24, pl 26, fr 33.
+**Swedish rule: the visible part of line 2 is ≤ 34 glyphs on every page** (trailing `_` and
+spaces do not count; DECISIONS D13). Whether ▶▶ shows depends on `b.i.c` at runtime, not on the
+string, so the rule covers every page, exactly as the harness warning does
+(`line 2 has 35 chars; char 35 … is overlapped by the blinking continue-marker`). A page whose line 1
+fills 35 glyphs may end in a `_` that leaves line 2 empty (`NU ÄR DE UPPTAGNA MED SINA SYSSLOR.@0`
+in g159: line 1 is exactly 35 glyphs, and the `_` that the game inserts for `@0` falls alone on
+line 2; never type a `_` before `@`, §1.4). VERIFIED: the Swedish render has no such warning
+(`screenshots/strings/de/report.txt`), and live play confirmed that Space advances and ▶▶ shows only in scripted messages (g1, g53,
+Severinus's tour), not in g49, the walk, g54 or g145 (`screenshots/runtime_sv/opening/INDEX.md`).
 
 **`b()`** runs once per logic tick (odd frames, E.java:207) and acts only when
 `Abadia.ak % 3 != 0`, i.e. **one tick per 3 frames**. The frame period is 33 ms, so 1 tick ≈ 0.1 s
@@ -275,9 +302,10 @@ Rules for Swedish:
 | array | limit | why (VERIFIED) |
 |---|---|---|
 | `g` (used) | **≤ 35 glyphs per line** (automatic greedy wrap at spaces); **every word ≤ 35**; 2 lines/page; **no total limit** | `bipush 35` in `e()`. Longest shipped: es g[122] 2305 chars, it g[122] 2504. The class-file limit is 65535 bytes of modified UTF-8 per string. |
-| `g[157]` | **≤ 232 ticks** (isolated, `text_sim`) | Remigio's day-1 walk, §1.8 |
-| `g[158]` | **≤ 96 ticks** isolated (≤ 129 when chained after 157) | §1.8 |
-| `g[159]` | **≤ 211 ticks** | §1.8 |
+| `g` line 2 | **≤ 34 visible glyphs** on every page | the ▶▶ marker covers glyph 35 in scripted scenes (§1.3, D13) |
+| `g[157]` | **≤ 215 ticks** (isolated, `text_sim`; = 645 frames) | Remigio's day-1 walk: the measured window is 220–223 ticks (§1.8, D12) |
+| `g[158]` | **≤ 96 ticks** isolated (≤ 129 when chained after 157) | §1.8 (measured window 187) |
+| `g[159]` | **≤ 211 ticks** | §1.8 (measured window 319) |
 | `g[51]` | **≤ 77 ticks** | §1.8 |
 | `a[0]`, `a[2]`, `a[3]` | **≤ 40** | centred `x = 160 − 4·len` on 320 px (E.java:378-381) |
 | `a[1]` | **≤ 37**, and **must start with a space** | drawn as `String.valueOf(pct) + a[1]`; pct is 0..104 (`7·(day−1) + hour + g.c()` (+5), 0 if < 5; `g.H` = 51 flags) |
@@ -302,17 +330,33 @@ counts every char.
   waypoint 8. On **arrival** at waypoints 8, 9 and 10, `j.b(158)`, `j.b(159)` and `j.b(51)` start
   **interrupting** (no `!bP` wait), so unread pages are cut. 51 is in turn interrupted by the abbot's
   `j.b(1)` once he sees Guillermo. The block runs only while `Abadia.t.v()`; otherwise Remigio's
-  40-tick counter fires `j.b(50)`. Shipped ticks (`text_sim`, isolated / leftover `bR`):
+  40-tick counter fires `j.b(50)`. Shipped and Swedish ticks (`text_sim`, isolated / leftover
+  `bR`), and the walk windows measured in Phase E:
 
-  | idx | es | en | it | fr | pl | cap for Swedish |
-  |---|---|---|---|---|---|---|
-  | 157 | 221 / 27 | 205 / 0 | **232** / 33 | 212 / 32 | 194 / 0 | ≤ 232 |
-  | 158 | 93 (120 after 157) | 94 | **96** (129 after 157) | 91 (123) | 86 | ≤ 96 isolated |
-  | 159 | 192 / 17 | 185 / 14 | 183 / 17 | **211** / 3 | 182 / 9 | ≤ 211 |
-  | 51 | 68 | 63 | **77** | 74 | 55 | ≤ 77 |
+  | idx | es | en | it | fr | pl | sv (built) | window, runs 1 / 2 / 4 | cap for Swedish |
+  |---|---|---|---|---|---|---|---|---|
+  | 157 | 221 / 27 | 205 / 0 | **232** / 33 | 212 / 32 | 194 / 0 | 194 / 0 | **220 / 223 / 223** (until 158) | **≤ 215** |
+  | 158 | 93 (120 after 157) | 94 | **96** (129 after 157) | 91 (123) | 86 | 88 (88 after 157) | 187 / 187 / 187 (until 159) | ≤ 96 isolated, ≤ 129 chained |
+  | 159 | 192 / 17 | 185 / 14 | 183 / 17 | **211** / 3 | 182 / 9 | 177 / 18 | 319 / 319 / 319 (until 51) | ≤ 211 |
+  | 51 | 68 | 63 | **77** | 74 | 55 | 67 | ends on its own; the abbot's `g[1]` waits for the player | ≤ 77 |
 
-  Also keep the last page of 157 long (≥ 40 budget) if possible, so it leaves no `bR` that
-  delays 158. Walking time to the waypoints was **not measured** (UNCERTAIN, §9).
+  **Walk timing (VERIFIED, Phase E).** The window is the time from a message's `MSG_START` to the
+  next one's (`ak` frames / 3): g157 6351 → 7011 (run 1), 1233 → 1903 (run 2), 1263 → 1931 (run 4).
+  Remigio never paused (one step per 8 frames, 14-frame turns at corners), so these are the
+  natural pace and the shortest windows. Live durations are within 1 tick of `text_sim` (g157
+  shown 580 frames = 193 ticks in all three runs, `text_sim` 194), and so are the page starts. So es
+  (221) and it (232) lose part of their 17-tick linger at waypoint 8; the old cap "≤ 232" (the
+  longest shipped) was too long. **The g157 cap is 215**: the whole message, linger included, ends
+  ≥ 5 ticks before the shortest window. 158/159/51 keep the shipped caps, far inside their
+  windows. Enforced by `tools/lint_strings.py` (`TICK_CAPS`). Evidence:
+  `work/phaseE/runs/run{1,2,4}/agent/events.log`, `screenshots/runtime_sv/opening/INDEX.md`.
+  Also keep the last page of 157 long (≥ 40 budget), so it leaves no `bR` that delays 158 (the
+  Swedish leaves 0; the lint warns otherwise). **The 215 cap assumes that g49 leaves `bR` = 0.**
+  g157 starts right after g49 and `bR` is never reset (§1.3), so a g49 whose last page has a
+  budget under 40 would add up to 39 ticks to g157's first page, and the lint (which simulates
+  g157 alone, `bR0 = 0`) would not notice. Keep g49's last page at a budget of 40 or more: the
+  Swedish g49 (145 ticks) leaves 0, its last page `JAG BER ER ATT FÖLJA MIG. ABBOTEN VÄNTAR PÅ
+  ER.` having a budget of 48 (`text_sim`).
 - **Dropped messages:** fire-and-forget `j.a()` calls (abbot 68 at b/a.java:255, 94, 116, 78/79,
   Adso 33/34, Guillermo 89) are lost if another message is showing. Longer ambient text widens that
   window slightly. State machines continue (no soft-lock; INFERRED). French already ships at +12 %
@@ -327,10 +371,13 @@ VERIFIED by rendering all 65536 BMP code points through the private glyph routin
 **Allowed for Swedish:** space, `A–Z`, `0–9`, `. , : ; ? ! ' -`, `Ä Ö É` (plus the rest of the
 switch set: `À Á Â Ç È Ê Ì Í Î Ñ Ò Ó Ô Ù Ú Û Ü ß Ą Ć Ę Ł Ń Œ Ś Ź Ż ¡ ¿`), and **`Å` only after the
 j.class patch (§3.4)**. Markers `@ _ *` in `g` only.
-**Forbidden:** lowercase (a–t, x draw special glyphs; u v w y z draw blank), `" # $ % & ( ) + / [ { | } ~`,
+**Forbidden:** lowercase (a–t, x draw special glyphs; since the Swedish font, `w` (119) draws the
+precomposed HUD Ö of cell 74 (§2.4); u v y z draw blank), `" # $ % & ( ) + / [ { | } ~`,
 `< = > @ \ ] ^ _` and the backtick (0x60) as literal text (they draw comma, diaeresis, ß, ¿, ¡, !, Ñ, ▶▶, acute),
 `Å` before the patch, `Æ Ø Ë Ï Õ Ã`, typographic quotes/dashes/ellipsis (`’ “ ” – — … « »`),
 NBSP, TAB. Use `...` (three periods) and `'` (ASCII apostrophe).
+VERIFIED on the built jar: the harness's empirical ink map lists `w` and `}` among the inked
+ASCII codes and Å among the drawable code points (`screenshots/strings/de/report.txt`).
 
 ### 1.10 Text outside the text classes (VERIFIED: string constants of every non-text class)
 
@@ -339,7 +386,7 @@ NBSP, TAB. Use `...` (three periods) and `'` (ASCII apostrophe).
 | `w.t` (save label prefix) | `DÍA `, `DAY `, `DIE `, `JOUR `, `DÍA `, `DZIEŃ ` | Spanish, **shares CP #7 with es** (ldc at w.<clinit> 218 and 238) | new constant for index 4 only (ASM, `ldc_w`); never edit #7 |
 | `w.u` (empty slot) | `VACÍO`, `EMPTY`, `VUOTO`, `VIDE`, `VACÍO`, `PUSTE` | Spanish, **shares CP #15** (ldc 256 and 276) | same |
 | `E.h` (AWT window title, system font) | `La Abadía del Crimen Extensum`, `The Abbey of Crime Extensum`, `L'Abbazia del Crimine Extensum`, `L'abbaye du crime Extensum`, `Die Abtei Des Crime Extensum`, `The Abbey of Crime Extensum` | German; String #7 → Utf8 #775, referenced only there | in-place or ASM |
-| `w` JOptionPane | `Los datos guardados están corruptos. `, `Error al grabar el fichero. ` + exception, title `ERROR GRAVE` | the same in **every** language (not indexed) | optional, out of scope |
+| `w` JOptionPane | `Los datos guardados están corruptos. `, `Error al grabar el fichero. ` + exception, title `ERROR GRAVE` | the same in **every** language (not indexed) | none: kept Spanish (DECISIONS D16) |
 | not player text | `d` (Spanish debug overlay), `r` `v1.3e` (AWT TimesRoman 12 at (10,10) on the loading screen), `y` `Caracter:` (stdout debug) | | none |
 
 `w.class` has 464 CP entries (new constants need `ldc_w`; ASM handles it). Proven tool:
@@ -348,9 +395,12 @@ it replaces the LDC after `ICONST_4` in `<clinit>`, needs exactly 1 hit per pair
 `ClassWriter(reader, 0)` to keep the pool). VERIFIED on JDK 8 and 11 with `-Xverify:all`:
 `t=[DÍA ,DAY ,DIE ,JOUR ,DAG ,DZIEŃ ]`, `u=[…,TOM,…]`, Spanish unchanged. The same tool works on
 `E.class` (`4 'Die Abtei Des Crime Extensum' '<title>'`, VERIFIED, only `h[4]` changes).
-`w.<clinit>` and `E.<clinit>` have no branches, so no frames are involved. Note that
-`tools/run_headless.sh` finds the window by the title regex `Abad|Abbey|Abbaz|abbaye|Abtei`
-(line 56, hard-coded), so a new title must match it, or the regex must be extended (§7.6).
+`w.<clinit>` and `E.<clinit>` have no branches, so no frames are involved. The build runs the
+maintained port `tools/java/PatchStrings.java` (same method; replacements come from a spec file,
+`work/build/patch_w.spec` and `patch_E.spec`), and `tools/java/VerifyClasses.java` checks the result
+(step 9b). Note that `tools/run_headless.sh` finds the window by the title regex
+`Abad|Abbey|Abbaz|abbaye|Abtei` (line 56, hard-coded), so a new title must match it, or the regex
+must be extended in all three copies (§7.6).
 
 ### 1.11 Per-index context table: `work/phaseA/context.tsv`
 
@@ -363,6 +413,14 @@ once, g.a = one-shot flag, hot = location hotspot), the condition (day/hour/plac
 ticks, and flags (QUATUOR, pause runs, length-sensitive). `speaker` is the `@N` sequence with names.
 **Fields are raw: trailing spaces are significant** (e.g. `f[3]` `SONIDOS: `). Fuller per-index
 metadata, including INFERRED trigger conditions: `text_index.json` and `text.md` §9.
+The project keeps a byte copy as `tools/data/context.tsv`, the lint's `--ref` table, and
+`translation/strings_sv.tsv` starts with the same columns. Their `context` and `max_len` cells are
+the Phase A notes and are not kept current: for g157 they say `keep <=232 ticks` (only the TSV's
+`max_len` cell was changed, to `keep <=215 ticks (DECISIONS D12)`), and the `g` rows say
+`35 glyphs/line` with no line-2 rule. The limits in force are those of §1.7 and §1.8 (g157 ≤ 215
+ticks, D12; visible line 2 ≤ 34 glyphs, D13), enforced by the lint and the render (§1.13). Against
+the reference table the lint checks only the row keys and their order and the `es` and `en`
+columns.
 
 ### 1.12 Regenerating `k` (Decision 2)
 
@@ -387,11 +445,20 @@ build lint must add:
    `@(?:[0-9]|1[0-4])(?= |$)` (ASCII digits).
 3. charset whitelist (§1.9); no lowercase; no `%`; no `_`, `*` or `@` outside `g`; `_`/`*` only at
    token ends; no space before `@`; no `_ @`; no leading/trailing whitespace; no NBSP or TAB; spaces
-   single except where es has a run at the same place.
+   single, except runs that es also has (the lint matches them by count and length, not by
+   position; keep them at the same place by hand).
 4. every word ≤ 35; `render.sh` reports no missing glyph, crash or no-progress.
 5. length limits §1.7 (menu combinations, end screen, `w.t`/`w.u`), Remigio tick caps §1.8
-   (`text_sim.simulate`).
+   (`text_sim.simulate`; g157 ≤ 215).
 6. QUATUOR present wherever es has it (g[125], g[127]).
+7. visible line 2 ≤ 34 glyphs on every page (§1.3): `render_strings.py` passes the harness
+   warning through, and the Swedish report must have none.
+
+Items 1–6 are `tools/lint_strings.py` (run by `tools/build.py` before anything is built); item 4's
+render and item 7 are `tools/render_strings.py`. VERIFIED on the final TSV (jar
+`43846c9e…0c60c`, Phase F final verification): lint 0 errors (1 warning, the space before g126's
+second marker, as in es), render 0 errors and no line-2 warning (`work/phaseF/render_r1.log` and,
+after the rebuild, `render_r2.log`; `screenshots/strings/de/report.txt`).
 
 ---
 
@@ -427,11 +494,23 @@ All shipped hour bytes are ≤ 113.
 rows 2–7 like cells 63 Ê and 68 Ó) in a **free cell reachable as a byte**: cells 2, 46, 72, 73, 74,
 76, 77, 78, 79 (bytes **47, 91, 117, 118, 119, 121, 122, 123, 124**). Cell 75 (byte 120) is
 unusable; cells 81/82 (bytes 126/127) only exist if the image is widened further (80 = ring, §3.4).
-The Phase B draft glossary (`translation/glossary.tsv`) chooses ` NATT  `, ` PRIM  `, ` TERS  `,
+The glossary (`translation/glossary.tsv`, GLOSSARY §5.1) chooses ` NATT  `, ` PRIM  `, ` TERS  `,
 ` SEXT  `, `  NON  `, `VESPER `, and `NATTBÖN` with a precomposed Ö at **byte 119 (cell 74)**. That fits
 these rules. A demo of precomposed Å/Ä/Ö in cells 72–74 rendered legibly
 (`proto_font/out/*/a_dy2_demo_hud.png`). Plain names (NATT, PRIM, TERS, SEXT, NON, VESPER, KOMPLET)
 need no new glyph.
+
+**Built (Phase D; DECISIONS D8).** Cell 74 of `res/fuente.png` holds the precomposed Ö
+(`assets_sv/glyphs/fuente_add.json`): row 0 = the cell-16 diaeresis dots (palette 37 + 1), row 1
+empty, rows 2–7 = the O body, pixel-identical to the O of the shipped HUD Ó (cell 68). `k.b[42..48]`
+= `78,65,84,84,66,119,78`. The build takes the bytes from the sv cell (`lint_strings.hud_bytes`:
+Ö → 119, A–Z and space as themselves), never from a note. The lint allows only `A–Z`, space and Ö
+in a `b` row and checks a `bytes=` note against the cell when one is present (none is; the
+reference byte lists are the `hour_hud` rows of `translation/glossary.tsv`). VERIFIED: the HUD
+strip and the save label render it with the game's code (`screenshots/strings/de/hours.png`, `raw/hud_hour6.png`, `raw/slots_set*.png`), and
+`tools/regress.py` finds fuente cells 0..79 identical except the filled blank cell 74
+(`work/phaseF/regress_r1.log`, `regress_r2.log`). Still free for later HUD glyphs: cells 2, 46, 72, 73, 76–79 (bytes 47,
+91, 117, 118, 121–124).
 
 ---
 
@@ -492,13 +571,17 @@ by rendering. É works. **Å does not.**
 | cells (code) | content |
 |---|---|
 | 0 `-`, 1 `.`, 3–12 `0–9`, 13 `:`, 14 `;`, 18 `?`, 20–45 `A–Z` | normal glyphs |
-| **2 `/`, 46 `[`, 72–79 `u v w x y z { \|`** | **blank, used by nothing** (75 = `x` is unreachable through `j.a`: switch → Ê) |
+| **2 `/`, 46 `[`, 72 `u`, 73 `v`, 75–79 `x y z { \|`** | **blank, used by nothing** (75 = `x` is unreachable through `j.a`: switch → Ê) |
+| **74 `w`** (Swedish build) | precomposed HUD Ö, hour byte 119 (§2.4); was blank in the original |
+| **80 (code 125 `}`)** (Swedish build, appended at x 640..647) | the Å ring overlay (§3.4); the image is 648×8 |
 | 15 `<` comma, 16 `=` diaeresis, 17 `>` ß, 19 `@` ¿, 47 `\` ¡, 48 `]` !, 49 `^` Ñ, 50 `_` ▶▶ (more marker), 51 `` ` `` acute, 52 `a` apostrophe, 59 `h` grave, 60 `i` circumflex, 61 `j` Ç, 62 `k` Œ, 69 `r` Ł, 70 `s` dot, 71 `t` ogonek | glyphs reached through the switch or as overlays |
 | 53–58 `b–g`, 63 `l` (precomposed Ê), 64–67 `m–p`, 68 `q` (precomposed Ó) | HUD-only slices; 53, 55, 66 are pixel-identical |
 
 ### 3.4 Chosen Å mechanism: patch `abadia/j.class` + ring glyph (prototype VERIFIED)
 
-**Patch** (tool `work/phaseA/proto_font/src/PatchJ.java`, args `<in> <out> 125 -2 1`):
+**Patch** (Phase A tool `work/phaseA/proto_font/src/PatchJ.java`, args `<in> <out> 125 -2 1`; the
+build runs its maintained port `tools/java/PatchJ.java` with the same args and asserts the same
+output md5):
 1. `ClassReader(flags 0)` → `ClassWriter(reader, 0)`. Every method except
    `a(IIILjava/awt/Graphics;)V` is copied verbatim; the constant pool is unchanged (`#265` = this method).
 2. Sanity checks: one `lookupswitch`, 36 keys, contains 196/214, not 197/229/125; maxs 5/10.
@@ -527,7 +610,20 @@ row2 . . . W G . . .
 ```
 With **dy = −2** the ring occupies rows y−2..y, the envelope of the circumflex, touching the A apex.
 dy −3 is crisper but pokes 2 px into `dialog.png`'s top border (rows 0–2) on dialogue line 1
-(VERIFIED render). Keep **dy −2**. Phase D may refine the art within rows 0–2.
+(VERIFIED render). Keep **dy −2**.
+
+**Final art (Phase D)**, `assets_sv/glyphs/fuente_add.json` cell 80, replaces the provisional one
+above: a 4×3 ring on cols 2–5 that sits on the A apex, accent palette only, lit from the top right:
+```
+row0 . . . W W . . .     W = palette 1, G = palette 6, rest palette 53
+row1 . . G . . W . .
+row2 . . . G G . . .
+```
+VERIFIED: the built `abadia/j.class` is 12092 B, md5 `f197f5a3…` (= the prototype patch);
+`tools/build.py` writes the font with PLTE/tRNS copied verbatim; Å draws in every rendered and
+live page that has one (e.g. g49 `VÅRT`, `screenshots/runtime_sv/opening/pages/001_g049_p01.png`);
+`tools/regress.py` renders es, en, it, fr and pl pixel-identically to the pristine jar (3711
+frames, `work/phaseF/regress_r1.log`, `regress_r2.log`).
 
 Side effects: `}` now draws a bare ring (forbid it); lowercase å/ä/ö draw Å/Ä/Ö (insurance only;
 the lint still rejects lowercase). Every other language renders pixel-identically (regression above).
@@ -623,9 +719,13 @@ notch at x ≈ 98..111. Keep line-11 descenders and cedillas (g j p q y ç ą ę
 or avoid them there (fr1 already has descender pixels on the border).
 **Rule: ink right edge ≤ 244 on every line.** Widest shipped (ink edge, intro/ending): es 243/241,
 en=de 246/246, pl 245/242, it 252/250, fr 252/254 (it/fr visibly overflow; not a reference).
-Measure: `uv run work/phaseA/scripts/letras_render.py width "<line>" --sv --letras <letras>`
-(prints pen advance and ink right edge; `--sv` maps ÅÄÖåäö to the slot bytes of §4.7; it measures
-only the first line of its argument).
+Swedish: **240/238** (VERIFIED with the real `y.a()`, `screenshots/strings/de/report.txt`;
+`tools/build.py` step 7 rejects any line > 244).
+Measure: `uv run tools/letras.py width "<line>" --letras game/TheAbbeyOfCrimeExtensum.jar`
+(prints pen advance and ink right edge; ÅÄÖåäö are mapped to the slot bytes of §4.7, as the build
+does; it measures only the first line of its argument). `uv run tools/letras.py check FILE --text
+--letras game/TheAbbeyOfCrimeExtensum.jar` gives the edge of every line of a whole file. The Phase A
+original was `work/phaseA/scripts/letras_render.py width "<line>" --sv --letras <letras>`.
 Do **not** end with CR after the 11th line of a page: the CR turns the page and the text ends on a
 blank parchment. Simplest: no CR before the final `1A`.
 
@@ -661,25 +761,41 @@ Build: copy `letras`, append each glyph stream at EOF (pixels `dy<<4|dx` in draw
 `0xF0|advance`), and write `0xA6D7 + offset` (LE16) into the slot. Prototype
 `scripts/proto_swedish.py` → `proto/res/letras` (5987 B; only bytes 94–99, 104–105, 158–161 change)
 rendered with the real code, no hang, pixel-identical to the emulator (`proto/java_pages/page1.png`).
-**Design status:** lowercase prototypes (a/o + two i-style dots in rows 1–2; a + ring in rows 0–2)
-read well. **Capitals are placeholders**: marks at row 0 merge into A/O ink. Å Ä Ö need a shorter
-capital body in rows 2..14 (like U V W X) with the mark in rows 0–1. Keep the same advance as A (14)
-and O (12). Optional: a `?` glyph in slot 0x3F (black) the same way. `!`, `"`, `(`, `)` are
-impossible (codes < 44).
+**Design status (the Phase A requirement):** lowercase prototypes (a/o + two i-style dots in rows
+1–2; a + ring in rows 0–2) read well. **Capitals are placeholders**: marks at row 0 merge into A/O
+ink. Å Ä Ö need a shorter capital body in rows 2..14 (like U V W X) with the mark in rows 0–1. Keep
+the same advance as A (14) and O (12). Optional: a `?` glyph in slot 0x3F (black) the same way; it
+needs a matching entry in `tools/letras.py` `SV_SLOTS` (which also feeds `TEXT_MAP`) as well as
+`letras_add.json`, because `apply_add` refuses any slot outside the six Swedish ones. `!`, `"`, `(`,
+`)` are impossible (codes < 44).
+**Built (Phase D):** the six final glyphs are `assets_sv/glyphs/letras_add.json` (advances Ä 14,
+Ö 12, Å 14, å 8, ä 8, ö 7); the capitals got the shorter body with the mark above (final: bodies in
+rows 3..14, the Ä/Ö dots in rows 0–1, the Å ring in rows 0–2), and the built `res/letras` is
+5949 B. VERIFIED: `tools/regress.py` finds the original bytes identical except the 12 slot-pointer
+bytes and all 62 original glyphs identical; both Swedish parchments run through the
+real `y.a()` with no `Caracter:` line (`screenshots/strings/de/parchment_*.png`), and the intro
+parchment was written live with å ä ö and red capitals (`screenshots/runtime_sv/INDEX.md`, files
+11–19). No ü slot was added, so `München` stays impossible (DECISIONS D10).
 
 **Swedish pergamino byte map (the build writes bytes, not text in an encoding):** ASCII letters,
 digits 1 2 3 7, `, - . : ;` and space as-is; å→`60`, ä→`7B`, ö→`7C`, Å→`5D`, Ä→`5B`, Ö→`5C`;
 é→`E9`, í→`ED`, ñ→`F1` (credits: "Menéndez", "Celemín", "Cañadas"), other accents per the §4.2 table;
-lines end with `0D`; the file ends with `1A`. No BOM, no LF (unless a forced page break is wanted),
-no TAB, no `? ! " ( ) /`, no digits 0 4 5 6 8 9, no apostrophe (if one is used, it must precede a plain
-letter). Verify every file with `letras_render.py pages <lang> <1|2> <outdir> --file <f> --letras <l>`
-and with the real code (`harness/render.sh --res`, or `refute_runtime_1/src/abadia/ParchHarness.java`,
-or `harness/src/PergHarness.java`), and grep stdout for `Caracter:`.
+lines end with `0D`; the file ends with `1A`. No BOM, no TAB, no `? ! " ( ) /`, no digits
+0 4 5 6 8 9. `translation/pergamino*_sv.txt` can express neither LF (each text line ends with CR) nor
+an apostrophe (`'` is not in `TEXT_MAP`); a forced page break or an apostrophe (which must precede a
+plain letter) would need a `TEXT_MAP` change in `tools/letras.py`. The build checks every file
+(step 7) and `tools/render_strings.py` runs both through the real `y.a()`; by hand, use
+`uv run tools/letras.py pages FILE OUTDIR --text --letras game/TheAbbeyOfCrimeExtensum.jar --res
+<dir with pergamino.png>` (without `--res` it reads `work/jar/res/pergamino.png`, the Phase A
+extraction; `work/inputs/<key>/jar/res/`, which every build recreates, holds the original file)
+and the real code (`harness/render.sh --res`, or `refute_runtime_1/src/abadia/ParchHarness.java`, or
+`harness/src/PergHarness.java`), and grep stdout for `Caracter:`.
 
 ### 4.8 Timing
 Every call sets `Abadia.e = 6` ms; space 33, CR 66, end of page turn 132. Per glyph 1 + pixels + 1
 ticks; page turn ≈ 1278 ms. Nominal ≈ 38–48 s per full page, 266–310 s per parchment. Measured: en
-intro 279 s, es 299 s (8 pages each). Pages (intro/ending): es 8/8, en=de 8/7, it 8/7, fr 9/8, pl 8/7.
+intro 279 s, es 299 s (8 pages each). Pages (intro/ending): es 8/8, en=de 8/7, it 8/7, fr 9/8, pl 8/7,
+**sv 8/8** (live intro 292 s, `screenshots/runtime_sv/INDEX.md`).
 Space skips **only the intro**, only in state 2 (`C.e && y.b != y.d`); Enter does not. The ending
 cannot be skipped. At `1A` the page waits for Space, then fades. A whole parchment's credits block
 (names, "In memoriam …") is inside `pergamino1`.
@@ -714,6 +830,15 @@ Risks: a missing `res/de` file → null → NPE in `r`/`y`; a stale `w`/`E` leav
 (§7.6); saves made in another language reload by index (harmless if `g` order is kept).
 Java 9+ always prints two harmless startup traces (§7.7).
 
+**Applied by the Swedish build (VERIFIED).** The patched jar differs from the original in exactly
+16 entries: `abadia/{E,j,k,w}.class`, `res/fuente.png`, `res/letras` and 10 `res/de/**` files (7
+images, `logo.png` as the es copy, both pergaminos), so every es/en/it/fr/pl resource is
+byte-identical (entry CRCs of `game/` against `original/`, re-checked for this update).
+`tools/regress.py` renders es, en, it, fr and pl pixel-identically to the pristine jar (3711 frames,
+`work/phaseF/regress_r1.log`, `regress_r2.log`), and live en/es/pl tours of both jars match at every deterministic state
+(`screenshots/runtime_regress/INDEX.md`). The launcher passes `de`; `Abadia.class` (the default
+language) is not patched.
+
 ---
 
 ## 6. Images
@@ -736,7 +861,53 @@ en=it=fr=de (es, pl unique); luna, monje, niebla, ventana identical in all 6.
 Full transcriptions for all languages: `images.md` §2. Code-drawn, not in images: `v1.3e` on the
 loading screen.
 
-### 6.2 Fonts (inventory `work/phaseA/images/glyphs/index.json`: 871 glyph crops + masks, 22 marks)
+**Swedish result (Phases D and E).** The seven Swedish images are built by
+`tools/images/build_*.py`; the wording is GLOSSARY §8 (`Dag`, `LADDAR: var god vänta...`,
+`och Daniel Celemín`, `efter spelet av / Paco Menéndez / och Juan Delcán`, `efter romanen /
+”Rosens namn” / av Umberto Eco`, `och / Jean-Jacques Annauds / film med samma namn`, `Tryck för att
+starta`; DECISIONS D11). They are derived files: git-ignored (`assets_sv/res/`) and rebuilt by every
+`tools/build.py` (step 8a, D14). VERIFIED live: every credit screen, the HUD word and the press-to-start
+line, compared with the same moments in `screenshots/pristine_{en,es}/`
+(`screenshots/runtime_sv/INDEX.md`).
+
+**Builder-and-critic loops (Phase D; the brief allows at most 6 rounds per image).** Read from the
+Phase D workflow journals `wf_c780c609-029` (intro images and the two shared kits; every round had
+two critics, a visual and a technical one) and `wf_dd9b103f-201` (HUD, font glyphs; one critic per
+round). A round is a build plus its critique; the loop ended at the first round that both critics
+passed. A builder-only nits pass then applied the agreed nits. No critic re-read that pass in
+Phase D, but the Phase E visual critic reviewed every final image and glyph in three rounds and found
+no defect. All seven shipped images are byte-identical to their Phase D final builds. `logo.png` had
+no loop: it is a byte copy of the es logo (DECISIONS D3a).
+
+| image or glyph set | rounds used (of 6) | final critic verdict | residual notes |
+|---|---|---|---|
+| `marcador.png` (`Dag`) | 1 | pass, 2 nits | Not applied (no builder round followed): the g's top-left touches the tip of an ivy leaf (visible at 4×, barely at 1×), and a builder comment overstates the bowl's stroke width. |
+| `intro/loading.png` | 1 + nits | pass (visual and technical), 7 nits | All 7 applied (comments and builder checks); the image bytes did not change. |
+| script `och` kit (`script_och.py`; manuydani, pacoyjuan, pelicula) | 1 + nits | pass, 7 nits | All 7 applied (the c's overshoot, the o's lower right, output guards). |
+| `intro/manuydani.png` | 1 + nits | pass, 5 nits | 4 technical nits applied. The visual nit is open: o, c and h do not join, where the shipped script joins its letters. Its fix belonged to the `och` kit and was not taken up. |
+| Fraktur kit (`fraktur.py`; novela, pacoyjuan, pelicula) | 5 + nits | pass in round 5 | The technical critic failed rounds 1–4 (round 1 with a must); the visual critic passed from round 2. All 8 final nits were handled. The `le` and `om` gaps in `efter spelet av` and `efter romanen` are 1 px looser than most shipped pairs but within the shipped range. The composed å ring is unused, since no image has an å. |
+| `intro/novela.png` | 1 + nits | pass, 5 nits | 4 applied; 1 (the kit's selftest output folder) left to the kit. |
+| `intro/pacoyjuan.png` | 1 + nits | pass, 4 nits | All 4 applied: the kept letters of `Paco` are restored to the es bytes. |
+| `intro/pelicula.png` | 1 + nits | pass, 4 nits | All 4 handled. The interpreter pin was answered with the critic's alternative: the builder prints the pixel hash and the zlib version, and zlib 1.2.11 and 1.3.1 gave identical bytes. |
+| `intro/pulsa.png` | 3 + nits | pass in round 3 | Round 1: the technical critic failed it with 3 should. Round 2: a must from the visual critic and a should from the technical one. Of the 6 final nits, 5 were applied, the word-internal joins only in part: T-r, y-c and f-o stay unjoined on purpose. The first r's flag ends 1 px short (left by agreement). |
+| fuente glyphs (Å ring, HUD Ö; §3.4, §2.4) | 1 | pass, 3 nits | No builder round followed. Two nits concern the previews: a wrong caption, and Å never shown in the menu font or on the end screen (the critic rendered both and found them fine). The third, documenting the new cells, is done in §1.9 and §3.3. |
+| `letras` glyphs (Ä Ö Å ä ö å; §4.7) | 2 | round 1 fail (must: the left dot of ä/ö merged with a preceding f, F, J, P, S, T or O); round 2 pass, 3 nits | Not applied: Ä Å Ö sit 1 px lower than A and O, Ö touches a following s diagonally, and Ä and Å look slightly lighter than A. All are visible only side by side. |
+
+No image ran out of rounds. The longest loop was the Fraktur kit's, which used 5 of 6; pulsa used
+3, the letras glyphs 2, and everything else passed in round 1.
+
+### 6.2 Fonts (inventory `index.json`: 871 glyph crops + masks, 22 marks)
+
+Where the inventory lives: Phase A wrote it to `work/phaseA/images/glyphs/`. The image builders
+do **not** read that, nor `work/jar/`. They read `work/inputs/<key>/` (`jar/res/**.png` + `glyphs/`),
+which `tools/images/inputs.py` derives from `original/TheAbbeyOfCrimeExtensum.jar` alone with the
+Phase A inventory scripts copied into `tools/images/inventory/` (key = sha256 of the jar, those
+scripts and `inputs.py`; published by an atomic rename, never changed). The regenerated tree is
+byte-identical to the Phase A inventory (1803/1803 files, VERIFIED in Phase E; see
+`tools/README_tools.md`). The Phase F final verification pinned the scripts' dependencies to the
+builders' `pillow==11.3.0`, `numpy==2.3.2` and `scipy==1.16.1`, because unpinned they now resolve
+to newer releases. The tree they produce is byte-identical to the Phase E one (VERIFIED: all files
+but `DONE.json`). Paths below that start `images/glyphs/` mean `work/inputs/<key>/glyphs/`.
 No image font has a diaeresis or a ring. ä/ö = a/o + two copies of the font's own dot; å = a +
 a hand-drawn ring.
 - **fraktur** (credits es/en/it/fr): chars `" - A C D E I J L M N P R T U a b c d e f h i k l m n o p q r s t u v w y z à á é ê í œ ’ “ ”`.
@@ -753,7 +924,8 @@ a hand-drawn ring.
 - **pulsa**: chars `N P a c e i j l m n o p r s t u z ę ś`; fill (253,246,231) (pl 255,246,231) with grey
   AA, then **1 px opaque black outline + 1 px semi-transparent black fringe** (alpha ≈ 15–218);
   x-height rows 171..182, caps from 166, descenders to 185. It is drawn over `monje.png` and
-  `logo.png`, so the outline is visible. "Tryck för att …" needs T, y, k, f, b, ö…
+  `logo.png`, so the outline is visible. `Tryck för att starta` needs T, y, k, f and ö, which
+  were hand-drawn (DECISIONS D11).
 - **loadline**: 1-bit, 1-px joined handwriting, colour (252,254,252) (pl #ffffff). Chars
   `, . : A C D E G H I L M N O P R T W Y Z a c d e f i k l n o p r s t u v w z ć ę`. Missing
   B F J K Q S U V X and b g h j m q x y. Rows: ascenders 181, caps 182..189 (round caps to 190),
@@ -771,7 +943,7 @@ a hand-drawn ring.
   numeral frame). With en's D and a, a `g` gets only x 30..36 on rows 7..14 (7 px), which needs a
   condensed g (model: en a-bowl + y-descender; the y descender reaches row 18). The hour strip covers
   image (4..59, 21..28); the obsequium bar covers (265..309, 17..22) (fr's grey fill [267,17,308,22]
-  sits under it). A clean word-area background: `images/glyphs/hud/BACKGROUND_reconstructed_x0-41_y0-21.png`
+  sits under it). A clean word-area background: `work/inputs/<key>/glyphs/hud/BACKGROUND_reconstructed_x0-41_y0-21.png`
   (majority vote; it differs from each language's ivy by 3–62 px, so starting from de/en
   `marcador.png` and editing only the word keeps en's ivy).
 - **Moon window:** from manuydani on, `r` draws luna/niebla/ventana opaque in the clip
@@ -811,12 +983,26 @@ source work/runs/<run>/env.sh; tap space; shot name; touch work/runs/<run>/stop
 kill -TERM $(cat <RUN_DIR>/run_headless.pid)                                            # stop
 ```
 `<gamedir>` contains `TheAbbeyOfCrimeExtensum.jar` (refused under `original/`). Env:
-`XVFB_SCREEN` (1920x1080x24), `JAVA_BIN`, `JAVA_MEM`, `JAVA_EXTRA`, `JAR_NAME`, `RUN_DIR`, `SHOT_DIR`,
-`WINDOW_TIMEOUT` (120 s), `DRIVER_TIMEOUT` (1800 s). Tour knobs: `PHASES` (default `intro parchment
+`XVFB_BIN` (default `tools/xvfb-root/usr/bin/Xvfb`), `XVFB_SCREEN` (1920x1080x24), `XVFB_EXTRA`
+(extra Xvfb arguments), `JAVA_BIN`, `JAVA_MEM`, `JAVA_EXTRA`, `JAR_NAME`, `RUN_DIR`, `SHOT_DIR`,
+`WINDOW_TIMEOUT` (120 s), `DRIVER_TIMEOUT` (1800 s), `ALLOW_NO_BWRAP` (0; 1 runs without hiding
+`/dev/snd`, with a WARNING), `XVFB_AUTOREPEAT` (0: X key autorepeat is turned off with `xset -r`
+when `xset` exists, so a held key is one press and one release; 1 keeps autorepeat on).
+Prerequisites, none in git: Xvfb unpacked into `tools/xvfb-root/`
+(git-ignored; there is no system Xvfb here): `(cd tools && apt-get download xvfb && dpkg-deb -x
+xvfb_*.deb xvfb-root)`, or point `XVFB_BIN` at one; `bwrap`; `pactl` and `parec` (PulseAudio or
+PipeWire); `xdotool`, `xwininfo`, `xwd`; ImageMagick 6 (`convert`, `identify`); coreutils
+`realpath` and `timeout`. The script stops with `missing tool: …` if `xdotool`, `xwd`, `convert`,
+`pactl`, `xwininfo`, `realpath` or `timeout` is absent (line 73), and without `bwrap` unless
+`ALLOW_NO_BWRAP=1`; `parec` (`audio_level`) and `identify` (`png_hash`) are needed only by those
+helpers, and `xset` is optional. Tour knobs: `PHASES` (default `intro parchment
 play menu walk gameover`), `PARCH_FULL`, `GAMEOVER`, `INTRO_SECS` (52). Per run: `game.log`,
 `evidence.log`, `driver.log`, `xvfb.log`. Helpers in `tools/headless_lib.sh`: `shot`, `burst`, `tap
 KEY [hold]`, `hold KEY s`, `wait_s`, `wait_stable`, `frame_hash`, `png_hash`, `check_invisible`,
-`check_audio`, `audio_level`, `game_geom`. Avoid the `keys` helper (12 ms presses).
+`check_audio`, `audio_level`, `game_geom`. Avoid the `keys` helper (12 ms presses). `audio_level`
+computes peak and RMS of the null-sink monitor with `parec | od | awk` only: since Phase E it no
+longer calls `python3` (the project runs Python only through `uv`); the first run of the fixed
+version logged `samples=263366 peak=15649 rms=2725.0` (`work/phaseE/fixer_r1/tour-sv/evidence.log`).
 Invisibility and silence: private Xvfb via `-displayfd`; null sink `abbey_mute_$$` + `PULSE_SINK`;
 a private ALSA config (`pcm.!default` = pulse → null sink); `bwrap --dev-bind / / --tmpfs /dev/snd`
 (only the `default` mixer remains); an audio watchdog; `DISPLAY=:0 xdotool search` before and after;
@@ -850,16 +1036,22 @@ together at the mirror), W 87 (directional walk), F1 112 (fullscreen). There are
 | manuydani / pacoyjuan / novela / pelicula | 11.13 / 17.74 / 24.13 / 31.00 | 10.30 / 16.94 / 24.05 / 30.55 |
 | monje / logo / press-to-start | 37.61 / 42.55 / 47.01 (blinks, period ≈ 3.27 s) | 37.09 / 41.97 / 46.31 |
 
-Timing varies by up to ~1 s per run (the music decode during loading), so **drivers must detect
-screens by pixels**, not fixed times. Space/Enter skip credits 1..6 (taps on the loading screen and
+Timing varies by up to ~1 s per run on an idle machine (the music decode during loading), and by
+~5 s under load (Phase E fixer tour: manuydani at 16.16 s against 10.85–11.67 s in the other tours,
+the later steps at their normal spacing; `work/phaseE/fixer_r1/tour-sv/driver.log`), so **drivers
+must detect screens by pixels**, not fixed times. Space/Enter skip credits 1..6 (taps on the loading screen and
 during the 2.1 s press-to-start fade are swallowed). Space at press-to-start: fade 64 frames, then
 the intro parchment (en 279 s, es 299 s; Space skips it during writing). Play starts outside the gate
 (HUD "DAY I"/"TERCE"). `hold Up 3` (classic) walks into the courtyard → Remigio's `g[49]`: 3 boxes
 of 1, 1 and 2 lines; later `g[157]`, `g[50]`. Esc → menu (all pages captured). Idling ends in the
-abbot's `g[12]` and the 0 % end screen 258–274 s after play starts (not deterministic: unseeded
-Random). Compare screenshots of static or text frames, not long idle sequences.
+abbot's `g[12]` and the 0 % end screen 258–293 s after play starts. The time varies between runs
+(the idle path uses an unseeded `Random`), yet in Phase E a patched and a pristine run started in
+the same second reached it within 0.03 s of each other in en, es and pl (630.78/630.80,
+636.60/636.61, 647.39/647.41 s after java start; `work/phaseE/runs/{en,es,pl}-{patched,pristine}/driver.log`),
+so start timing may explain most of the spread (INFERRED). Compare screenshots of static or text
+frames, not long idle sequences.
 Reference sets: `screenshots/pristine_en/` (319 PNG) and `screenshots/pristine_es/` (320 PNG).
-Contact sheets are in `work/phaseA/images/runtime_sheets/` (es_4_menu.png is missing). PNGs carry a
+Contact sheets are in `work/phaseA/images/runtime_sheets/`. PNGs carry a
 tEXt comment with the window title, so compare pixels (`identify -format %#`), not file hashes.
 
 ### 7.5 Files the game writes
@@ -873,17 +1065,61 @@ volume entries in `~/.local/state/wireplumber/restore-stream`.
 `run_headless.sh` line 56 hard-codes `TITLE_RE='Abad|Abbey|Abbaz|abbaye|Abtei'`
 (`headless_lib.sh` honours an env override; the launcher does not). If `E.h[4]` becomes a title
 without one of these words, the launcher times out after 120 s and the `:0` check goes blind. Keep a
-matching word, or extend the regex in both files before the Swedish runs.
+matching word, or extend the regex in all three copies before the Swedish runs:
+`tools/run_headless.sh` (line 56, hard-coded), `tools/headless_lib.sh` (env default) and
+`tools/lint_strings.py` (`TITLE_RE`, used for the `E.h[4]` warning).
+**Resolved:** `E.h[4]` = `La Abadía del Crimen Extensum` (DECISIONS D6), which matches `Abad`;
+`tools/lint_strings.py` warns if a future title stops matching. Every Swedish run found its window
+and logged `INVISIBLE OK` (`screenshots/runtime_sv/INDEX.md`, `opening/INDEX.md`).
 
 ### 7.7 Expected log content
 Java 11: exactly two startup stack traces from `abadia.c.b.a(String)` (ClassCastException
 AppClassLoader→URLClassLoader, then NullPointerException; a `/lib/*.jar` classpath hack). They are
 harmless, and the vorbis SPI is in the jar. Java 8: an empty log. Anything else (an exception,
-`Caracter:`) is a failure.
+`Caracter:`) is a failure. VERIFIED for the Swedish build: every Phase E `game.log` holds exactly
+these two traces and no `Caracter:` line, as the pristine game does.
+
+### 7.8 Day-1 route to the opening messages (VERIFIED, Phase E runs 1, 2 and 4)
+
+Navigation notes for a driver that must reach the abbot's welcome and the day-1 meetings.
+Coordinates are the character positions logged by the read-only Java agent
+(`work/phaseE/agent/src/StateAgent.java`, loaded with `JAVA_EXTRA=-javaagent:…` through
+`tools/run_headless.sh`; it writes `RUN_DIR/agent/state.txt` and `events.log`). The route was
+driven by `work/phaseE/drivers/follow.py` (`uv run work/phaseE/drivers/follow.py RUN_DIR [--who 8]
+[--gap 3] [--until-cn 51] [--goto o,p]`: it reads `state.txt` and steers Vilhelm with XTEST keys
+on the run's private display), with `recorder.sh`, `skip_pages.sh` and `k.sh` from the same
+directory. Agent and drivers live only in the git-ignored `work/phaseE/`; they are not part of
+`tools/`. Full account: `screenshots/runtime_sv/opening/INDEX.md`.
+1. **Remigio's walk.** Walk into the courtyard (`g[49]`), then follow Remigio 3–6 units behind him.
+   He needs Vilhelm within ±8 units (`Abadia.t.v()`, §1.8); otherwise he waits and, 40 ticks later, says
+   `g[50]` (which repeats and costs obsequium). Along the walk come `g[157]`, `g[158]`, `g[159]`,
+   then `g[51]` at the cell door.
+2. **The abbot.** Step around Remigio to the right, through the door at (169,31), and two steps
+   toward the abbot: `g[1]` (24 pages; Space advances one page, because Vilhelm is under script
+   control), then `g[5]`. Some time after `g[5]`, Adso asks who Ubertino is (`g[145]`).
+3. **Back to the courtyard the long way.** The corridor door (141,127) → (138,127) that Remigio
+   used is locked for Vilhelm.
+4. **Order matters: Ubertino and Salvatore come after `g[5]` and before Severinus.** Ubertino's
+   `g[53]` needs day 1 TERCIA, room 117, Vilhelm within ±2 (`b/q.java` case 2); Salvatore's `g[54]`
+   needs TERCIA after flag `g.a`, within ±2, player control (`b/n.java` case 2). When Severinus's
+   tour ends after `g[58]`, the hour becomes SEXTA (`b/o.java` case 6 sets `D.e`; Adso says
+   `g[10]`), and both are unreachable that day.
+   - Ubertino: round the low choir wall of the church, (141,67) → (141,80) → (149,80) → (149,73).
+   - Salvatore patrols (88,155) → (67,81) → (191,167); meet him as he crosses near (168,145)
+     (run 4 followed him from (168,137) and got `g[54]` at (189,166)).
+5. **Severinus.** West to his beat near (115,182) → `g[55]`; the tour then runs by itself: `g[56]`,
+   `g[57]` at the refectory, `g[58]` at the kitchen, then `g[10]`.
 
 ---
 
 ## 8. Harnesses and checkers
+
+The project's maintained copies are in `tools/`: `tools/harness/` (this harness, self-contained),
+`tools/text_sim.py`, `tools/letras.py` (port of `letras_render.py`), `tools/render_strings.py`,
+`tools/regress.py`, and `tools/java/{PatchJ,PatchStrings,ClassDiff,VerifyClasses}.java` (the ASM
+patchers and verifiers that `tools/build.py` runs: ports of `PatchJ` and `PatchTW`, the class
+comparison, and the `CheckClassAdapter` + `-Xverify:all` check) (`tools/README_tools.md`). The
+Phase A originals below stay as the reference.
 
 **`work/phaseA/harness/render.sh`**: draws every string of a language with the game's own code,
 headless (`env -u DISPLAY`, `-Djava.awt.headless=true`; no Frame or Window is loaded; Java 8 and 11
@@ -923,35 +1159,58 @@ Other tools:
   `refute_parchment_0/java/Rec.java` (records every drawLine; END/UNCAUGHT/HANG).
 - Font/patch: `proto_font/src/PatchJ.java`, `VerifyJ.java`, `scripts/make_font.py`,
   `proto_font/src/abadia/RegressAll.java`. w/E strings: `refute_deslot_1/scripts/PatchTW.java`
-  (also `deslot/PatchProbeW.java`, `refute_deslot_0/scripts/PatchW.java`).
+  (also `scripts/PatchProbeW.java`, `refute_deslot_0/scripts/PatchW.java`).
 - Format re-checks: `scripts/format_checks.py` (menu limits, parchment edges, letras slots);
   `scripts/make_context_tsv.py`.
 
 ---
 
-## 9. Open questions (UNCERTAIN)
+## 9. Open questions: status after Phases E and F
 
-1. **Remigio's walk timing:** the frames from `j.b(157)` to Remigio's arrival at waypoints 8, 9 and
-   10 were not measured, so whether the shipped text is already cut there is unknown. Until a runtime
-   measurement exists (a private Xvfb run of the day-1 walk with frame-stamped captures), keep
-   157/158/159/51 within the §1.8 tick caps.
-2. **Abbot's welcome `g[1]`** was never reached at runtime (it needs following Remigio). Phase E needs
-   a navigation driver, or should render `g[1]` with the harness.
-3. **Ending parchment** cannot be reached by an automated drive (the game must be solved). Render
-   `pergamino2` with the harness/ParchHarness. A bad byte there is an unskippable soft-lock, so the
-   byte whitelist is mandatory.
-4. **Final pixel designs:** the fuente ring (provisional art), the precomposed HUD Ö (if the glossary
-   keeps NATTBÖN), the letras capitals Å Ä Ö (placeholders today), and the lowercase å ä ö
-   (prototypes OK). Settled by the Phase D builder/critic loop.
-5. **Window title `E.h[4]`:** Spanish real name (matches the harness regex, consistent with the logo)
-   or a Swedish title (needs a `TITLE_RE` change). See DECISIONS D6.
-6. **manuydani base:** es (with "Celemín") or en ("Celemin"). Recommended es, using en spacing for
-   "och".
+Questions 1–6 and 9 are **settled**; each keeps its number and says how. Questions 7, 8 and 10
+stay open (UNCERTAIN or INFERRED); none of them blocks the translation.
+
+1. **Remigio's walk timing: SETTLED (VERIFIED).** Measured live in Phase E runs 1, 2 and 4 with a
+   read-only agent: g157 has 220–223 ticks until Remigio reaches waypoint 8 and g158 interrupts
+   it, g158 has 187 and g159 319. Remigio never paused, so these are the shortest windows. The
+   g157 cap is now **215** ticks (the old "≤ 232" was the longest shipped text, which the window cuts);
+   the others keep their shipped caps (§1.8, DECISIONS D12). Evidence:
+   `work/phaseE/runs/run{1,2,4}/agent/events.log`, `screenshots/runtime_sv/opening/INDEX.md`.
+2. **Abbot's welcome `g[1]`: SETTLED (VERIFIED).** Reached at runtime by following Remigio and
+   stepping into the cell: all 24 pages, in runs 1, 2 and 4 (run 1 untouched, 1265 ticks; runs 2
+   and 4 advanced with Space, one page per tap). Route in §7.8; evidence as for question 1.
+3. **Ending parchment: SETTLED (by the game's own code).** It still cannot be reached by an automated
+   drive (the game must be solved). `pergamino2` was run through the real `y.a()` by the harness:
+   8 pages, 87 lines, widest ink x = 238, no `Caracter:` line, and `tools/letras.py` is
+   pixel-identical to the real code on it (`screenshots/strings/de/parchment_ending_*.png`,
+   `raw/parch_ending_p01..08.png`, `report.txt`). The build's byte whitelist stays mandatory, because
+   a bad byte there is an unskippable soft-lock.
+4. **Final pixel designs: SETTLED (Phase D builder/critic loop).** The fuente ring (cell 80,
+   §3.4), the precomposed HUD Ö (cell 74, §2.4) and the six letras glyphs (§4.7) are final in
+   `assets_sv/glyphs/{fuente_add,letras_add}.json`. Critic rounds: `work/phaseD/fuente_critic_r1/`,
+   `letras_critic_r1/`, `letras_critic_r2/`; rounds and verdicts for these glyphs and for every
+   Swedish image are in the §6.1 table (no image ran out of its 6 rounds). Rendered with the game's code
+   (`screenshots/strings/de/`) and seen live (`screenshots/runtime_sv/`).
+5. **Window title `E.h[4]`: SETTLED.** The Spanish real name `La Abadía del Crimen Extensum`
+   (DECISIONS D6); it matches `TITLE_RE`, so the harness needed no change (§7.6).
+6. **manuydani base: SETTLED.** es, with "Celemín"; "och" is set with the en/es spacing
+   (`tools/images/build_manuydani.py`; GLOSSARY §8).
 7. **Index 0 reachability** (`b.a.e = 0` reset): INFERRED unreachable. It would break every language
    alike. Keep `g[0] = ""`.
 8. **Fire-and-forget collisions** (e.g. abbot 68 vs a hotspot message): inferred from control flow,
    not reproduced. No action needed beyond reasonable lengths.
-9. **Live-vs-harness equivalence** for message boxes is INFERRED (same code, same buffers). Phase E
-   can settle it by comparing a live screenshot crop (0,146,320,30) with `raw/msg_g049_p*.png`.
+9. **Live-vs-harness equivalence: SETTLED (VERIFIED).** The dialogue box of each live shot
+   (crop 0,146,320,30; near-white text pixels; the animated face and the blinking ▶▶ masked) was
+   compared with the harness render `screenshots/strings/de/raw/msg_gNNN_pK.png`: **277 of 277**
+   shots from runs 1–3 had 0 differing pixels against the render of their jar, and **134 of 134**
+   run-4 shots against the current render (about 600 text pixels per crop). Evidence:
+   `screenshots/runtime_sv/opening/INDEX.md`, `work/phaseE/scripts/match_pages.sh`,
+   `work/phaseE/fixer_r2/match_rec4.txt`. So a harness render stands for live play, which is how
+   the later string edits were checked: the 16 Phase E edits not shown in the opening runs, and
+   the Phase F edits (g54, g61, g64, g122, g131, g149, g150, g163), which are verified by harness
+   render only. g54's live shots (run 4, jar `0ad2bbf0…`) show its text before Phase F added the page break
+   after `DOMINE FRATE MAGNIFICENTISSIMO.`: against the Phase F render, run 4 still matches on 130 of
+   its 134 shots, and the other 4 are g54 pages 4–5 in their earlier layout
+   (`work/phaseF/match_rec4_phaseF.txt`). The current g54 pages 4–5 have not been seen live.
 10. Object-bitmask meanings in `x.a(0,…)` were named from the message text, not from code. They do
     not matter for translation.

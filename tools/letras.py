@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["pillow"]
+# dependencies = ["pillow==11.3.0"]
 # ///
 """Parchment ("pergamino") codec for the Swedish build: res/letras font, text bytes, layout,
 measurement and page rendering. A faithful port of work/phaseA/scripts/letras_render.py, which is

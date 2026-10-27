@@ -6,12 +6,20 @@ hiding `/dev/snd`. Keys were sent with XTEST on that private display. Three runs
 `work/phaseE/runs/run1`, `run2` and `run3`, plus run 4 (`work/phaseE/runs/run4`, Phase E round 2),
 which replayed run 2's route to re-capture g54 after its first line was reworded.
 
-**Jars.** Runs 1-3 used jar sha256 `e9a95e0c…`. Run 4 used the current `game/` jar `0ad2bbf0…`.
-The two differ only in `abadia/k.class` (entry CRC diff over all 445 entries), and within it only in
-`g` strings: g52, g54, g61, g64, g75, g77, g85, g114, g118, g122, g125, g131, g143, g149, g150,
-g155 and g163. g54 is the only one of these that the runs show, and run 4 re-captured it. The
-other pages here are unchanged on the current jar: run 4's 134 shots of g49, g157-g159, g51, g1,
-g5, g145, g53 and g54 all match the current harness render exactly.
+**Jars.** Runs 1-3 used jar sha256 `e9a95e0c…`. Run 4 used Phase E's final `game/` jar
+`0ad2bbf0…`. The two differ only in `abadia/k.class` (entry CRC diff over all 445 entries), and
+within it only in `g` strings: g52, g54, g61, g64, g75, g77, g85, g114, g118, g122, g125, g131,
+g143, g149, g150, g155 and g163. g54 is the only one of these that the runs show, and run 4
+re-captured it. Run 4's 134 shots of g49, g157-g159, g51, g1, g5, g145, g53 and g54 all matched the
+Phase E harness render exactly.
+
+**Phase F.** Phase F then reworded g54, g61, g64, g122, g131, g149, g150 and g163 and rebuilt.
+The current jar `43846c9e…` differs from `0ad2bbf0…`/`e9a95e0c…` only in `abadia/k.class` (entry
+CRC diff, Phase F final verification); `work/build/manifest.json` holds the current hash. Of the messages here only g54 changed: a page break now follows `DOMINE
+FRATE MAGNIFICENTISSIMO.`, so its pages 4-5 are laid out differently. Against the current render,
+130 of run 4's 134 shots still match exactly; the other 4 are the shots of g54 pages 4-5, which show
+the earlier layout (`work/phaseF/match_rec4_phaseF.txt`). The current g54 pages 4-5 are verified by
+the harness render only (docs/FORMAT.md §9 question 9).
 
 ## Result
 
@@ -27,10 +35,11 @@ g5, g145, g53 and g54 all match the current harness render exactly.
   blinking ▶▶ glyph were masked. **277 of 277 shots from the three runs match exactly (0 differing
   pixels).** The sheets were also checked by eye: Å Ä Ö are correct, no glyph is missing, and no
   page is blank or a lone word. This settles FORMAT §9 question 9: live boxes equal the harness.
-  (Measured on the harness render of the time. Against today's render, run 2 still matches on 130
-  of its 134 shots. The other 4 are g54 pages 1-2, which show the old first line. Run 4 replaced
-  all g54 pages, and **134 of 134 run-4 shots match the current render exactly**. See
-  `work/phaseE/fixer_r2/match_rec2_now.txt` and `match_rec4.txt`.)
+  (Measured on the harness render of the time. Against the Phase E round-2 render, run 2 still
+  matched on 130 of its 134 shots. The other 4 are g54 pages 1-2, which show the old first line.
+  Run 4 replaced all g54 pages, and **134 of 134 run-4 shots matched the Phase E round-2 render
+  exactly**. See `work/phaseE/fixer_r2/match_rec2_now.txt` and `match_rec4.txt`. Against the
+  Phase F render, 130 of 134; see the Phase F note above.)
 - **Remigio's walk.** g157, g158 and g159 each showed all their pages. Each ended on its own before
   the next one started, in both runs (table below).
 - **Logs.** Every `game.log` has exactly the two Java 11 startup traces (FORMAT §7.7) and no

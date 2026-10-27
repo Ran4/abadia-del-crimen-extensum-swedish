@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["pillow", "numpy"]
+# dependencies = ["pillow==11.3.0", "numpy==2.3.2"]
 # ///
 """HUD (res/<lang>/marcador.png) day-word glyphs: manual boxes (inclusive), font-colour masks,
 and a reconstructed clean background for the word area.

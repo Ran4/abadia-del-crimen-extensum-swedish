@@ -218,15 +218,18 @@ The engine rules are in `text.md` §0 and §3.5. Translation rules on top of the
   walk to waypoint 8 begins; g158, g159 and g51 start, interrupting the message before, when
   Remigio *arrives* at waypoints 8, 9 and 10 (g51 = the cell). So g157, g158 and g159 are cut
   off by the next arrival, and g51 is itself cut off when the abbot sees Guillermo inside the
-  cell (`j.b(1)`, which depends on the player). All four must stay at or under the longest
-  shipped version.
+  cell (`j.b(1)`, which depends on the player). g157 must stay under the walk window measured in
+  Phase E (220–223 ticks until g158 interrupts it), so its cap is **215 ticks = 645 frames**
+  (FORMAT §1.8, DECISIONS D12); the other three stay at or under the longest shipped version,
+  far inside their measured windows (g158 187 ticks, g159 319).
 - Measure with `uv run work/phaseA/scripts/text_sim.py` (frames = ticks × 3; its `simulate()`
   function takes one string, which is how the trial values below were measured). The caps below are
-  **text_sim values**, the numbers that tool prints for the longest shipped language:
+  **text_sim values**, the numbers that tool prints for the longest shipped language (for g157,
+  the Phase E cap instead):
 
   | msg | cap (text_sim ticks × 3) | longest shipped | real-harness value (`text.md` §5.3) | es (text_sim) |
   |---|---|---|---|---|
-  | g157 | **≤ 696** | it | 695 | 663 |
+  | g157 | **≤ 645** (= 215 ticks: the measured walk window less a margin) | it (696, longer than the window) | 695 | 663 |
   | g158 | **≤ 288** | it | 287 | 279 |
   | g159 | **≤ 633** | fr | 631 | 576 |
   | g51 | **≤ 231** | it | (not measured) | 204 |
@@ -237,8 +240,9 @@ The engine rules are in `text.md` §0 and §3.5. Translation rules on top of the
   measures 264, while `EN STILLA PLATS, SOM GJORD FÖR PROMENADER OCH BETRAKTELSE.` measures
   303 and is over. Trial measurements that fit: g51 `@8 DETTA ÄR ER CELL. ABBOTEN VÄNTAR PÅ ER
   DÄRINNE.` 201; g159 `@8 SENARE FÅR NI TRÄFFA DE ÖVRIGA MUNKARNA I KLOSTRET. _ NU ÄR DE UPPTAGNA
-  MED SINA SYSSLOR.@0 JAG FÖRSTÅR.@8 SNART ÄR VI FRAMME.` 531; g157 with `... SÅ VÄCKER SOLEN I
-  GRYNINGEN MUNKARNA I CELLERNA.` 672.
+  MED SINA SYSSLOR.@0 JAG FÖRSTÅR.@8 SNART ÄR VI FRAMME.` 531. A g157 trial with `... SÅ VÄCKER SOLEN I
+  GRYNINGEN MUNKARNA I CELLERNA.` measured 672, which fitted the old cap but not the Phase E one; the
+  shipped g157 (`PÅ SÅ VIS VÄCKER SOLEN ...`) measures 582.
 
 ### 1.10 Salvatore's pidgin (g54, g100, g101, g118)
 
@@ -338,7 +342,7 @@ Evidence = message indices. "Vocative" = how the addressee is called.
 | Severino → monks (plural) | **NI** | 93 | BRÖDER! |
 | Malaquías → Guillermo | **NI** | vos 7, 43, 44 (unused, SI LO DESEÁIS ... OS MOSTRARÁ) | BRODER, ÄREVÖRDIGE BRODER |
 | Berengario → Guillermo | **NI** | vos 60, 61, 62 (ESTÁIS VIENDO), 75 | ÄREVÖRDIGE BRODER |
-| Guillermo → Berengario | **DU**; **NI** in his last turn of g75 | tú 75; the closing switch to vos (NO ME PIDÁIS ... VUESTROS PECADOS) **is** copied: documented exception (§2.1). Not a switch: TENÍAIS in `SI TENÍAIS LA MISMA EDAD` (g75) is plural, "you two" (Berengar and Adelmo), so plural NI: `OM NI VAR JÄMNGAMLA` | (none) |
+| Guillermo → Berengario | **DU**; **NI** in his last turn of g75 | tú 75; the closing switch to vos (NO ME PIDÁIS ... VUESTROS PECADOS) **is** copied: documented exception (§2.1). Not a switch: TENÍAIS in `SI TENÍAIS LA MISMA EDAD` (g75) is plural, "you two" (Berengar and Adelmo), so plural NI: `NÄR NI VAR JÄMNGAMLA` (NÄR, not OM: after past-tense KALLADE the sense is "when, given that", and OM could read as a real condition) | (none) |
 | Jorge → Guillermo | **NI**; **DU** in the opening of g128 | vos 42, 62, 128 (TENÉIS VUESTRO), 129, 130; tú twice in g128 (ERES TÚ, TE ESTABA ESPERANDO) **is** copied: documented exception (§2.1); the generic tú of g42 (LO ESPERAS) → MAN (§2.1) | BRODER VILHELM, VILHELM (g128), ÄREVÖRDIGE BRODER (g42, unused) |
 | Guillermo → Jorge | **NI** | vos 62, 128; tú once in g131 (ROBASTE) not copied | ÄREVÖRDIGE JORGE |
 | Jorge → Adso | **DU** | tú 130 | GOSSE |
@@ -599,16 +603,17 @@ letters `TERCIA ` / `VESPER `, 7 letters fill the field (`VESPERS`).
 | 3 SEXTA | `·SEXTA·` | `·SEXT··` | `' SEXT  '` | 32,83,69,88,84,32,32 |
 | 4 NONA | `·NONA··` | `·NONE··` | `'  NON  '` | 32,32,78,79,78,32,32 |
 | 5 VÍSPERAS | `VgPERAS` (ligature) | `VESPERS` | `'VESPER '` | 86,69,83,80,69,82,32 |
-| 6 COMPLETAS | `COMdefg` (ligatures) | `COMbcNE` (ligatures) | `'NATTBÖN'` | 78,65,84,84,66,**119**,78 (119 = the HUD Ö, provisional) |
+| 6 COMPLETAS | `COMdefg` (ligatures) | `COMbcNE` (ligatures) | `'NATTBÖN'` | 78,65,84,84,66,**119**,78 (119 = the HUD Ö, `fuente.png` cell 74, built in Phase D) |
 
 **Ö** = one new precomposed, squashed HUD glyph (diaeresis in rows 0-1, O squashed below, as
-the shipped precomposed Ó in slot 68 and as demonstrated by the Phase A demo "ÖTTA"). Suggested
-code **119** (slot 74); Phase D assigns the final code. The Ö in the text is **not** byte 214
+the shipped precomposed Ó in slot 68 and as demonstrated by the Phase A demo "ÖTTA"). Phase D
+built it as code **119** (slot 74; DECISIONS D8). The Ö in the text is **not** byte 214
 (U+00D6): that is a negative signed byte, which `v.c()` does not draw and the save list shows as
-blank. So the TSV gives every `hour_hud` row its exact bytes as the first token of the note
-(`bytes=78,65,84,84,66,119,78`), and a generator emits those bytes, never the encoded `sv` cell. Constraints: slot ≤ 82, never code 120,
-never 33/39/44/95/37 (the save menu runs the same byte through `j.a(int)`). All other bytes are
-plain A-Z and space.
+blank. So the build maps the `sv` cell with `lint_strings.hud_bytes` (Ö → 119, A-Z and space as
+themselves) and never encodes it as text. The `bytes=` token that starts every `hour_hud` note
+(`bytes=78,65,84,84,66,119,78`) is a reference list for a cross-check by hand; no tool reads it.
+Constraints: slot ≤ 82, never code 120, never 33/39/44/95/37 (the save menu runs the same byte
+through `j.a(int)`). All other bytes are plain A-Z and space.
 
 **Why these.** PRIM, TERS, SEXT, NON and VESPER are the Swedish names of the canonical hours
 (clipped from the Latin exactly as the Swedish liturgical tradition does) and fit in plain
@@ -822,19 +827,19 @@ checks the plain indices automatically and the variant ones by hand.
 | ESTE ES / ESTA ES | **DETTA ÄR** | 51, 57, 58, 59, 124, 158 (`DETTA ÄR ER CELL`, `DETTA ÄR REFEKTORIET`, `BRÖDER, DETTA ÄR VILHELM`) |
 | UN EXTRAÑO LIBRO | **EN MÄRKLIG BOK** | 13, 72, 111; variant: 77 (EL EXTRAÑO LIBRO → `DEN MÄRKLIGA BOKEN`). EXTRAÑO is MÄRKLIG by default, UNDERLIG where uncanny (§7.1) |
 | QUÉ EXTRAÑO | **SÅ MÄRKLIGT** | 19 |
-| EL LIBRO EN GRIEGO | **BOKEN PÅ GREKISKA** | 78; variant: 72 (UN EXTRAÑO LIBRO ESCRITO EN GRIEGO → `EN MÄRKLIG BOK SKRIVEN PÅ GREKISKA`) |
+| EL LIBRO EN GRIEGO | **BOKEN PÅ GREKISKA** | 78; variant: 72 (UN EXTRAÑO LIBRO ESCRITO EN GRIEGO → `EN MÄRKLIG BOK PÅ GREKISKA`) |
 | LA MESA DE VENANCIO | **VENANTIUS PULPET** | 73, 77, 81, 122 |
 | LA MESA DE TRABAJO DE ADELMO | **ADELMOS PULPET** | 60 |
 | EL MANUSCRITO DE VENANCIO | **VENANTIUS MANUSKRIPT** | 2, 125, 127; g2 unused (`LÄMNA VENANTIUS MANUSKRIPT, ...`), twice in g127 |
 | LA LLAVE DE MALAQUÍAS | **MALACHIAS NYCKEL** | 83 |
 | LAS LÁMPARAS DE LA BIBLIOTECA | **BIBLIOTEKETS LAMPOR** | 99, 107 |
-| EVITAR RESPIRAR ESOS HUMOS | **UNDVIKA ATT ANDAS IN DESSA ÅNGOR** | 90 only. g99 has another sentence (EVITAR RESPIRAR LOS HUMOS QUE SALEN DE ESAS LÁMPARAS → `ATT INTE ANDAS IN ÅNGORNA SOM STIGER UPP UR DESSA LAMPOR`), g107 has none; the term is ÅNGOR (§7.1) |
+| EVITAR RESPIRAR ESOS HUMOS | **UNDVIKA ATT ANDAS IN DESSA ÅNGOR** | 90 only. g99 has another sentence (EVITAR RESPIRAR LOS HUMOS QUE SALEN DE ESAS LÁMPARAS → `ATT INTE ANDAS IN LAMPORNAS ÅNGOR`), g107 has none; the term is ÅNGOR (§7.1) |
 | MANCHAS NEGRAS | **SVARTA FLÄCKAR** | 32, 122; variant: 95 (MANCHADAS DE NEGRO → `SVARTA`, ESAS MANCHAS → `DESSA FLÄCKAR`) |
 | LA TINAJA DE SANGRE | **BLODKARET** | 85, 122; LA TINAJA alone -> KARET (68, 69, 142) |
 | EL ÚLTIMO QUE VIO CON VIDA A ADELMO | **DEN SISTE SOM SÅG ADELMO VID LIV** | 75; variant: 74 (AL JOVEN ADELMO → `DEN SISTE SOM SÅG DEN UNGE ADELMO VID LIV`) |
 | LA MUERTE DE ADELMO | **ADELMOS DÖD** | 59, 122; variant: 74 (LA NOCHE DE LA MUERTE DE ADELMO → a clause, `DEN NATT ADELMO DOG SÅG JAG HONOM GÅ TILL BERENGARS CELL`; never `NATTEN FÖR ADELMOS DÖD`) |
-| UN MONJE SE AVENTURÓ POR LA NOCHE EN LA BIBLIOTECA Y TUVO VISIONES EXTRAÑAS | **EN MUNK VÅGADE SIG EN NATT IN I BIBLIOTEKET OCH FICK UNDERLIGA SYNER** | variant: 64 (with EN BUSCA DE UN LIBRO: `... IN I BIBLIOTEKET FÖR ATT SÖKA EN BOK OCH ...`), 99 (SE AVENTURÓ A ENTRAR ... TUVO EXTRAÑAS VISIONES, same Swedish words); one past night, so EN NATT, not OM NATTEN (§5.2) |
-| DECIDAN POR SÍ SOLOS | **SJÄLVA AVGÖR** | 47, 64 |
+| UN MONJE SE AVENTURÓ POR LA NOCHE EN LA BIBLIOTECA Y TUVO VISIONES EXTRAÑAS | **EN MUNK VÅGADE SIG EN NATT IN I BIBLIOTEKET OCH FICK UNDERLIGA SYNER** | variant: 64 (with EN BUSCA DE UN LIBRO, split in two sentences: `... IN I BIBLIOTEKET. _ HAN SÖKTE EN BOK OCH FICK UNDERLIGA SYNER.`), 99 (SE AVENTURÓ A ENTRAR ... TUVO EXTRAÑAS VISIONES, same Swedish words); one past night, so EN NATT, not OM NATTEN (§5.2) |
+| DECIDAN POR SÍ SOLOS | **SJÄLVA AVGÖR / SJÄLVA AVGÖRA** | 47 (`SJÄLVA AVGÖR`); variant: 64 (`DE SKA INTE FÅ VÄLJA FRITT`: FÅ makes the restriction the unknown controller's will, and the fixed form does not fit the page with it) |
 | ID A VERME | **SÖK UPP MIG** | 63, 155 |
 | AQUÍ TENÉIS (handing over) | **VARSÅGOD** | 64; one word = "here you are". Three words `VAR SÅ GOD OCH ...` = old-fashioned "please, kindly" (§10) |
 | ¡AQUÍ LAS TENÉIS! | **HÄR ÄR DE!** | 123 |
@@ -974,9 +979,9 @@ checks the plain indices automatically and the variant ones by hand.
 | LA CIENCIA | **VETENSKAPEN** (indef. VETENSKAP) | g64 LA CIENCIA HUMANA → `MÄNSKLIG VETENSKAP`, LOS SECRETOS DE LA CIENCIA → `VETENSKAPENS HEMLIGHETER`. Here VETENSKAP has its old sense, learning (Bacon's *scientia*); kept apart from VETANDET (SABER) and KUNSKAP (CONOCIMIENTO) |
 | REMEDIO | **MEDEL** (def. MEDLET), with **MOT** | g70 `ETT GOTT MEDEL MOT SINNESSJUKDOMAR`; g99 ×4 `NÅGOT MEDEL MOT ...`, `DET BÄSTA MEDLET ÄR ATT ...`, `DET MEDLET`. Not BOTEMEDEL (one word everywhere), not MEDEL FÖR |
 | DESCIFRAR | **TYDA** | g82, g125 |
-| CIFRADO, CIFRADA | **I CHIFFER** | g122 `NYCKELN ... SKRIVEN I CHIFFER PÅ ETT PERGAMENT`, `ANVISNINGARNA I CHIFFER` |
+| CIFRADO, CIFRADA | **I CHIFFER** | g122 `ETT PERGAMENT SOM ANGAV I CHIFFER VAR BOKEN LÅG`, `ANVISNINGARNA I CHIFFER` |
 | ARTIFICIOS | **KONSTGREPP** | g64 `MAGISKA KONSTGREPP`, g126 |
-| LOS HUMOS (lamp) / EL HUMO (fire) | **ÅNGOR, ÅNGORNA / RÖKEN** | g90 `DESSA ÅNGOR`; g99 `ÅNGORNA SOM STIGER UPP UR DESSA LAMPOR`; g161 (fire) `RÖKEN` |
+| LOS HUMOS (lamp) / EL HUMO (fire) | **ÅNGOR, ÅNGORNA / RÖKEN** | g90 `DESSA ÅNGOR`; g99 `LAMPORNAS ÅNGOR`; g161 (fire) `RÖKEN` |
 | LA LENGUA (the organ) | **TUNGAN** | g32 `PÅ TUNGAN OCH FINGRARNA`, g95 `TUNGAN ÄR OCKSÅ SVART!`, g120, g122, g131 `FUKTA FINGRARNA MED TUNGAN`. g53 LAS LENGUAS (people's talk) is not this term |
 | NEGRO / ENNEGRECIDO (tongue, fingers) | **SVART / SVARTNAD** | g95 `SVART`, g120 `SVARTA`, g122 ENNEGRECIDOS → `SVARTNADE`; never a fixed `SVART TUNGA` phrase, because none of the three sentences has that shape |
 | LAS YEMAS DE LOS DEDOS | **FINGERTOPPARNA** (indef. FINGERTOPPAR) | g120 `FINGERTOPPARNA`; g95 LAS YEMAS DE DOS DEDOS DE SU MANO DERECHA → `TVÅ FINGERTOPPAR PÅ HANS HÖGRA HAND` (not "fingertips of two fingers"; not `PÅ HÖGER HAND`, which is also the fixed adverbial "on the right-hand side") |
@@ -990,7 +995,7 @@ checks the plain indices automatically and the variant ones by hand.
 | GAFAS | **GLASÖGON** | does not occur; the game says LENTES |
 | SECRETO DE CONFESIÓN (concept) | **BIKTHEMLIGHETEN** | reserve; in g75 the image is kept: `BIKTENS SIGILL` (§7) |
 | IMAGEN (g127, the *idolum*) | **BILDEN** | not AVBILDEN |
-| REALIZAR | **GÖRA / UTFÖRA**, or the specific verb | g64 REALIZO ALGUNOS TRABAJOS DE ARTESANÍA → `UTFÖR EN DEL HANTVERKSARBETEN`; g108 REALIZAR EL MAPA → `RITA KARTAN`; g149 ILUSTRACIONES REALIZADAS POR → `ILLUSTRATIONER UTFÖRDA AV`. Never REALISERA |
+| REALIZAR | **GÖRA / UTFÖRA**, or the specific verb | g64 REALIZO ALGUNOS TRABAJOS DE ARTESANÍA → `GÖR EN DEL ANNAT HANTVERK`; g108 REALIZAR EL MAPA → `RITA KARTAN`; g149 ILUSTRACIONES REALIZADAS POR → the specific verb, folded into `PRYTT BOKEN MED UTSÖKTA MINIATYRER` (Phase E). Never REALISERA |
 | DEMOSTRAR | **VISA** | the general rendering, for rewrites; never DEMONSTRERA. Its one occurrence, g75 SABES MÁS DE LO QUE DEMUESTRAS, is the set phrase `DU VET MER ÄN DU LÅTSAS OM` (§7) |
 | PARAFERNALIA | **ATTIRALJ** (common gender: DENNA ATTIRALJ, DEN) | g110 `JAG KÄNNER IGEN DENNA ATTIRALJ. NI KÄNNER VÄL OCKSÅ IGEN DEN, BRODER VILHELM?` (§1.2); never `PARAFERNALIA` |
 | ENCARGARSE DE / EL ENCARGADO DE | **HA HAND OM** (an office) / **TA HAND OM** (a task) | g47 `JAG ÄR SEVERINUS, SOM HAR HAND OM SJUKHUSET`; g55 `JAG HAR HAND OM BADHUSET, SJUKHUSET OCH ÖRTAGÅRDARNA`; g76 `... TAR HAND OM DEN` (the lamp) |
@@ -1090,7 +1095,10 @@ Optional Phase D upgrade, only when all three steps are done (until then the tex
 
 1. A precomposed **ü** (the ä/ö diaeresis over u) goes into the empty table slot **0x3C `<`**.
    Its code is black (`0x3C & 96 = 32`), as a lowercase letter must be; codes 0x40-0x5F draw red.
-2. `letras_render.py --sv` is extended to map `ü` → 0x3C, so the line can be measured.
+2. `tools/letras.py` gets the entry `"ü": 0x3C` in `SV_SLOTS` (from which `TEXT_MAP` and
+   `SLOT_CHARS` are built), and the glyph goes into `assets_sv/glyphs/letras_add.json` under slot
+   `"3C"` (`apply_add` refuses any slot outside `SV_SLOTS`, and the text encoder rejects a
+   character outside `TEXT_MAP`), so the line can be built and measured.
 3. The paragraph is re-wrapped and rendered with the new letras.
 
 Then Phase E may swap `Bayern` → `München` (`När vi kom till München`) and update the TSV row.
@@ -1215,8 +1223,9 @@ a target form, except kind `forbidden`. Conventions in `note`:
   forbidden checks run on them too (§1.7 rule 9).
 - `reserve` or `not in strings`: a reference form for rewrites; it occurs in no shipped `g`
   message and the checker skips the row.
-- `hour_hud` notes start with `bytes=` followed by the exact 7 byte values; a generator emits
-  those bytes and never encodes the `sv` cell (whose Ö stands for the HUD glyph, not byte 214).
+- `hour_hud` notes start with `bytes=` followed by the exact 7 byte values, as a reference that
+  no tool reads. The build maps the `sv` cell with `lint_strings.hud_bytes` (its Ö stands for the
+  HUD glyph 119, not byte 214) and never encodes it as text.
 - Term rows (`term`, `name`, `place`, `title`) are inflected in context (definite, plural,
   genitive), so their index lists say where the term applies, not where the exact string stands.
 - **Keys.** The `es` cell alone is not unique: the same Spanish stands under several kinds by
@@ -1229,7 +1238,7 @@ a target form, except kind `forbidden`. Conventions in `note`:
 |---|---|---|---|
 | `name` `place` `title` `term` `phrase` `hour_text` `latin` | the one fixed Swedish (or kept Latin) form | `g` messages | uppercase `sv`: message font (A-Z, digits, space, `. , : ; ? ! ' -`, É, Å Ä Ö). Only `name` may hold a mixed-case `sv` (real people, the novel title, the game title): a reference form for images and parchment, checked where it occurs. Latin that occurs only in images (OBSEQUIUM, EXTENSUM) is kind `image`, and names that occur only in the parchment (Occam) are kind `parchment` |
 | `address` | NI or DU (or the 3rd-person form) for one ordered speaker pair | `g` | one pronoun per pair; the note names the documented exceptions (g75, g128) |
-| `hour_hud` | exactly 7 characters, padding included; the note's `bytes=` token is authoritative | HUD strip, save list | A-Z, space and the one HUD Ö glyph (code 119, provisional); length exactly 7 |
+| `hour_hud` | exactly 7 characters, padding included; the build takes the bytes from this cell (the note's `bytes=` token is a reference) | HUD strip, save list | A-Z, space and the one HUD Ö glyph (code 119); length exactly 7 |
 | `ui` | the exact string, trailing spaces significant | `a c d e f`, `w.t`, `w.u`, `E.h` | message font, uppercase; menu label + value ≤ 23; end screen ≤ 40; `E.h` any Unicode |
 | `image` | exact wording, mixed case, ` / ` = line break | intro and HUD images | that image font's inventory (`images.md` §3.8); letters it lacks are hand-drawn (§8) |
 | `parchment` | exact wording, mixed case | `pergamino1/2` (letras font) | a-z A-Z, å ä ö Å Ä Ö (new slots), space, `, - . : ;`, digits 1 2 3 7, and é í ñ á only in the credits; never `? ! ' " ( ) /` (§9.3) |

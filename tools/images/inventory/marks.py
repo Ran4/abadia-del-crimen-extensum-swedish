@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["pillow", "numpy"]
+# dependencies = ["pillow==11.3.0", "numpy==2.3.2"]
 # ///
 """Cut diacritic / dot models: rows strictly above the x-height top of the glyph's line, taken from the glyph's
 _mask file (only that glyph's pixels). Writes GLYPHDIR/<font>/marks/*.png (+ x8 previews) and marks_index.json.

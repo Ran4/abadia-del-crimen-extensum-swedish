@@ -15,7 +15,9 @@ two trees that this module derives from original/TheAbbeyOfCrimeExtensum.jar:
                         JAR_DIR / that path)
   GLYPHS / ...          the glyph inventory: index.json, font_metrics.json, fraktur/*_mask.png,
                         hud/BACKGROUND_reconstructed_x0-41_y0-21.png and the rest, made by the
-                        Phase A inventory scripts, copied unchanged into tools/images/inventory/
+                        Phase A inventory scripts, copied into tools/images/inventory/ (unchanged
+                        but for pinned dependency versions, the builders' pillow==11.3.0,
+                        numpy==2.3.2 and scipy==1.16.1, so a new uv resolution cannot drift them)
                         (glyph_inventory.py RES OUT; font_metrics.py OUT; hud_glyphs.py RES OUT;
                         marks.py OUT; merge_index.py OUT)
 

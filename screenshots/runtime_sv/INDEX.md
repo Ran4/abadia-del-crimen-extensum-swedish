@@ -4,12 +4,16 @@ All files are native 320x208 game frames (the exact framebuffer, see docs/FORMAT
 from the built game in `game/` started with language `de` (= Swedish), Java 11.
 
 **Jar note (Phase E round 2).** These runs used jar sha256 `e9a95e0c…` (the fixer run of round 1
-used the round-1 rebuild). The current `game/` jar is `0ad2bbf0…`. It differs from `e9a95e0c…` only
-in `abadia/k.class` (entry CRC diff over all 445 entries), and within it only in 17 `g` strings: g52,
-g54, g61, g64, g75, g77, g85, g114, g118, g122, g125, g131, g143, g149, g150, g155 and g163. None of
-them is on screen in this tour. The current wording of all of them is in the harness render
-(`screenshots/strings/de/`), and g54 was re-captured live on the current jar
-(`opening/INDEX.md`, run 4).
+used the round-1 rebuild). Phase E's final `game/` jar was `0ad2bbf0…`. It differs from `e9a95e0c…`
+only in `abadia/k.class` (entry CRC diff over all 445 entries), and within it only in 17 `g` strings:
+g52, g54, g61, g64, g75, g77, g85, g114, g118, g122, g125, g131, g143, g149, g150, g155 and g163.
+None of them is on screen in this tour. The current wording of all of them is in the harness render
+(`screenshots/strings/de/`), and g54 was re-captured live on `0ad2bbf0…` (`opening/INDEX.md`, run 4).
+
+**Jar note (Phase F).** Phase F reworded g54, g61, g64, g122, g131, g149, g150 and g163 (all from the list
+above) and rebuilt. The current jar `43846c9e…` differs from `0ad2bbf0…`/`e9a95e0c…` only in
+`abadia/k.class` (entry CRC diff, Phase F final verification). None of these is on screen in this
+tour. `work/build/manifest.json` holds the current jar's hash.
 
 Where they came from:
 
@@ -27,6 +31,14 @@ Where they came from:
 - **Save run** (`work/runs/save-sv`): `tools/drivers/interactive.sh` on a **copy** of the jar in
   `work/phaseE/save_game/`, so that `savedata.bin` would not be written into `game/`. Used only for
   files 40-41: a filled save slot, which the tour never creates. The raw frames are in `work/phaseE/sv_save/`.
+
+- **Manual menu run** (`work/phaseF/menu_run`, 2026-10-27 10:21-10:23, Phase F, jar `43846c9e…`):
+  `RUN_DIR=work/phaseF/menu_run SHOT_DIR=work/phaseF/menu_run/shots tools/run_headless.sh work/phaseF/menu_game de tools/drivers/manual_menu.sh`,
+  on a copy of the jar in `work/phaseF/menu_game/`. Used only for file 49: the pause menu opened at the
+  first frames of play, before anyone speaks, so no dialogue box lies under the menu scroll (the
+  user manual's MENYN picture; every tour menu frame, 24-41, has g49 or g157 underneath). With the
+  menu closed again the frame is pixel-identical to `20_play_start_hud.png` (AE 0). `evidence.log`
+  records `INVISIBLE OK` before and after, `/dev/snd: 0 entries` and the sink-input on its null sink.
 
 Every file was compared with the same moment in `screenshots/pristine_en/` and `screenshots/pristine_es/`.
 
@@ -84,6 +96,7 @@ Every file was compared with the same moment in `screenshots/pristine_en/` and `
 | 46_g12_box2_abbot.png | g12 box 2: "LÄMNA DETTA KLOSTER FÖR ALLTID." | |
 | 47_end_screen.png | End screen "DU HAR LÖST / 0 PROCENT / AV GÅTAN / TRYCK PÅ MELLANSLAG" | 630 |
 | 48_after_end_restart.png | After Space on the end screen: the game restarts at the gate | 636 |
+| 49_menu_no_dialogue.png | Manual menu run: pause menu at the start of play, cursor on FORTSÄTT, no dialogue underneath | 66 |
 
 ## Comparison with pristine_en / pristine_es
 

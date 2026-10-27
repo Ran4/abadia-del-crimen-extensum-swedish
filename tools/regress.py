@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["pillow"]
+# dependencies = ["pillow==11.3.0"]
 # ///
 """Regression: the Swedish build must not change a single pixel of any other language.
 

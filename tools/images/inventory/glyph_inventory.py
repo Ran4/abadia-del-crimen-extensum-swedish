@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["pillow", "numpy", "scipy"]
+# dependencies = ["pillow==11.3.0", "numpy==2.3.2", "scipy==1.16.1"]
 # ///
 """Cut glyphs out of the language versions of the intro images, per font, using connected components.
 

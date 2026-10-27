@@ -10,11 +10,13 @@ pause-menu and save/load-slot panels, the end screen and the restart after it. E
 pixel that differs belongs to a moving thing or comes from timing jitter. All six game logs are
 clean, all six runs stayed invisible, and all audio went to the private null sinks.
 
-**Jar note (Phase E round 2).** "The patched jar" here is `e9a95e0c…`. The current `game/` jar,
-`0ad2bbf0…`, differs from it only in `abadia/k.class` (entry CRC diff over all 445 entries), and
-within it only in 17 Swedish `g` strings. `k` is the `de` slot (FORMAT §1.1), so en, es and pl do not
-read it. `uv run tools/regress.py` on the current jar is pixel-identical in es, en, it, fr and pl
-(3711 frames; `work/regress_final.log`).
+**Jar note (Phase E round 2, updated in Phase F).** "The patched jar" here is `e9a95e0c…`. Phase E's
+final jar, `0ad2bbf0…`, differs from it only in `abadia/k.class` (entry CRC diff over all 445
+entries), and within it only in Swedish `g` strings. The current jar `43846c9e…` differs from
+`0ad2bbf0…`/`e9a95e0c…` only in `abadia/k.class` (entry CRC diff, Phase F final verification).
+`k` is the `de` slot (FORMAT §1.1), so en, es and pl do not read it. `uv run tools/regress.py` on
+`43846c9e…` is pixel-identical in es, en, it, fr and pl (3711 frames; `work/phaseF/regress_r1.log`,
+and `regress_r2.log` after the final rebuild).
 
 Date 2026-10-27. Six live runs through `tools/run_headless.sh` + `tools/drivers/pristine_tour.sh`,
 then a pairwise comparison with `work/phaseE/compare_runtime.py`.
