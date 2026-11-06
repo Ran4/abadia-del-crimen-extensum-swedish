@@ -92,11 +92,7 @@ tills du trycker på mellanslag. Slutpergamentet går inte att hoppa över.
   Crimen Extensum”. Det är spelets egentliga namn, så ingen titelgrafik behövde ritas om.
   Språkplatsen ”de” hade från början en engelsk titelbild. Hade den fått stå kvar bredvid den
   spanska logotypen, skulle spelet ha visat två olika titlar (DECISIONS D3a).
-- **Fönstertiteln** är också ”La Abadía del Crimen Extensum”, av samma skäl (DECISIONS D6). Titeln
-  står i raden `E.h[4]` i `translation/strings_sv.tsv`. Den som vill ändra den måste först lägga
-  till ett ord ur den nya titeln i `TITLE_RE` i `tools/run_headless.sh`, `tools/headless_lib.sh`
-  och `tools/lint_strings.py`. Annars hittar testriggen inte fönstret, och lintern fortsätter att
-  varna.
+- **Fönstertiteln** är också ”La Abadía del Crimen Extensum”, av samma skäl (DECISIONS D6).
 - **Rösterna:** spelet har inget tal. Varje figur har ett eget ordlöst mummel: för varje bokstav
   som skrivs fram spelas ett av tre korta ljud, slumpvis valt (i jarfilen:
   `res/sound/voces/vozguillermo.ogg` och så vidare). Ljuden är desamma på alla språk.
@@ -118,152 +114,49 @@ från den engelska manualen. Den använder spelets egna ord: menyraderna och tim
 `translation/strings_sv.tsv`, och prologsidan är inledningspergamentet. Översättningen är inofficiell
 och för privat bruk, och det står i manualen.
 
-```sh
-uv run tools/manual/build_manual.py
-```
+Bygget kopierar PDF:en till `game/` som `User's manual (Swedish).pdf`. Själva manualen bygger du om
+med `uv run tools/manual/build_manual.py`. Båda filerna innehåller bilder ur spelet och hålls
+utanför git (DECISIONS D14, D15).
 
-skriver `.docx`-filen, gör PDF:en med `soffice --headless --convert-to pdf` (inget fönster öppnas)
-och lägger sedan till PDF:ens länkar, som LibreOffice tappar vid exporten. Skriptet kontrollerar att
-varje sida har sin länk och att rubrikerna går att söka på. `--no-pdf` skriver bara `.docx`-filen.
-Det behövs LibreOffice, typsnittet Junicode och `pdfimages`/`pdftotext` (poppler-utils). Bilderna är
-svenska spelbilder ur `screenshots/runtime_sv/`; motivet till avsnittet Menyn tas fram med
-`tools/drivers/manual_menu.sh`.
+## Ändra och bygga om
 
-PDF:en är referensen för hur manualen ska se ut. `.docx`-filen bäddar in Junicode, så att den ser
-likadan ut i Word även på en dator som saknar typsnittet. Nästa `uv run tools/build.py` kopierar
-PDF:en till `game/` som `User's manual (Swedish).pdf`. Båda filerna innehåller bilder ur spelet och
-hålls utanför git (DECISIONS D14, D15).
-
-## Bygga om spelet
-
-När du har ändrat något i `translation/` (eller i `assets_sv/` eller `tools/images/`) bygger du om
-`game/` med:
+Texten står i `translation/strings_sv.tsv` (alla strängar i spelet, i kolumnen `sv`) och i
+`translation/pergamino1_sv.txt` och `translation/pergamino2_sv.txt` (inlednings- och
+slutpergamentet). När du har ändrat något bygger du om `game/` med:
 
 ```sh
 uv run tools/build.py
 ```
 
-**Det här behövs:**
+Det behövs uv, JDK 11, JDK 8, ASM-jarfilerna i `tools/` och originalspelet i `original/`. Allt
+detta beskrivs i `tools/README_tools.md`. Bygget kontrollerar översättningen och de patchade
+klasserna innan det skriver något. Om en kontroll misslyckas lämnas `game/` orörd. Annars skapas
+mappen på nytt (`savedata.bin` behålls), så lägg inga egna filer där.
 
-- `uv`. All Pythonkod körs med uv, och skripten anger själva sina beroenden.
-- JDK 11 (`java`, `javac` och `javap` i PATH) och JDK 8 i `/usr/lib/jvm/java-8-openjdk-amd64`.
-  JDK 8 används för verifieringen, och bygget misslyckas utan den.
-- ASM-jarfilerna i `tools/` (`asm-9.7.1.jar`, `asm-tree-9.7.1.jar`, `asm-analysis-9.7.1.jar`,
-  `asm-util-9.7.1.jar`) från Maven Central. Adresser och kontrollsummor finns i
-  `tools/README_tools.md`.
-- `original/` med den orörda nedladdningen av originalspelet (jarfilen, startskripten och
-  PDF-filerna). Bygget läser därifrån men skriver aldrig dit.
-
-**Bygget kontrollerar bland annat:**
-
-- att originalets jarfil har rätt SHA-256-summa (annars får du en varning);
-- att strängarna klarar lintern, innan något byggs (bygget avbryts vid fel);
-- att den genererade textklassen `abadia/k.class` har exakt samma fält, flaggor och klassversion
-  som originalet;
-- att patcharna i `j.class` (Å), `w.class` (”DAG”, ”TOM”) och `E.class` (fönstertiteln) inte
-  ändrar något annat;
-- att varje pergamentrad ryms på bredden;
-- att de sju svenska bilderna har rätt storlek och format (de görs om vid varje körning, från
-  originalet och `assets_sv/`, utom med `--no-image-rebuild`);
-- att de patchade klasserna går att ladda och länka med `-Xverify:all` på både JDK 11 och JDK 8;
-- att strängarna i den färdiga jarfilen stämmer med TSV-filen.
-
-Resultatet är `game/` och `work/build/manifest.json`. Samma indata ger byte för byte samma
-utdata. Om en kontroll misslyckas lämnas `game/` orörd. Vid ett lyckat bygge raderas mappen och
-skapas på nytt, men `savedata.bin` behålls. Bygget vägrar att köras om `game/` innehåller något
-annat än byggets egna filer och `savedata.bin`, så lägg inga egna filer där. Alla flaggor till
-`build.py` beskrivs i `tools/README_tools.md`.
-
-### Källfilerna
-
-| Fil | Innehåll |
-|---|---|
-| `translation/strings_sv.tsv` | Alla strängar i spelet; den svenska texten står i kolumnen `sv` |
-| `translation/pergamino1_sv.txt`, `translation/pergamino2_sv.txt` | Inlednings- och slutpergamentet (UTF-8, en textrad per pergamentrad) |
-| `assets_sv/glyphs/` | De nya tecknen: `fuente_add.json` (spelets typsnitt) och `letras_add.json` (pergamentens handskrift) |
-| `assets_sv/image_src/` | Handritade bokstäver till bilderna, som textfiler |
-| `tools/images/` | Byggskripten för de sju svenska bilderna (körs av `build.py`) |
-| `translation/glossary.tsv` | Ordlistan i maskinläsbar form, för `check_glossary.py` (läses inte av bygget) |
-
-`assets_sv/res/` skrivs över vid varje vanligt bygge och ska därför inte redigeras för hand.
-
-**Att tänka på** (detaljerna finns i `docs/GLOSSARY.md` och i `docs/FORMAT.md`: §1.4 och §1.13 för
-strängarna, §4.5 och §4.7 för pergamenten):
-
-- Strängarna skrivs med VERSALER (utom fönstertiteln `E.h[4]`).
-- Talarkoderna `@N` ska stå exakt som i den spanska texten.
-- I en replik ger `_` ny sida och `*` ny rad. Mellanslag räknas in i längden.
-- Håll dig inom gränsen i kolumnen `max_len`. För några repliker gäller i stället en tidsgräns i tick,
-  som lintern kontrollerar (DECISIONS D12).
-- Rad 2 på varje sida i en replik får ha högst 34 synliga tecken, eftersom den blinkande
-  ▶▶-markören täcker det 35:e (DECISIONS D13). Lintern kontrollerar inte detta. Kör
-  `render_strings.py` och se till att `screenshots/strings/de/report.txt` inte har någon varning
-  om ”continue-marker”.
-- Pergamenten klarar bara a–z och A–Z, å ä ö Å Ä Ö, några accentbokstäver (bland annat é, í och ñ,
-  som eftertexterna behöver), mellanslag, `, - . : ;` och siffrorna 1, 2, 3 och 7. Skriv tal med
-  bokstäver.
-- Pergamentraderna bryts för hand, eftersom spelet inte radbryter själv, och en sida rymmer 11
-  rader. Bläcket får nå högst till x = 244; mät raderna med `letras.py check` (se nedan).
-
-### Kontrollkommandon
-
-```sh
-uv run tools/lint_strings.py      # strängreglerna, utan att bygga
-uv run tools/check_glossary.py    # strängar och pergament mot translation/glossary.tsv
-uv run tools/render_strings.py    # ritar alla svenska strängar ur game/ med spelets egen kod
-                                  # till screenshots/strings/de/; misslyckas om ett tecken saknas
-uv run tools/regress.py           # spanska, engelska, franska, italienska och polska: originalet
-                                  # och det patchade spelet ska vara pixelidentiska
-```
-
-`render_strings.py` och `regress.py` läser det byggda spelet, så kör dem efter `build.py`.
-`render_strings.py` säger också till om strängfilen eller pergamentfilerna har ändrats efter
-bygget. Ändrade tecken eller bilder märker den inte, så bygg alltid om först.
-
-Två hjälpmedel:
-
-```sh
-uv run tools/translate_tool.py pages "@0 TEXT"     # hur spelet delar upp en replik på sidor,
-                                                   # och hur många tick den tar
-uv run tools/letras.py check translation/pergamino1_sv.txt --text \
-    --letras game/TheAbbeyOfCrimeExtensum.jar      # mäter pergamentraderna
-```
+Reglerna för strängar och pergament, kontrollkommandona och testriggen som kör spelet osynligt
+beskrivs i `CLAUDE.md`.
 
 ## Var finns vad
 
 | Sökväg | Innehåll |
 |---|---|
 | `game/` | Det färdiga spelet (byggs av `build.py`) |
-| `manual/` | Den svenska användarmanualen, `.pdf` och `.docx` (byggs av `tools/manual/build_manual.py`) |
+| `translation/` | Strängarna, pergamenten och ordlistan i maskinläsbar form |
+| `assets_sv/` | De nya tecknen och de handritade bokstäverna till bilderna |
+| `manual/` | Den svenska användarmanualen, `.pdf` och `.docx` |
 | `docs/FORMAT.md` | Spelets dataformat och gränser, som bygget vilar på |
 | `docs/GLOSSARY.md` | Ordlista och stilguide: tilltal, namn, timmar, fasta fraser |
 | `docs/DECISIONS.md` | Beslut som ändrar eller kompletterar den ursprungliga planen |
-| `docs/TRANSLATION_REVIEW.md` | Protokoll över granskningen: redaktörsläsning, blind återöversättning och konsekvensläsning för varje sträng och båda pergamenten, med alla avvisade förslag och skälen (genereras av `tools/review_record.py`) |
+| `docs/TRANSLATION_REVIEW.md` | Protokoll över granskningen av varje sträng och båda pergamenten: redaktörsläsning, blind återöversättning och konsekvensläsning, med alla avvisade förslag och skälen |
 | `screenshots/strings/de/` | Kontaktkartor med alla svenska strängar, ritade med spelets egen kod (sammanfattning i `report.txt`) |
 | `screenshots/runtime_sv/` | Skärmbilder från körningar av det svenska spelet; `INDEX.md` beskriver vad som kontrollerades |
 | `screenshots/runtime_regress/` | Spanska, engelska och polska i det patchade spelet, jämförda med originalet (`INDEX.md`) |
 | `screenshots/pristine_en/`, `screenshots/pristine_es/` | Referensbilder från originalspelet |
 | `tools/` | Bygget, kontrollerna och testriggen; se `tools/README_tools.md` |
+| `CLAUDE.md` | Hur man arbetar med projektet: regler, kontroller och testriggen |
 | `implementation_prompt.md` | Den ursprungliga beställningen |
-| `work/` | Mellanresultat, data som `translate_tool.py` läser och rådata från testerna (körloggar, skärmbilder) som INDEX-filerna och `docs/FORMAT.md` hänvisar till. Bygget klarar sig utan mappen, men behåll den (DECISIONS D14) |
+| `work/` | Mellanresultat och rådata från testerna, som INDEX-filerna och `docs/FORMAT.md` hänvisar till. Bygget klarar sig utan mappen, men behåll den (DECISIONS D14) |
 
-Dokumenten i `docs/` och `tools/README_tools.md` är skrivna på engelska. Bilderna i `screenshots/`
-och `assets_sv/res/` bygger på originalets grafik och hålls utanför git (DECISIONS D14).
-
-## Testriggen
-
-`tools/run_headless.sh` kör spelet osynligt och tyst: på en egen Xvfb-skärm (aldrig på din) och
-med ljudet skickat till en stum ljudutgång. Styrskripten i `tools/drivers/` trycker på tangenter
-och tar skärmbilder. Ett exempel är en rundtur från introt via början av inledningspergamentet,
-statusfältet och pausmenyn fram till slutskärmen (tar ungefär elva minuter):
-
-```sh
-SHOT_DIR=work/runs/min-tur tools/run_headless.sh game de tools/drivers/pristine_tour.sh
-```
-
-Riggen behöver `bwrap`, `xdotool`, `xwd`, `xwininfo`, ImageMagick (`convert` och `identify`),
-`pactl`, `parec` och Xvfb uppackad i `tools/xvfb-root/`. Xvfb packar du upp en gång, utan sudo:
-
-```sh
-(cd tools && apt-get download xvfb && dpkg-deb -x xvfb_*.deb xvfb-root)
-```
+Dokumenten i `docs/`, `tools/README_tools.md` och `CLAUDE.md` är skrivna på engelska. Bilderna i
+`screenshots/` och `assets_sv/res/` bygger på originalets grafik och hålls utanför git (DECISIONS
+D14).
