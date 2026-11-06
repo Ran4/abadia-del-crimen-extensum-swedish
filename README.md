@@ -5,9 +5,6 @@ Celemín. Förlagan är klassikern *La Abadía del Crimen* från 1987 av Paco Me
 Det spelet bygger i sin tur på Umberto Ecos roman *Rosens namn*. Det här är en svensk översättning
 av nyversionen.
 
-**Endast för privat bruk.** Ingenting publiceras: varken det patchade spelet, originalfilerna eller
-översättningen lämnar den här datorn.
-
 Svenskan tar över spelets oanvända språkplats ”de”, som inget av originalets startskript väljer.
 
 ## Starta spelet
